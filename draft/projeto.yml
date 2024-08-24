@@ -1,0 +1,115 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: |-
+    Modelo simples de quadro kanban apresentado no projeto integrador de competências II.
+  license:
+    name: AGPL 3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.pt-br.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://dev.intranet.local.br/
+
+paths:
+  /quadro/{idQuadro}:
+    get:
+      responses:
+        "200":
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quadro"
+    parameters:
+      - name: idQuadro
+        in: path
+        required: true
+        description: "Id do quadro a ser exibido"
+        schema:
+          type: integer
+          example: 10
+  /tarefa:
+    put:
+      requestBody:
+        description: "Requisitar criação de tarefa, o id é ignorado, pois será gerado no servidor"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tarefa"
+      responses:
+        "201":
+          description: "Tarefa criada com sucesso"
+          content:
+            application/text:
+              schema:
+                type: integer
+                description: "Id da tarefa criada"
+                example: 123
+        "422":
+          description: "Solicitação inválida"
+    post:
+      requestBody:
+        description: "Requisitar modificação de tarefa. Os campos mutáveis são idEstado, título e descrição"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tarefa"
+      responses:
+        "200":
+          description: "Tarefa alterada com sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tarefa"
+        "422":
+          description: "Solicitação inválida"
+
+components:
+  schemas:
+    Tarefa:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        idEstado:
+          type: integer
+          example: 20
+        titulo:
+          type: string
+          example: "Título da tarefa"
+        descricao:
+          type: string
+          example: "Descrição da tarefa"
+    Status:
+      type: object
+      properties:
+        idEstado:
+          type: integer
+          example: 20
+        nomeEstado:
+          type: string
+          example: "Backlog"
+        ordemEstado:
+          type: integer
+          example: 1
+        tarefas:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tarefa"
+    Quadro:
+      type: object
+      properties:
+        idQuadro:
+          type: integer
+          example: 1
+        titulo:
+          type: string
+          example: "Nome do quadro"
+        acompanhamento:
+          type: array
+          items:
+            $ref: "#/components/schemas/Status"
