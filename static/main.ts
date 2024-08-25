@@ -23,7 +23,7 @@ type Tarefa = {
 type Tag = string;
 
 (() => {
-    let resp: Quadro = {
+    let mockResposta: Quadro = {
         "idQuadro": 1,
         "titulo": "Nome do quadro",
         "descricao": "Descrição do quadro",
@@ -80,10 +80,10 @@ type Tag = string;
         ]
     }
 
-    criarQuadro(resp);
+    criarQuadro(mockResposta);
 })()
 
-function criarQuadro(resp: Quadro) {
+function criarQuadro(quadro: Quadro) {
     let quadroDiv = document.getElementById("quadro-kanban") as HTMLDivElement;
 
     // Criação
@@ -95,14 +95,14 @@ function criarQuadro(resp: Quadro) {
     colunaContainer.classList.add("coluna-container");
 
     // Dados
-    tituloQuadro.innerText = resp.titulo;
-    descricaoQuadro.innerText = resp.descricao;
+    tituloQuadro.innerText = quadro.titulo;
+    descricaoQuadro.innerText = quadro.descricao;
 
     // Inserção
     quadroDiv.appendChild(tituloQuadro);
     quadroDiv.appendChild(descricaoQuadro);
     quadroDiv.appendChild(colunaContainer);
-    for (let estado of resp.colunas) {
+    for (let estado of quadro.colunas) {
         criarColuna(colunaContainer, estado);
     }
 }

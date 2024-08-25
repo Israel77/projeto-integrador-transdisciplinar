@@ -22,7 +22,7 @@ button {
 
 #quadro-kanban {
     margin: auto;
-    max-width: min(1080px, 100vw);
+    max-width: min(80rem, 100vw);
     overflow: scroll;
 
 }

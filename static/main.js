@@ -1,5 +1,5 @@
 (function () {
-    var resp = {
+    var mockResposta = {
         "idQuadro": 1,
         "titulo": "Nome do quadro",
         "descricao": "Descrição do quadro",
@@ -55,9 +55,9 @@
             },
         ]
     };
-    criarQuadro(resp);
+    criarQuadro(mockResposta);
 })();
-function criarQuadro(resp) {
+function criarQuadro(quadro) {
     var quadroDiv = document.getElementById("quadro-kanban");
     // Criação
     var tituloQuadro = document.createElement("h1");
@@ -66,13 +66,13 @@ function criarQuadro(resp) {
     // Estilo
     colunaContainer.classList.add("coluna-container");
     // Dados
-    tituloQuadro.innerText = resp.titulo;
-    descricaoQuadro.innerText = resp.descricao;
+    tituloQuadro.innerText = quadro.titulo;
+    descricaoQuadro.innerText = quadro.descricao;
     // Inserção
     quadroDiv.appendChild(tituloQuadro);
     quadroDiv.appendChild(descricaoQuadro);
     quadroDiv.appendChild(colunaContainer);
-    for (var _i = 0, _a = resp.colunas; _i < _a.length; _i++) {
+    for (var _i = 0, _a = quadro.colunas; _i < _a.length; _i++) {
         var estado = _a[_i];
         criarColuna(colunaContainer, estado);
     }
