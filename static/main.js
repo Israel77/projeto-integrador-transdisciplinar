@@ -1,68 +1,70 @@
-(function () {
-    var mockResposta = {
-        "idQuadro": 1,
-        "titulo": "Nome do quadro",
-        "descricao": "Descrição do quadro",
-        "colunas": [
-            {
-                "idEstado": 1,
-                "nomeEstado": "Backlog",
-                "ordemEstado": 1,
-                "tarefas": [
-                    {
-                        "id": 1,
-                        "idEstado": 1,
-                        "titulo": "Título da tarefa",
-                        "descricao": "Descrição da tarefa",
-                        tags: ["Frontend", "Backend"]
-                    },
-                    {
-                        "id": 2,
-                        "idEstado": 1,
-                        "titulo": "Título da tarefa",
-                        "descricao": "Uma tarefa razoavelmente longa",
-                        tags: ["Backend"]
-                    }
-                ]
-            },
-            {
-                "idEstado": 2,
-                "nomeEstado": "Em andamento",
-                "ordemEstado": 2,
-                "tarefas": [
-                    {
-                        "id": 3,
-                        "idEstado": 3,
-                        "titulo": "Título da tarefa",
-                        "descricao": "Tarefa super longa que vai me tomar muito tempo",
-                        tags: ["Backend", "Performance"]
-                    }
-                ]
-            },
-            {
-                "idEstado": 3,
-                "nomeEstado": "Concluída",
-                "ordemEstado": 3,
-                "tarefas": [
-                    {
-                        "id": 4,
-                        "idEstado": 3,
-                        "titulo": "Título da tarefa",
-                        "descricao": "Descrição da tarefa",
-                        tags: ["Backend"]
-                    }
-                ]
-            },
-        ]
-    };
-    criarQuadro(mockResposta);
+(async function main() {
+    // let mockResposta: Quadro = {
+    //     "idQuadro": 1,
+    //     "titulo": "Nome do quadro",
+    //     "descricao": "Descrição do quadro",
+    //     "colunas": [
+    //         {
+    //             "idEstado": 1,
+    //             "nomeEstado": "Backlog",
+    //             "ordemEstado": 1,
+    //             "tarefas": [
+    //                 {
+    //                     "id": 1,
+    //                     "idEstado": 1,
+    //                     "titulo": "Título da tarefa",
+    //                     "descricao": "Descrição da tarefa",
+    //                     tags: ["Frontend", "Backend"]
+    //                 },
+    //                 {
+    //                     "id": 2,
+    //                     "idEstado": 1,
+    //                     "titulo": "Título da tarefa",
+    //                     "descricao": "Uma tarefa razoavelmente longa",
+    //                     tags: ["Backend"]
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             "idEstado": 2,
+    //             "nomeEstado": "Em andamento",
+    //             "ordemEstado": 2,
+    //             "tarefas": [
+    //                 {
+    //                     "id": 3,
+    //                     "idEstado": 3,
+    //                     "titulo": "Título da tarefa",
+    //                     "descricao": "Tarefa super longa que vai me tomar muito tempo",
+    //                     tags: ["Backend", "Performance"]
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             "idEstado": 3,
+    //             "nomeEstado": "Concluída",
+    //             "ordemEstado": 3,
+    //             "tarefas": [
+    //                 {
+    //                     "id": 4,
+    //                     "idEstado": 3,
+    //                     "titulo": "Título da tarefa",
+    //                     "descricao": "Descrição da tarefa",
+    //                     tags: ["Backend"]
+    //                 }
+    //             ]
+    //         },
+    //     ]
+    // }
+    let resposta = (await fetch("http://localhost:8080/api/v1/quadro/1"));
+    let corpoResposta = await resposta.json();
+    criarQuadro(corpoResposta);
 })();
 function criarQuadro(quadro) {
-    var quadroDiv = document.getElementById("quadro-kanban");
+    let quadroDiv = document.getElementById("quadro-kanban");
     // Criação
-    var tituloQuadro = document.createElement("h1");
-    var descricaoQuadro = document.createElement("p");
-    var colunaContainer = document.createElement("div");
+    let tituloQuadro = document.createElement("h1");
+    let descricaoQuadro = document.createElement("p");
+    let colunaContainer = document.createElement("div");
     // Estilo
     colunaContainer.classList.add("coluna-container");
     // Dados
@@ -72,17 +74,16 @@ function criarQuadro(quadro) {
     quadroDiv.appendChild(tituloQuadro);
     quadroDiv.appendChild(descricaoQuadro);
     quadroDiv.appendChild(colunaContainer);
-    for (var _i = 0, _a = quadro.colunas; _i < _a.length; _i++) {
-        var estado = _a[_i];
+    for (let estado of quadro.colunas) {
         criarColuna(colunaContainer, estado);
     }
 }
 function criarColuna(root, estado) {
     // Criação
-    var colunaEstado = document.createElement("div");
-    var colunaHeader = document.createElement("div");
-    var tituloColuna = document.createElement("h2");
-    var btnAdicionarTarefa = document.createElement("button");
+    let colunaEstado = document.createElement("div");
+    let colunaHeader = document.createElement("div");
+    let tituloColuna = document.createElement("h2");
+    let btnAdicionarTarefa = document.createElement("button");
     // Estilo
     colunaEstado.addEventListener("drop", drop);
     colunaEstado.addEventListener("dragover", dragover);
@@ -98,18 +99,17 @@ function criarColuna(root, estado) {
     colunaEstado.appendChild(colunaHeader);
     colunaHeader.appendChild(btnAdicionarTarefa);
     colunaHeader.appendChild(tituloColuna);
-    for (var _i = 0, _a = estado.tarefas; _i < _a.length; _i++) {
-        var tarefa = _a[_i];
+    for (let tarefa of estado.tarefas) {
         criarCardTarefa(colunaEstado, tarefa);
     }
     return colunaEstado;
 }
 function criarCardTarefa(root, tarefa) {
     // Criação
-    var tarefaDiv = document.createElement("div");
-    var pTitulo = document.createElement("p");
-    var pDescricao = document.createElement("p");
-    var secaoTags = document.createElement("div");
+    let tarefaDiv = document.createElement("div");
+    let pTitulo = document.createElement("p");
+    let pDescricao = document.createElement("p");
+    let secaoTags = document.createElement("div");
     // Inserção
     root.appendChild(tarefaDiv);
     tarefaDiv.appendChild(pTitulo);
@@ -126,15 +126,14 @@ function criarCardTarefa(root, tarefa) {
     tarefaDiv.setAttribute("data-id-tarefa", tarefa.id.toString());
     pTitulo.innerText = tarefa.titulo;
     pDescricao.innerText = tarefa.descricao;
-    for (var _i = 0, _a = tarefa.tags; _i < _a.length; _i++) {
-        var tag = _a[_i];
+    for (let tag of tarefa.tags) {
         criarTag(secaoTags, tag);
     }
     return tarefaDiv;
 }
 function criarTag(root, tag) {
     // Criação
-    var tagElement = document.createElement("span");
+    let tagElement = document.createElement("span");
     // Inserção
     root.appendChild(tagElement);
     // Estilo
@@ -147,10 +146,9 @@ function dragover(ev) {
     ev.preventDefault();
 }
 function drag(ev) {
-    var _a, _b;
-    var tarefaId = (_a = ev.target) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id-tarefa");
+    let tarefaId = ev.target?.getAttribute("data-id-tarefa");
     if (tarefaId)
-        (_b = ev.dataTransfer) === null || _b === void 0 ? void 0 : _b.setData("text", tarefaId);
+        ev.dataTransfer?.setData("text", tarefaId);
 }
 function drop(ev) {
     try {
@@ -158,8 +156,8 @@ function drop(ev) {
     }
     catch (error) { }
     if (ev.dataTransfer) {
-        var data = ev.dataTransfer.getData("text");
-        var card = document.querySelector("[data-id-tarefa=\"".concat(data, "\"]"));
+        let data = ev.dataTransfer.getData("text");
+        let card = document.querySelector(`[data-id-tarefa="${data}"]`);
         if (card != null) {
             mudarColuna(ev.target, card);
         }

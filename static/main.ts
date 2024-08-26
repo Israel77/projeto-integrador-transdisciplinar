@@ -22,65 +22,67 @@ type Tarefa = {
 
 type Tag = string;
 
-(() => {
-    let mockResposta: Quadro = {
-        "idQuadro": 1,
-        "titulo": "Nome do quadro",
-        "descricao": "Descrição do quadro",
-        "colunas": [
-            {
-                "idEstado": 1,
-                "nomeEstado": "Backlog",
-                "ordemEstado": 1,
-                "tarefas": [
-                    {
-                        "id": 1,
-                        "idEstado": 1,
-                        "titulo": "Título da tarefa",
-                        "descricao": "Descrição da tarefa",
-                        tags: ["Frontend", "Backend"]
-                    },
-                    {
-                        "id": 2,
-                        "idEstado": 1,
-                        "titulo": "Título da tarefa",
-                        "descricao": "Uma tarefa razoavelmente longa",
-                        tags: ["Backend"]
-                    }
-                ]
-            },
-            {
-                "idEstado": 2,
-                "nomeEstado": "Em andamento",
-                "ordemEstado": 2,
-                "tarefas": [
-                    {
-                        "id": 3,
-                        "idEstado": 3,
-                        "titulo": "Título da tarefa",
-                        "descricao": "Tarefa super longa que vai me tomar muito tempo",
-                        tags: ["Backend", "Performance"]
-                    }
-                ]
-            },
-            {
-                "idEstado": 3,
-                "nomeEstado": "Concluída",
-                "ordemEstado": 3,
-                "tarefas": [
-                    {
-                        "id": 4,
-                        "idEstado": 3,
-                        "titulo": "Título da tarefa",
-                        "descricao": "Descrição da tarefa",
-                        tags: ["Backend"]
-                    }
-                ]
-            },
-        ]
-    }
+(async function main() {
+    // let mockResposta: Quadro = {
+    //     "idQuadro": 1,
+    //     "titulo": "Nome do quadro",
+    //     "descricao": "Descrição do quadro",
+    //     "colunas": [
+    //         {
+    //             "idEstado": 1,
+    //             "nomeEstado": "Backlog",
+    //             "ordemEstado": 1,
+    //             "tarefas": [
+    //                 {
+    //                     "id": 1,
+    //                     "idEstado": 1,
+    //                     "titulo": "Título da tarefa",
+    //                     "descricao": "Descrição da tarefa",
+    //                     tags: ["Frontend", "Backend"]
+    //                 },
+    //                 {
+    //                     "id": 2,
+    //                     "idEstado": 1,
+    //                     "titulo": "Título da tarefa",
+    //                     "descricao": "Uma tarefa razoavelmente longa",
+    //                     tags: ["Backend"]
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             "idEstado": 2,
+    //             "nomeEstado": "Em andamento",
+    //             "ordemEstado": 2,
+    //             "tarefas": [
+    //                 {
+    //                     "id": 3,
+    //                     "idEstado": 3,
+    //                     "titulo": "Título da tarefa",
+    //                     "descricao": "Tarefa super longa que vai me tomar muito tempo",
+    //                     tags: ["Backend", "Performance"]
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             "idEstado": 3,
+    //             "nomeEstado": "Concluída",
+    //             "ordemEstado": 3,
+    //             "tarefas": [
+    //                 {
+    //                     "id": 4,
+    //                     "idEstado": 3,
+    //                     "titulo": "Título da tarefa",
+    //                     "descricao": "Descrição da tarefa",
+    //                     tags: ["Backend"]
+    //                 }
+    //             ]
+    //         },
+    //     ]
+    // }
 
-    criarQuadro(mockResposta);
+    let resposta = (await fetch("http://localhost:8080/api/v1/quadro/1"));
+    let corpoResposta = await resposta.json() as Quadro;
+    criarQuadro(corpoResposta);
 })()
 
 function criarQuadro(quadro: Quadro) {

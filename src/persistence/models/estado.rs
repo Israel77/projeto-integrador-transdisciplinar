@@ -1,5 +1,3 @@
-use sqlx::types::time::PrimitiveDateTime;
-
 pub struct Estado {
     pub id: i32,
     pub quadro_id: i32,
