@@ -8,7 +8,7 @@ COPY ./static .
 
 RUN npm install -g typescript
 
-RUN tsc main.ts
+RUN tsc main.ts --target ES2022
 # ----------
 # --- Rust build ---
 # Use the official Rust image as the base image

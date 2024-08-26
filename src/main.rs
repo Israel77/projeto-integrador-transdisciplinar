@@ -14,7 +14,8 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
 
     let database_url =
-        env::var("DATABASE_URL").expect("DATABASE_URL não está definido no arquivo .env");
+        env::var("DATABASE_URL")
+        .expect("DATABASE_URL não está definido no arquivo .env e não foi encontrada em variáveis de ambiente");
 
     let pool = PgPoolOptions::new()
         .connect(&database_url)
