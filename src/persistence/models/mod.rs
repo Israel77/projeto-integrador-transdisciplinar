@@ -1,4 +1,4 @@
-pub mod estado;
+pub mod coluna;
 pub mod quadro;
 pub mod tag;
 pub mod tarefa;

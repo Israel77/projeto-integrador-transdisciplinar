@@ -38,7 +38,7 @@ struct ColunaDTO {
 }
 
 impl ColunaDTO {
-    fn from_model(coluna: models::estado::Coluna, tarefas: Vec<TarefaDTO>) -> Self {
+    fn from_model(coluna: models::coluna::Coluna, tarefas: Vec<TarefaDTO>) -> Self {
         ColunaDTO {
             id_estado: coluna.id_coluna,
             titulo: coluna.nome_coluna,
@@ -93,7 +93,7 @@ async fn consultar_quadro_por_id(
     .await?;
 
     let estados_models = query_as!(
-        models::estado::Coluna,
+        models::coluna::Coluna,
         "SELECT * FROM kanban.colunas WHERE id_quadro=$1",
         quadro_model.id_quadro
     )

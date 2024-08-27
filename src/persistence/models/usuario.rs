@@ -1,7 +1,6 @@
 use sqlx::{
     prelude::FromRow,
     types::{ipnetwork::IpNetwork, time::PrimitiveDateTime},
-    PgPool,
 };
 
 #[derive(Debug, FromRow)]
