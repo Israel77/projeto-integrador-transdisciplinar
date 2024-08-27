@@ -18,9 +18,9 @@ struct QuadroDTO {
 impl QuadroDTO {
     fn from_model(quadro: models::quadro::Quadro, colunas: Vec<ColunaDTO>) -> Self {
         QuadroDTO {
-            id_quadro: quadro.id,
-            titulo: quadro.titulo.clone(),
-            descricao: quadro.descricao,
+            id_quadro: quadro.id_quadro,
+            titulo: quadro.titulo_quadro.clone(),
+            descricao: quadro.descricao_quadro,
             colunas,
         }
     }
@@ -38,11 +38,11 @@ struct ColunaDTO {
 }
 
 impl ColunaDTO {
-    fn from_model(coluna: models::estado::Estado, tarefas: Vec<TarefaDTO>) -> Self {
+    fn from_model(coluna: models::estado::Coluna, tarefas: Vec<TarefaDTO>) -> Self {
         ColunaDTO {
-            id_estado: coluna.id,
-            titulo: coluna.nome_estado,
-            ordem: coluna.ordem,
+            id_estado: coluna.id_coluna,
+            titulo: coluna.nome_coluna,
+            ordem: coluna.ordem_coluna,
             tarefas,
         }
     }
@@ -61,11 +61,11 @@ struct TarefaDTO {
 impl TarefaDTO {
     fn from_model(tarefa: models::tarefa::Tarefa, tags: &Vec<models::tag::Tag>) -> Self {
         TarefaDTO {
-            id: tarefa.id,
-            titulo: tarefa.titulo,
-            descricao: tarefa.descricao,
-            estado_id: tarefa.estado_id,
-            tags: tags.iter().map(|model| model.nome.clone()).collect(),
+            id: tarefa.id_tarefa,
+            titulo: tarefa.titulo_tarefa,
+            descricao: tarefa.descricao_tarefa,
+            estado_id: tarefa.id_coluna,
+            tags: tags.iter().map(|model| model.nome_tag.clone()).collect(),
         }
     }
 }
@@ -80,19 +80,22 @@ async fn retornar_quadros(id: web::Path<i32>, pool: web::Data<sqlx::PgPool>) -> 
     }
 }
 
-async fn consultar_quadro_por_id(conn: &sqlx::PgPool, id: i32) -> Result<QuadroDTO, sqlx::Error> {
+async fn consultar_quadro_por_id(
+    conn: &sqlx::PgPool,
+    id_quadro: i32,
+) -> Result<QuadroDTO, sqlx::Error> {
     let quadro_model = query_as!(
         models::quadro::Quadro,
-        "SELECT * FROM kanban.quadros WHERE id=$1",
-        id
+        "SELECT * FROM kanban.quadros WHERE id_quadro=$1",
+        id_quadro
     )
     .fetch_one(conn)
     .await?;
 
     let estados_models = query_as!(
-        models::estado::Estado,
-        "SELECT * FROM kanban.estados WHERE quadro_id=$1",
-        quadro_model.id
+        models::estado::Coluna,
+        "SELECT * FROM kanban.colunas WHERE id_quadro=$1",
+        quadro_model.id_quadro
     )
     .fetch_all(conn)
     .await?;
@@ -101,8 +104,8 @@ async fn consultar_quadro_por_id(conn: &sqlx::PgPool, id: i32) -> Result<QuadroD
     for estado_model in estados_models {
         let tarefas_models = query_as!(
             models::tarefa::Tarefa,
-            "SELECT * FROM kanban.tarefas WHERE estado_id=$1",
-            estado_model.id
+            "SELECT * FROM kanban.tarefas WHERE id_coluna=$1",
+            estado_model.id_coluna
         )
         .fetch_all(conn)
         .await?;
@@ -111,8 +114,8 @@ async fn consultar_quadro_por_id(conn: &sqlx::PgPool, id: i32) -> Result<QuadroD
         for tarefa_model in tarefas_models {
             let tags_models = query_as!(
                 models::tag::Tag,
-                "SELECT * FROM kanban.tags WHERE id IN (SELECT tag_id FROM kanban.tarefa_tags WHERE tarefa_id=$1)",
-                tarefa_model.id
+                "SELECT * FROM kanban.tags WHERE id_tag IN (SELECT id_tag FROM kanban.tarefas_tags WHERE id_tarefa=$1)",
+                tarefa_model.id_tarefa
             )
             .fetch_all(conn)
             .await?;

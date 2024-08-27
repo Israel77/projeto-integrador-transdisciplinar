@@ -3,9 +3,9 @@ use std::sync::Arc;
 use sqlx::types::time::PrimitiveDateTime;
 
 pub struct Quadro {
-    pub id: i32,
-    pub usuario_id: i32,
-    pub titulo: Arc<str>,
-    pub descricao: Option<String>,
-    pub data_criacao: Option<PrimitiveDateTime>,
+    pub id_quadro: i32,
+    pub id_usuario: i32,
+    pub titulo_quadro: Arc<str>,
+    pub descricao_quadro: Option<String>,
+    pub data_criacao_quadro: Option<PrimitiveDateTime>,
 }

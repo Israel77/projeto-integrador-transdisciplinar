@@ -6,10 +6,10 @@ use sqlx::{
 
 #[derive(Debug, FromRow)]
 pub struct Usuario {
-    pub id: i32,
+    pub id_usuario: i32,
     pub nome_usuario: String,
-    pub email: String,
-    pub senha_hash: String,
-    pub data_criacao: Option<PrimitiveDateTime>,
-    pub ip_criacao: Option<IpNetwork>,
+    pub email_usuario: String,
+    pub senha_hash_usuario: String,
+    pub data_criacao_usuario: Option<PrimitiveDateTime>,
+    pub ip_criacao_usuario: Option<IpNetwork>,
 }

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
 pub struct Tag {
-    pub id: i32,
-    pub nome: Arc<str>,
+    pub id_tag: i32,
+    pub nome_tag: Arc<str>,
 }
