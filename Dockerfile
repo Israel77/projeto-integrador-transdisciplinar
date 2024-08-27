@@ -12,15 +12,22 @@ RUN tsc main.ts --target ES2022
 # ----------
 # --- Rust build ---
 # Use the official Rust image as the base image
-FROM rust:1.80 as builder
+FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
 
 # Set the working directory
 WORKDIR /usr/src/projeto-integrador-transdisciplinar
 
 # Copy the actual source code
+FROM chef AS planner
 COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
 
-# Build the actual application
+FROM chef AS builder 
+COPY --from=planner /usr/src/projeto-integrador-transdisciplinar/recipe.json recipe.json
+# Build dependencies - this is the caching Docker layer!
+RUN cargo chef cook --release --recipe-path recipe.json
+# Build application
+COPY . .
 RUN cargo build --release
 
 # ----------
