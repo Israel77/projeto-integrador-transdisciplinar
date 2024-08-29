@@ -1,10 +1,17 @@
+mod errors;
 mod persistence;
 mod routes;
+mod services;
 
 use std::env;
 
 use actix_files::Files;
-use actix_web::{web, App, HttpServer};
+use actix_session::{storage::RedisSessionStore, SessionMiddleware};
+use actix_web::{
+    cookie::Key,
+    web::{self, scope},
+    App, HttpServer,
+};
 use dotenv::dotenv;
 use sqlx::postgres::PgPoolOptions;
 
@@ -22,10 +29,27 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Erro ao conectar ao banco de dados");
 
+    // TODO: Substituir por chave armazenada em variáveis de ambiente
+    let secret_key = Key::generate();
+
+    let redis_store = RedisSessionStore::new("redis://localhost:6379")
+        .await
+        .unwrap();
+
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(pool.clone()))
-            .service(web::scope("/api/v1").service(routes::quadro::retornar_quadros))
+            .wrap(SessionMiddleware::new(
+                redis_store.clone(),
+                secret_key.clone(),
+            ))
+            .service(
+                scope("/api/v1")
+                    .service(routes::quadro::retornar_quadros)
+                    .service(routes::auth::sign_up)
+                    .service(routes::auth::login)
+                    .service(routes::auth::logout),
+            )
             .service(Files::new("/", "./static").index_file("index.html"))
     })
     .bind(("0.0.0.0", 8080))?
