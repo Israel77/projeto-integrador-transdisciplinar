@@ -16,6 +16,7 @@ pub enum ListaErros {
     ErroUsuarioNaoEncontrado(String),
     ErroUsuarioNaoAutorizado(String),
     ErroAuteticacao,
+    ErroUsuarioNaoLogado,
     // Erros de criação de usuário
     ErroSenhaCurta,
     ErroUsuarioJaExistente(String),
@@ -48,6 +49,11 @@ impl ListaErros {
             ListaErros::ErroAuteticacao => MensagemErro {
                 code: "103".to_string(),
                 message: "Usuário ou senha inválidos".to_string(),
+                status_code: 401,
+            },
+            ListaErros::ErroUsuarioNaoLogado => MensagemErro {
+                code: "104".to_string(),
+                message: "Usuário não está logado".to_string(),
                 status_code: 401,
             },
             ListaErros::ErroSenhaCurta => MensagemErro {

@@ -48,7 +48,8 @@ async fn main() -> std::io::Result<()> {
                     .service(routes::quadro::retornar_quadros)
                     .service(routes::auth::sign_up)
                     .service(routes::auth::login)
-                    .service(routes::auth::logout),
+                    .service(routes::auth::logout)
+                    .service(routes::auth::verificar_login),
             )
             .service(Files::new("/", "./static").index_file("index.html"))
     })

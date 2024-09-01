@@ -1,10 +1,18 @@
 use std::{net::IpAddr, str::FromStr};
 
 use actix_session::Session;
-use actix_web::{post, web, HttpRequest, HttpResponse, Responder};
+use actix_web::{get, post, web, HttpRequest, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
+use serde_json::json;
+use sqlx::PgPool;
 
-use crate::services::auth_service::{login_service, registrar_usuario_service};
+use crate::{
+    errors::error::ListaErros,
+    services::{
+        auth_service::{login_service, registrar_usuario_service},
+        quadro_service::consultar_ids_quadros_usuario,
+    },
+};
 
 #[derive(Serialize, Deserialize)]
 pub struct RequisicaoLogin {
@@ -55,10 +63,20 @@ pub async fn sign_up(
         req.connection_info()
             .realip_remote_addr()
             .map(|ip_str| IpAddr::from_str(ip_str).ok())
-            .unwrap_or_default(),
+            .flatten(),
         pool.get_ref(),
     )
     .await
     .map(|result| HttpResponse::Ok().json(result))
     .unwrap_or_else(|err| err.as_response())
+}
+
+#[get("/verificar-login")]
+pub async fn verificar_login(pool: web::Data<PgPool>, session: Session) -> impl Responder {
+    if let Some(id_usuario) = session.get::<i32>("id_usuario").ok().flatten() {
+        let quadros = consultar_ids_quadros_usuario(&pool, id_usuario).await.ok();
+        HttpResponse::Ok().json(json!({"id": id_usuario, "quadros": quadros}))
+    } else {
+        ListaErros::ErroUsuarioNaoLogado.as_response()
+    }
 }
