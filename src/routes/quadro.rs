@@ -1,10 +1,14 @@
 use std::sync::Arc;
 
+use actix_session::Session;
 use actix_web::{get, web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 use sqlx::query_as;
 
-use crate::persistence::models::{self};
+use crate::{
+    errors::error::ListaErros,
+    persistence::models::{self},
+};
 
 #[derive(Serialize, Deserialize)]
 struct QuadroDTO {
@@ -70,34 +74,49 @@ impl TarefaDTO {
     }
 }
 
-#[get("/quadro/{id}")]
-async fn retornar_quadros(id: web::Path<i32>, pool: web::Data<sqlx::PgPool>) -> impl Responder {
-    let conn = pool.get_ref();
+#[get("/quadro/{id_quadro}")]
+async fn retornar_quadros(
+    id_quadro: web::Path<i32>,
+    pool: web::Data<sqlx::PgPool>,
+    session: Session,
+) -> impl Responder {
+    let usuario = session.get::<i32>("id_usuario").unwrap();
 
-    match consultar_quadro_por_id(conn, id.into_inner()).await {
-        Ok(quadro_dto) => HttpResponse::Ok().json(quadro_dto),
-        Err(e) => HttpResponse::InternalServerError().body(e.to_string()),
+    if let Some(usuario) = usuario {
+        match consultar_quadro_por_id(&pool, id_quadro.into_inner(), usuario).await {
+            Ok(quadro_dto) => HttpResponse::Ok().json(quadro_dto),
+            Err(e) => e.as_response(),
+        }
+    } else {
+        ListaErros::ErroUsuarioNaoAutorizado("não identificado".to_string()).as_response()
     }
 }
 
 async fn consultar_quadro_por_id(
-    conn: &sqlx::PgPool,
+    pool: &sqlx::PgPool,
     id_quadro: i32,
-) -> Result<QuadroDTO, sqlx::Error> {
+    id_usuario: i32,
+) -> Result<QuadroDTO, ListaErros> {
     let quadro_model = query_as!(
         models::quadro::Quadro,
         "SELECT * FROM kanban.quadros WHERE id_quadro=$1",
         id_quadro
     )
-    .fetch_one(conn)
+    .fetch_one(pool)
     .await?;
+
+    // if quadro_model.id_usuario != id_usuario {
+    //     return Err(ListaErros::ErroUsuarioNaoAutorizado(
+    //         "O usuário não tem permissão para acessar este quadro.".to_string(),
+    //     ));
+    // }
 
     let estados_models = query_as!(
         models::coluna::Coluna,
         "SELECT * FROM kanban.colunas WHERE id_quadro=$1",
         quadro_model.id_quadro
     )
-    .fetch_all(conn)
+    .fetch_all(pool)
     .await?;
 
     let mut estados_dto: Vec<ColunaDTO> = Vec::new();
@@ -107,7 +126,7 @@ async fn consultar_quadro_por_id(
             "SELECT * FROM kanban.tarefas WHERE id_coluna=$1",
             estado_model.id_coluna
         )
-        .fetch_all(conn)
+        .fetch_all(pool)
         .await?;
 
         let mut tarefas_dto: Vec<TarefaDTO> = vec![];
@@ -117,7 +136,7 @@ async fn consultar_quadro_por_id(
                 "SELECT * FROM kanban.tags WHERE id_tag IN (SELECT id_tag FROM kanban.tarefas_tags WHERE id_tarefa=$1)",
                 tarefa_model.id_tarefa
             )
-            .fetch_all(conn)
+            .fetch_all(pool)
             .await?;
 
             tarefas_dto.push(TarefaDTO::from_model(tarefa_model, &tags_models));
