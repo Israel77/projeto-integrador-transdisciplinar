@@ -1,0 +1,19 @@
+meta {
+  name: logout
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/v1/logout
+  body: json
+  auth: none
+}
+
+script:pre-request {
+  const cookie = bru.getVar("cookie");
+  
+  if(cookie) {
+    req.setHeader("Cookie", cookie.split(";")[0])
+  }
+}

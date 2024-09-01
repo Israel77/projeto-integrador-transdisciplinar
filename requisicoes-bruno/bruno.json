@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "projeto-integrador-transdisciplinar",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
