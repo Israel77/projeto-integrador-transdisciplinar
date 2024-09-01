@@ -16,13 +16,16 @@ use crate::{
 
 #[derive(Serialize, Deserialize)]
 pub struct RequisicaoLogin {
+    #[serde(rename = "nomeUsuario")]
     pub nome_usuario: String,
     pub senha: String,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct RequisicaoRegistro {
+    #[serde(rename = "nomeUsuario")]
     pub nome_usuario: String,
+    #[serde(rename = "emailUsuario")]
     pub email_usuario: String,
     pub senha: String,
 }

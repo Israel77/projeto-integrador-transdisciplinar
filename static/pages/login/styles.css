@@ -1,0 +1,46 @@
+:root {
+    --white: #FFFFFF;
+    --lighter-gray: #F3F4F4;
+    --dark-gray: #5A5A65;
+    --light-gray: #E1E4E8;
+    --green: #59F28D;
+    --blue: #067FEF;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+input {
+    padding: .5em;
+    border-radius: .4rem;
+    border: 1px solid var(--dark-gray);
+}
+
+button {
+    font-size: 1.2rem;
+}
+
+#login {
+    margin: auto;
+    max-width: min(30rem, 100vw);
+    padding: 2rem;
+    outline: 1px solid var(--light-gray);
+}
+
+.extra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+}
+
+@media screen and (min-width: 600px) {
+    #login {
+        margin-top: 2rem;
+    }
+}

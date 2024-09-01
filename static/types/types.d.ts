@@ -21,8 +21,12 @@ type Tarefa = {
 }
 
 type RequisicaoLogin = {
-    "nome_usuario": string,
+    "nomeUsuario": string,
     "senha": string
 }
 
+type MensagemErro = {
+    "code": string,
+    "message": string
+}
 type Tag = string;

@@ -1,4 +1,4 @@
-import { criarTag } from "./TagTarefa";
+import { criarTag } from "./TagTarefa.js";
 
 export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivElement {
     // Criação

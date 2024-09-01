@@ -1,4 +1,4 @@
-import { criarColuna } from "./ColunaKanban";
+import { criarColuna } from "./ColunaKanban.js";
 
 export function criarQuadro(quadro: Quadro) {
     let quadroDiv = document.getElementById("quadro-kanban") as HTMLDivElement;

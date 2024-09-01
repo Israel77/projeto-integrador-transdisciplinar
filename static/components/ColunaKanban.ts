@@ -1,4 +1,4 @@
-import { criarCardTarefa } from "./CardTarefa";
+import { criarCardTarefa } from "./CardTarefa.js";
 
 export function criarColuna(root: HTMLElement, estado: Estado): HTMLDivElement {
     // Criação

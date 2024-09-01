@@ -51,6 +51,8 @@ async fn main() -> std::io::Result<()> {
                     .service(routes::auth::logout)
                     .service(routes::auth::verificar_login),
             )
+            .service(Files::new("/login", "./static/pages/login/").index_file("index.html"))
+            .service(Files::new("/components", "./static/components"))
             .service(Files::new("/", "./static").index_file("index.html"))
     })
     .bind(("0.0.0.0", 8080))?
