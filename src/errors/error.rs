@@ -79,3 +79,9 @@ impl ListaErros {
         HttpResponse::build(StatusCode::from_u16(mensagem.status_code).unwrap()).json(mensagem)
     }
 }
+
+impl From<sqlx::Error> for ListaErros {
+    fn from(error: sqlx::Error) -> Self {
+        ListaErros::ErroSQL(error)
+    }
+}
