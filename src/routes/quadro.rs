@@ -105,11 +105,9 @@ async fn consultar_quadro_por_id(
     .fetch_one(pool)
     .await?;
 
-    // if quadro_model.id_usuario != id_usuario {
-    //     return Err(ListaErros::ErroUsuarioNaoAutorizado(
-    //         "O usuário não tem permissão para acessar este quadro.".to_string(),
-    //     ));
-    // }
+    if quadro_model.id_usuario != id_usuario {
+        return Err(ListaErros::ErroUsuarioNaoAutorizado(id_usuario.to_string()));
+    }
 
     let estados_models = query_as!(
         models::coluna::Coluna,
