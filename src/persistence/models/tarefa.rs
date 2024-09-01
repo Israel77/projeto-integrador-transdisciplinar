@@ -1,5 +1,6 @@
 use sqlx::types::time::PrimitiveDateTime;
 
+#[allow(dead_code)]
 pub struct Tarefa {
     pub id_tarefa: i32,
     pub titulo_tarefa: String,

@@ -4,6 +4,7 @@ use sqlx::{
 };
 
 #[derive(Debug, FromRow)]
+#[allow(dead_code)]
 pub struct Usuario {
     pub id_usuario: i32,
     pub nome_usuario: String,

@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use sqlx::types::time::PrimitiveDateTime;
 
+#[allow(dead_code)]
 pub struct Quadro {
     pub id_quadro: i32,
     pub id_usuario: i32,

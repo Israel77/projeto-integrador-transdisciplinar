@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 pub struct Coluna {
     pub id_coluna: i32,
     pub id_quadro: i32,
