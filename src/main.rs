@@ -24,7 +24,7 @@ async fn main() -> std::io::Result<()> {
         env::var("DATABASE_URL")
         .expect("DATABASE_URL não está definida no arquivo .env e não foi encontrada em variáveis de ambiente");
 
-    let database_url = env::var("REDIS_URL").expect(
+    let redis_url = env::var("REDIS_URL").expect(
         "REDIS_URL não está definida no arquivo .env e não foi encontrada em variáveis de ambiente",
     );
 
@@ -36,7 +36,7 @@ async fn main() -> std::io::Result<()> {
     // TODO: Substituir por chave armazenada em variáveis de ambiente
     let secret_key = Key::generate();
 
-    let redis_store = RedisSessionStore::new(redis_url)
+    let redis_store = RedisSessionStore::new(&redis_url)
         .await
         .expect(format!("Erro ao conectar ao Redis: {}", redis_url).as_str());
 
