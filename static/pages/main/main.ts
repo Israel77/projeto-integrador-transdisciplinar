@@ -1,6 +1,7 @@
 import { criarQuadro } from "../../components/QuadroKanban.js";
 import { fazerLogout } from "../../services/fazerLogout.js";
 import { RespostaLogin, verificarLogin } from "../../services/verificarLogin.js";
+import type { MensagemErro, Quadro } from "../../types/types";
 
 
 (async () => {
@@ -11,6 +12,7 @@ import { RespostaLogin, verificarLogin } from "../../services/verificarLogin.js"
         return;
     }
 
+    // Por enquanto, cada usuário terá apenas um quadro
     const idQuadro = (dadosLogin as RespostaLogin).quadros[0];
     const resposta = await fetch(`/api/v1/quadro/${idQuadro}`, {
         method: "GET",

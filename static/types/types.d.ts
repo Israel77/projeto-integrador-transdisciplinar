@@ -1,18 +1,18 @@
-type Quadro = {
+export type Quadro = {
     "idQuadro": number,
     "titulo": string,
     "descricao": string,
     "colunas": Estado[]
 }
 
-type Estado = {
+export type Estado = {
     "idEstado": number,
     "nomeEstado": string,
     "ordemEstado": number,
     "tarefas": Tarefa[]
 }
 
-type Tarefa = {
+export type Tarefa = {
     "id": number,
     "idEstado": number,
     "titulo": string,
@@ -20,13 +20,13 @@ type Tarefa = {
     "tags": Tag[]
 }
 
-type RequisicaoLogin = {
+export type RequisicaoLogin = {
     "nomeUsuario": string,
     "senha": string
 }
 
-type MensagemErro = {
+export type MensagemErro = {
     "code": string,
     "message": string
 }
-type Tag = string;
+export type Tag = string;

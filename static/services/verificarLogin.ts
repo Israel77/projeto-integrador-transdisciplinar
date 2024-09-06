@@ -1,3 +1,5 @@
+import type { MensagemErro } from "../types/types.d.ts";
+
 export type RespostaLogin = {
     id: number;
     quadros: number[];
