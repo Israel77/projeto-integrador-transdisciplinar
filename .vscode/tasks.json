@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Redis",
+            "type": "shell",
+            "command": "podman",
+            "args": [
+                "run",
+                "--replace",
+                "--name",
+                "redis",
+                "-d",
+                "-p",
+                "6379:6379",
+                "redis"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        {
+            "label": "Stop Redis",
+            "type": "shell",
+            "command": "podman",
+            "args": [
+                "stop",
+                "redis"
+            ],
+            "problemMatcher": [],
+            "group": "none"
+        },
+        {
+            "label": "Start app",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "watch",
+                "-x",
+                "run",
+            ],
+            "dependsOn": "Run Redis",
+            "problemMatcher": [],
+            "group": "build"
+        }
+    ]
+}
