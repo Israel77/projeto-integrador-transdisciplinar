@@ -1,3 +1,4 @@
+import type { Tag } from "../types/types";
 
 export function criarTag(root: HTMLElement, tag: Tag) {
     // Criação

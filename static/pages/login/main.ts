@@ -1,3 +1,5 @@
+import { RequisicaoLogin } from "../../types/types";
+
 (() => {
     const nomeUsuario: HTMLInputElement = document.getElementById('nome-usuario') as HTMLInputElement;
     const senha: HTMLInputElement = document.getElementById('senha') as HTMLInputElement;

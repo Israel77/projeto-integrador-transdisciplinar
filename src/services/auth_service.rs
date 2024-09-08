@@ -25,7 +25,7 @@ pub async fn login_service(
         Ok(dados_usuario) => {
             if verify(senha, &dados_usuario.senha_hash_usuario).is_ok_and(|result| result) {
                 session
-                    .insert("id_usuario", dados_usuario.id_usuario)
+                    .insert("id_usuario", dados_usuario.id_usuario.to_string())
                     .unwrap();
                 Ok(format!("Usuário {} logado com sucesso", nome_usuario))
             } else {

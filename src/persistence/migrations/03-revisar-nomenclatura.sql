@@ -9,6 +9,12 @@
 -- 7. Nomes de tabelas devem ser no plural.
 -- 8. Nomes de colunas devem ser no singular.
 -- 9. Nomes de colunas devem ser o mais próximo possível do que será exibido no frontend (linguagem do domínio).
+----------
+----- ADENDOS POSTERIORES ----
+----- Adicionadas no script #05 -----
+-- 10. Ids devem ser UUIDs e não são a chave primária.
+-- 11. Todas as tabelas devem ter um UUID.
+-- 12. Chaves primárias devem ser identificadas por pk_<nome_da_tabela> (singular).
 
 ALTER TABLE kanban.quadros ADD COLUMN descricao TEXT;
 

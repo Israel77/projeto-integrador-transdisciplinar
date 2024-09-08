@@ -1,3 +1,4 @@
+import type { Tarefa } from "../types/types";
 import { criarTag } from "./TagTarefa.js";
 
 export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivElement {

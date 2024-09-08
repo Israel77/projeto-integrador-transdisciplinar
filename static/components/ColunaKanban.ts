@@ -1,3 +1,4 @@
+import type { Estado } from "../types/types";
 import { criarCardTarefa } from "./CardTarefa.js";
 
 export function criarColuna(root: HTMLElement, estado: Estado): HTMLDivElement {
@@ -17,7 +18,7 @@ export function criarColuna(root: HTMLElement, estado: Estado): HTMLDivElement {
     // Dados
     tituloColuna.innerText = estado.nomeEstado;
     btnAdicionarTarefa.innerText = "+";
-    colunaEstado.setAttribute("data-id-estado", estado.idEstado.toString());
+    colunaEstado.setAttribute("data-id-estado", estado.idColuna.toString());
 
     // Inserção
     root.appendChild(colunaEstado);

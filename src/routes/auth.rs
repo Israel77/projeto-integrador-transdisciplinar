@@ -76,8 +76,8 @@ pub async fn sign_up(
 
 #[get("/verificar-login")]
 pub async fn verificar_login(pool: web::Data<PgPool>, session: Session) -> impl Responder {
-    if let Some(id_usuario) = session.get::<i32>("id_usuario").ok().flatten() {
-        let quadros = consultar_ids_quadros_usuario(&pool, id_usuario).await.ok();
+    if let Some(id_usuario) = session.get::<String>("id_usuario").ok().flatten() {
+        let quadros = consultar_ids_quadros_usuario(&pool, &id_usuario).await.ok();
         HttpResponse::Ok().json(json!({"id": id_usuario, "quadros": quadros}))
     } else {
         ListaErros::ErroUsuarioNaoLogado.as_response()

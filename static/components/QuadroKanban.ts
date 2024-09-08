@@ -1,3 +1,4 @@
+import type { Quadro } from "../types/types";
 import { criarColuna } from "./ColunaKanban.js";
 
 export function criarQuadro(quadro: Quadro) {
