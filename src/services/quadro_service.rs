@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use futures::join;
 use serde::{Deserialize, Serialize};
-use sqlx::{query_as, types::Uuid};
+use sqlx::{query, query_as, types::Uuid};
 
 use crate::{errors::error::ListaErros, persistence::models};
 
@@ -162,4 +162,30 @@ pub async fn consultar_ids_quadros_usuario(
             .map(|quadro| quadro.id_quadro.to_string())
             .collect())
     })?
+}
+
+pub async fn verificar_quadro_pertence_ao_usuario(
+    pool: &sqlx::PgPool,
+    id_quadro: &str,
+    id_usuario: &str,
+) -> Result<(), ListaErros> {
+    let consulta = query!(
+        "SELECT q.pk_usuario
+        FROM kanban.quadros q
+        INNER JOIN kanban.usuarios u
+        ON q.pk_usuario = u.pk_usuario
+        WHERE
+        id_quadro=$1 AND
+        id_usuario=$2;",
+        Uuid::parse_str(id_quadro).unwrap(),
+        Uuid::parse_str(id_usuario).unwrap(),
+    )
+    .fetch_optional(pool)
+    .await?;
+
+    consulta
+        .map(|_| ())
+        .ok_or(ListaErros::ErroUsuarioNaoAutorizado(
+            Uuid::parse_str(id_usuario).unwrap().to_string(),
+        ))
 }
