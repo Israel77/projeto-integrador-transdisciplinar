@@ -6,6 +6,8 @@ use sqlx::{query, query_as, types::Uuid};
 
 use crate::{errors::error::ListaErros, persistence::models};
 
+use super::tarefa_service::TarefaDTO;
+
 #[derive(Serialize, Deserialize)]
 pub struct QuadroDTO {
     #[serde(rename = "idQuadro")]
@@ -44,28 +46,6 @@ impl ColunaDTO {
             titulo: coluna.nome_coluna,
             ordem: coluna.ordem_coluna,
             tarefas,
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize)]
-struct TarefaDTO {
-    id: String,
-    titulo: String,
-    descricao: Option<String>,
-    #[serde(rename = "idEstado")]
-    estado_id: Option<i32>,
-    tags: Vec<Arc<str>>,
-}
-
-impl TarefaDTO {
-    fn from_model(tarefa: models::tarefa::Tarefa, tags: &Vec<models::tag::Tag>) -> Self {
-        TarefaDTO {
-            id: tarefa.id_tarefa.to_string(),
-            titulo: tarefa.titulo_tarefa,
-            descricao: tarefa.descricao_tarefa,
-            estado_id: tarefa.pk_coluna,
-            tags: tags.iter().map(|model| model.nome_tag.clone()).collect(),
         }
     }
 }
@@ -132,7 +112,11 @@ pub async fn consultar_quadro_por_id(
             .fetch_all(pool)
             .await?;
 
-            tarefas_dto.push(TarefaDTO::from_model(tarefa_model, &tags_models));
+            tarefas_dto.push(TarefaDTO::from_model(
+                tarefa_model,
+                Some(coluna_model.id_coluna),
+                &tags_models,
+            ));
         }
 
         estados_dto.push(ColunaDTO::from_model(coluna_model, tarefas_dto));
