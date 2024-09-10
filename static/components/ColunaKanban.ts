@@ -1,37 +1,38 @@
-import type { Estado } from "../types/types";
+import type { Coluna as Coluna } from "../types/types";
 import { criarCardTarefa } from "./CardTarefa.js";
 
-export function criarColuna(root: HTMLElement, estado: Estado): HTMLDivElement {
+export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     // Criação
-    let colunaEstado = document.createElement("div");
+    let colunaDiv = document.createElement("div");
     let colunaHeader = document.createElement("div");
     let tituloColuna = document.createElement("h2");
     let btnAdicionarTarefa = document.createElement("button");
 
     // Estilo
-    colunaEstado.addEventListener("drop", drop)
-    colunaEstado.addEventListener("dragover", dragover)
-    colunaEstado.classList.add("coluna-kanban")
+    colunaDiv.addEventListener("drop", drop)
+    colunaDiv.addEventListener("dragover", dragover)
+    colunaDiv.classList.add("coluna-kanban")
     tituloColuna.classList.add("titulo-coluna")
     colunaHeader.classList.add("header-coluna")
 
     // Dados
-    tituloColuna.innerText = estado.nomeEstado;
+    console.log(coluna);
+    tituloColuna.innerText = coluna.nomeColuna;
     btnAdicionarTarefa.innerText = "+";
-    colunaEstado.setAttribute("data-id-estado", estado.idColuna.toString());
+    colunaDiv.setAttribute("data-id-coluna", coluna.idColuna.toString());
 
     // Inserção
-    root.appendChild(colunaEstado);
+    root.appendChild(colunaDiv);
 
-    colunaEstado.appendChild(colunaHeader);
+    colunaDiv.appendChild(colunaHeader);
     colunaHeader.appendChild(btnAdicionarTarefa);
     colunaHeader.appendChild(tituloColuna);
 
-    for (let tarefa of estado.tarefas) {
-        criarCardTarefa(colunaEstado, tarefa);
+    for (let tarefa of coluna.tarefas) {
+        criarCardTarefa(colunaDiv, tarefa);
     }
 
-    return colunaEstado;
+    return colunaDiv;
 }
 
 function dragover(ev: Event) {

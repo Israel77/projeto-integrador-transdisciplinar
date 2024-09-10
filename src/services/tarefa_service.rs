@@ -10,7 +10,7 @@ pub struct TarefaDTO {
     id: String,
     titulo: String,
     descricao: Option<String>,
-    #[serde(rename = "idEstado")]
+    #[serde(rename = "idColuna")]
     id_coluna: Option<Arc<str>>,
     tags: Vec<Arc<str>>,
 }

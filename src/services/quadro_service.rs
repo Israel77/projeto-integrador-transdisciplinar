@@ -32,9 +32,9 @@ impl QuadroDTO {
 struct ColunaDTO {
     #[serde(rename = "idColuna")]
     id_coluna: String,
-    #[serde(rename = "nomeEstado")]
+    #[serde(rename = "nomeColuna")]
     titulo: String,
-    #[serde(rename = "ordemEstado")]
+    #[serde(rename = "ordemColuna")]
     ordem: i32,
     tarefas: Vec<TarefaDTO>,
 }
@@ -92,7 +92,7 @@ pub async fn consultar_quadro_por_id(
     .fetch_all(pool)
     .await?;
 
-    let mut estados_dto: Vec<ColunaDTO> = Vec::new();
+    let mut colunas_dto: Vec<ColunaDTO> = Vec::new();
     for coluna_model in colunas_models {
         let tarefas_models = query_as!(
             models::tarefa::Tarefa,
@@ -119,10 +119,10 @@ pub async fn consultar_quadro_por_id(
             ));
         }
 
-        estados_dto.push(ColunaDTO::from_model(coluna_model, tarefas_dto));
+        colunas_dto.push(ColunaDTO::from_model(coluna_model, tarefas_dto));
     }
 
-    Ok(QuadroDTO::from_model(&quadro_model, estados_dto))
+    Ok(QuadroDTO::from_model(&quadro_model, colunas_dto))
 }
 
 pub async fn consultar_ids_quadros_usuario(

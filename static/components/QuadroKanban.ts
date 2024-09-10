@@ -20,7 +20,7 @@ export function criarQuadro(quadro: Quadro) {
     quadroDiv.appendChild(tituloQuadro);
     quadroDiv.appendChild(descricaoQuadro);
     quadroDiv.appendChild(colunaContainer);
-    for (let estado of quadro.colunas) {
-        criarColuna(colunaContainer, estado);
+    for (let coluna of quadro.colunas) {
+        criarColuna(colunaContainer, coluna);
     }
 }

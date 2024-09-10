@@ -2,19 +2,19 @@ export type Quadro = {
     "idQuadro": string,
     "titulo": string,
     "descricao": string,
-    "colunas": Estado[]
+    "colunas": Coluna[]
 }
 
-export type Estado = {
+export type Coluna = {
     "idColuna": string,
-    "nomeEstado": string,
-    "ordemEstado": number,
+    "nomeColuna": string,
+    "ordemColuna": number,
     "tarefas": Tarefa[]
 }
 
 export type Tarefa = {
     "id": string,
-    "idEstado": string,
+    "idColuna": string,
     "titulo": string,
     "descricao": string,
     "tags": Tag[]
