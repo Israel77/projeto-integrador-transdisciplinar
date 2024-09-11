@@ -1,0 +1,35 @@
+use sqlx::{query, types::Uuid};
+
+use crate::errors::error::ListaErros;
+
+pub async fn consultar_id_por_pk_coluna(
+    pool: &sqlx::PgPool,
+    pk_coluna: i32,
+) -> Result<Uuid, ListaErros> {
+    // TODO: Verificar rastreabilidade de erros
+    let id = query!(
+        "SELECT id_coluna FROM kanban.colunas WHERE pk_coluna=$1",
+        pk_coluna
+    )
+    .fetch_one(pool)
+    .await?
+    .id_coluna;
+
+    Ok(id)
+}
+
+pub async fn consultar_pk_por_id_coluna(
+    pool: &sqlx::PgPool,
+    id_coluna: &str,
+) -> Result<i32, ListaErros> {
+    // TODO: Verificar rastreabilidade de erros
+    let pk_coluna = query!(
+        "SELECT pk_coluna FROM kanban.colunas WHERE id_coluna=$1",
+        Uuid::parse_str(id_coluna).unwrap()
+    )
+    .fetch_one(pool)
+    .await?
+    .pk_coluna;
+
+    Ok(pk_coluna)
+}
