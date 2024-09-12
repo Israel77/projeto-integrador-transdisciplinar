@@ -52,6 +52,7 @@ async fn main() -> std::io::Result<()> {
                     .service(routes::quadro::retornar_quadros)
                     .service(routes::tarefas::atualizar_tarefa)
                     .service(routes::tarefas::deletar_tarefa)
+                    .service(routes::tarefas::criar_tarefa)
                     .service(routes::auth::sign_up)
                     .service(routes::auth::login)
                     .service(routes::auth::logout)

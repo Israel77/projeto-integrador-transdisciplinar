@@ -8,5 +8,4 @@ pub struct Tarefa {
     pub descricao_tarefa: Option<String>,
     pub data_criacao_tarefa: Option<PrimitiveDateTime>,
     pub pk_coluna: Option<i32>,
-    pub pk_quadro: i32,
 }

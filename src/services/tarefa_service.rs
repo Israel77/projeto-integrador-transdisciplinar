@@ -39,7 +39,7 @@ pub async fn gravar_nova_tarefa(
     pool: &sqlx::PgPool,
     titulo: &str,
     descricao: Option<&str>,
-    id_coluna: i32,
+    pk_coluna: i32,
     tags: Vec<i32>,
 ) -> Result<Uuid, ListaErros> {
     struct DadosTarefa(Uuid, i32);
@@ -47,7 +47,7 @@ pub async fn gravar_nova_tarefa(
         "INSERT INTO kanban.tarefas (titulo_tarefa, descricao_tarefa, pk_coluna) VALUES ($1, $2, $3) RETURNING id_tarefa, pk_tarefa",
         titulo,
         descricao,
-        id_coluna)
+        pk_coluna)
     .fetch_one(pool)
     .await?;
 
@@ -106,9 +106,7 @@ pub async fn editar_tarefa(
 }
 
 pub async fn apagar_tarefa(pool: &sqlx::PgPool, id_tarefa: &Uuid) -> Result<(), ListaErros> {
-    let pk_tarefa = consultar_pk_por_id_tarefa(pool, id_tarefa).await?;
-
-    // Assume que as tabelas com dependência nas tarefas possuem regra de CASCADE
+    // Assume que as tabelas com dependência nas tarefas possuem regra de CASCADE,
     // caso contrário, devem ser criadas triggers para deletar os registros dependentes
     // ou inserir queries para deletar os registros dependentes
     query!("DELETE FROM kanban.tarefas WHERE id_tarefa=$1", id_tarefa)
@@ -118,6 +116,7 @@ pub async fn apagar_tarefa(pool: &sqlx::PgPool, id_tarefa: &Uuid) -> Result<(), 
     Ok(())
 }
 
+// TODO: Implementar cache
 pub async fn consultar_pk_por_id_tarefa(
     pool: &sqlx::PgPool,
     id_tarefa: &Uuid,

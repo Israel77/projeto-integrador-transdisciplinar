@@ -9,7 +9,7 @@ use crate::{
     errors::error::ListaErros,
     services::{
         coluna_service::consultar_pk_por_id_coluna,
-        tarefa_service::{apagar_tarefa, editar_tarefa},
+        tarefa_service::{apagar_tarefa, editar_tarefa, gravar_nova_tarefa},
     },
 };
 
@@ -17,6 +17,14 @@ use crate::{
 struct AtualizarTarefaDTO {
     #[serde(rename = "idTarefa")]
     id_tarefa: String,
+    titulo: String,
+    descricao: Option<String>,
+    #[serde(rename = "idColuna")]
+    id_coluna: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct CriarTarefaDTO {
     titulo: String,
     descricao: Option<String>,
     #[serde(rename = "idColuna")]
@@ -80,6 +88,50 @@ pub async fn atualizar_tarefa(
             HttpResponse::Ok().json("Ok")
         } else {
             resultado.unwrap_err().as_response()
+        }
+    } else {
+        resultado_pk_coluna.unwrap_err().as_response()
+    }
+}
+
+#[put("/tarefa/criar")]
+pub async fn criar_tarefa(
+    dados_tarefa: web::Json<CriarTarefaDTO>,
+    pool: web::Data<sqlx::PgPool>,
+    session: Session,
+) -> impl Responder {
+    //TODO: Analisar a necessidade de validar se a tarefa pertence ao usuário logado
+    if session.get::<String>("id_usuario").is_err() {
+        return ListaErros::ErroUsuarioNaoLogado.as_response();
+    }
+
+    let resultado_pk_coluna = consultar_pk_por_id_coluna(
+        &pool,
+        dados_tarefa
+            .id_coluna
+            .as_ref()
+            .map(|id_coluna| id_coluna.as_str())
+            .unwrap(),
+    )
+    .await;
+
+    if let Ok(pk_coluna) = resultado_pk_coluna {
+        let resultado = gravar_nova_tarefa(
+            &pool,
+            &dados_tarefa.titulo,
+            dados_tarefa
+                .descricao
+                .as_ref()
+                .map(|descricao| descricao.as_str()),
+            pk_coluna,
+            vec![],
+        )
+        .await;
+
+        if let Ok(id_tarefa) = resultado {
+            return HttpResponse::Ok().json(id_tarefa.to_string());
+        } else {
+            return resultado.unwrap_err().as_response();
         }
     } else {
         resultado_pk_coluna.unwrap_err().as_response()

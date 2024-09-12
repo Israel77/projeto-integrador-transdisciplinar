@@ -33,3 +33,19 @@ pub async fn consultar_pk_por_id_coluna(
 
     Ok(pk_coluna)
 }
+
+pub async fn consultar_quadro_da_coluna(
+    pool: &sqlx::PgPool,
+    id_coluna: &Uuid,
+) -> Result<i32, ListaErros> {
+    // TODO: Verificar rastreabilidade de erros
+    let pk_quadro = query!(
+        "SELECT pk_quadro FROM kanban.colunas WHERE id_coluna=$1",
+        id_coluna
+    )
+    .fetch_one(pool)
+    .await?
+    .pk_quadro;
+
+    Ok(pk_quadro)
+}

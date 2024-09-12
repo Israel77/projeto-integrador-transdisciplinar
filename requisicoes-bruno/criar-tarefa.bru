@@ -1,0 +1,32 @@
+meta {
+  name: criar-tarefa
+  type: http
+  seq: 8
+}
+
+put {
+  url: http://localhost:8080/api/v1/tarefa/criar
+  body: json
+  auth: none
+}
+
+headers {
+  ~Cookie: id=YhHLPGhb4qJQGBRKwRFvQJAJV1+4yJAUNuDlh1iDd2lNsuPPFS4DuDu8lF2aVS96zwzcHaBx80i13bTn%2FJbPfs1hOeabqlYlBqwbD8AyexR5YIL%2FLHo58gxEOaA%3D
+}
+
+body:json {
+  {
+            "titulo": "Tarefa 7",
+            "descricao": "Tarefa sem descricao",
+            "idColuna": "02394375-4b09-4fc6-bc14-705e74690079",
+            "tags": []
+  }
+}
+
+script:pre-request {
+  const cookie = bru.getVar("cookie");
+  
+  if(cookie) {
+    req.setHeader("Cookie", cookie.split(";")[0])
+  }
+}
