@@ -4,7 +4,6 @@ import { RequisicaoLogin } from "../../types/types";
     const nomeUsuario: HTMLInputElement = document.getElementById('nome-usuario') as HTMLInputElement;
     const senha: HTMLInputElement = document.getElementById('senha') as HTMLInputElement;
 
-    const botaoLogin: HTMLButtonElement = document.querySelector('#botao-entrar') as HTMLButtonElement;
     const formularioLogin: HTMLFormElement = document.getElementById('formulario-login') as HTMLFormElement;
 
     formularioLogin.addEventListener('submit', (e) => {

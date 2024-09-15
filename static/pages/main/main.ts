@@ -1,4 +1,5 @@
 import { criarQuadro } from "../../components/QuadroKanban.js";
+import { buscarDadosTarefa } from "../../services/buscarDadosTarefa.js";
 import { fazerLogout } from "../../services/fazerLogout.js";
 import { RespostaLogin, verificarLogin } from "../../services/verificarLogin.js";
 import type { MensagemErro, Quadro } from "../../types/types";
@@ -33,5 +34,66 @@ import type { MensagemErro, Quadro } from "../../types/types";
     botaoLogout.addEventListener("click", async () => {
         await fazerLogout();
         window.location.href = "/";
-    })
+    });
+
+    // Adicionar event listeners nas tarefas
+    let tarefas = document.querySelectorAll("[data-id-tarefa]");
+    for (const tarefa of tarefas) {
+        tarefa.addEventListener("click", abrirEditorTarefa);
+    }
 })()
+
+async function abrirEditorTarefa(e: MouseEvent) {
+    const dialogo = document.getElementById("editar-tarefa") as HTMLDialogElement;
+    const idTarefa = (e.target as HTMLElement).dataset.idTarefa;
+
+    if (idTarefa === undefined) {
+        console.error("Não foi possível obter o ID da tarefa");
+        return;
+    }
+
+    const dadosTarefa = await buscarDadosTarefa(idTarefa);
+
+    const formEditarTarefa = document.createElement("form");
+    if (dadosTarefa) {
+        const inputTitulo = document.createElement("input");
+        const inputDescricao = document.createElement("input");
+        const botaoSalvar = document.createElement("button");
+
+        inputTitulo.type = "text";
+        inputTitulo.name = "titulo";
+        inputTitulo.value = dadosTarefa.titulo;
+
+        inputDescricao.type = "text";
+        inputDescricao.name = "descricao";
+        inputDescricao.value = dadosTarefa.descricao;
+
+        botaoSalvar.type = "submit";
+        botaoSalvar.textContent = "Salvar";
+        botaoSalvar.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const resposta = await fetch(`api/v1/tarefa/atualizar`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    idTarefa: idTarefa,
+                    titulo: inputTitulo.value,
+                    descricao: inputDescricao.value,
+                    // TODO: Adicionar tags
+                    tags: dadosTarefa.tags,
+                    // TODO: Mover entre colunas
+                    idColuna: dadosTarefa.idColuna
+                })
+            });
+
+            dialogo.close();
+        });
+
+        formEditarTarefa.append(inputTitulo, inputDescricao, botaoSalvar);
+    }
+
+    dialogo.appendChild(formEditarTarefa);
+    dialogo.showModal();
+}
