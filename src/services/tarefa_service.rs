@@ -132,3 +132,51 @@ pub async fn consultar_pk_por_id_tarefa(
 
     Ok(pk_tarefa)
 }
+
+pub async fn editar_titulo_tarefa(
+    pool: &sqlx::PgPool,
+    id_tarefa: &Uuid,
+    titulo: &str,
+) -> Result<(), ListaErros> {
+    query!(
+        "UPDATE kanban.tarefas SET titulo_tarefa=$1 WHERE id_tarefa=$2",
+        titulo,
+        id_tarefa
+    )
+    .execute(pool)
+    .await?;
+
+    Ok(())
+}
+
+pub async fn editar_descricao_tarefa(
+    pool: &sqlx::PgPool,
+    id_tarefa: &Uuid,
+    descricao: Option<&str>,
+) -> Result<(), ListaErros> {
+    query!(
+        "UPDATE kanban.tarefas SET descricao_tarefa=$1 WHERE id_tarefa=$2",
+        descricao,
+        id_tarefa
+    )
+    .execute(pool)
+    .await?;
+
+    Ok(())
+}
+
+pub async fn editar_coluna_tarefa(
+    pool: &sqlx::PgPool,
+    id_tarefa: &Uuid,
+    pk_coluna: i32,
+) -> Result<(), ListaErros> {
+    query!(
+        "UPDATE kanban.tarefas SET pk_coluna=$1 WHERE id_tarefa=$2",
+        pk_coluna,
+        id_tarefa
+    )
+    .execute(pool)
+    .await?;
+
+    Ok(())
+}

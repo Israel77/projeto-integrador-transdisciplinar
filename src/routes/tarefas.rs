@@ -9,7 +9,10 @@ use crate::{
     errors::error::ListaErros,
     services::{
         coluna_service::consultar_pk_por_id_coluna,
-        tarefa_service::{apagar_tarefa, editar_tarefa, gravar_nova_tarefa},
+        tarefa_service::{
+            apagar_tarefa, editar_descricao_tarefa, editar_tarefa, editar_titulo_tarefa,
+            gravar_nova_tarefa,
+        },
     },
 };
 
@@ -21,6 +24,20 @@ struct AtualizarTarefaDTO {
     descricao: Option<String>,
     #[serde(rename = "idColuna")]
     id_coluna: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct AtualizarTituloTarefaDTO {
+    #[serde(rename = "idTarefa")]
+    id_tarefa: String,
+    titulo: String,
+}
+
+#[derive(Deserialize)]
+struct AtualizarDescricaoTarefaDTO {
+    #[serde(rename = "idTarefa")]
+    id_tarefa: String,
+    descricao: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -48,7 +65,7 @@ pub async fn deletar_tarefa(
         .unwrap_or_else(|err| err.as_response())
 }
 
-#[put("/tarefa/atualizar/{id_tarefa}")]
+#[put("/tarefa/atualizar")]
 pub async fn atualizar_tarefa(
     dados_tarefa: web::Json<AtualizarTarefaDTO>,
     pool: web::Data<sqlx::PgPool>,
@@ -91,6 +108,59 @@ pub async fn atualizar_tarefa(
         }
     } else {
         resultado_pk_coluna.unwrap_err().as_response()
+    }
+}
+
+#[put("/tarefa/atualizar/titulo")]
+pub async fn atualizar_titulo_tarefa(
+    dados_tarefa: web::Json<AtualizarTituloTarefaDTO>,
+    pool: web::Data<sqlx::PgPool>,
+    session: Session,
+) -> impl Responder {
+    //TODO: Analisar a necessidade de validar se a tarefa pertence ao usuário logado
+    if session.get::<String>("id_usuario").is_err() {
+        return ListaErros::ErroUsuarioNaoLogado.as_response();
+    }
+
+    let resultado = editar_titulo_tarefa(
+        &pool,
+        &Uuid::parse_str(&dados_tarefa.id_tarefa).unwrap(),
+        &dados_tarefa.titulo,
+    )
+    .await;
+
+    if let Ok(_) = resultado {
+        HttpResponse::Ok().json("Ok")
+    } else {
+        resultado.unwrap_err().as_response()
+    }
+}
+
+#[put("/tarefa/atualizar/descricao")]
+pub async fn atualizar_descricao_tarefa(
+    dados_tarefa: web::Json<AtualizarDescricaoTarefaDTO>,
+    pool: web::Data<sqlx::PgPool>,
+    session: Session,
+) -> impl Responder {
+    //TODO: Analisar a necessidade de validar se a tarefa pertence ao usuário logado
+    if session.get::<String>("id_usuario").is_err() {
+        return ListaErros::ErroUsuarioNaoLogado.as_response();
+    }
+
+    let resultado = editar_descricao_tarefa(
+        &pool,
+        &Uuid::parse_str(&dados_tarefa.id_tarefa).unwrap(),
+        dados_tarefa
+            .descricao
+            .as_ref()
+            .map(|descricao| descricao.as_str()),
+    )
+    .await;
+
+    if let Ok(_) = resultado {
+        HttpResponse::Ok().json("Ok")
+    } else {
+        resultado.unwrap_err().as_response()
     }
 }
 
