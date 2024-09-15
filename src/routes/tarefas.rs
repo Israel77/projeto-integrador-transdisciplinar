@@ -1,7 +1,7 @@
 use std::vec;
 
 use actix_session::Session;
-use actix_web::{delete, put, web, HttpResponse, Responder};
+use actix_web::{delete, get, put, web, HttpResponse, Responder};
 use serde::Deserialize;
 use sqlx::types::Uuid;
 
@@ -10,8 +10,8 @@ use crate::{
     services::{
         coluna_service::consultar_pk_por_id_coluna,
         tarefa_service::{
-            apagar_tarefa, editar_descricao_tarefa, editar_tarefa, editar_titulo_tarefa,
-            gravar_nova_tarefa,
+            apagar_tarefa, consultar_dados_tarefa, editar_descricao_tarefa, editar_tarefa,
+            editar_titulo_tarefa, gravar_nova_tarefa,
         },
     },
 };
@@ -46,6 +46,25 @@ struct CriarTarefaDTO {
     descricao: Option<String>,
     #[serde(rename = "idColuna")]
     id_coluna: Option<String>,
+}
+
+#[get("/tarefa/{id_tarefa}")]
+pub async fn obter_dados_tarefa(
+    id_tarefa: web::Path<String>,
+    pool: web::Data<sqlx::PgPool>,
+    session: Session,
+) -> impl Responder {
+    //TODO: Analisar a necessidade de validar se a tarefa pertence ao usuário logado
+    if session.get::<String>("id_usuario").is_err() {
+        return ListaErros::ErroUsuarioNaoLogado.as_response();
+    }
+
+    let id_tarefa = Uuid::parse_str(id_tarefa.as_str()).unwrap();
+
+    consultar_dados_tarefa(&pool, &id_tarefa)
+        .await
+        .map(|tarefa| HttpResponse::Ok().json(tarefa))
+        .unwrap_or_else(|err| err.as_response())
 }
 
 #[delete("/tarefa/{id_tarefa}")]
