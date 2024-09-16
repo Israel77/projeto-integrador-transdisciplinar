@@ -1,8 +1,8 @@
 import type { MensagemErro } from "../types/types.d.ts";
 
 export type RespostaLogin = {
-    id: number;
-    quadros: number[];
+    id: string;
+    quadros: string[];
 }
 
 export const verificarLogin = async (): Promise<RespostaLogin | MensagemErro> => {

@@ -16,7 +16,6 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     colunaHeader.classList.add("header-coluna")
 
     // Dados
-    console.log(coluna);
     tituloColuna.innerText = coluna.nomeColuna;
     btnAdicionarTarefa.innerText = "+";
     colunaDiv.setAttribute("data-id-coluna", coluna.idColuna.toString());

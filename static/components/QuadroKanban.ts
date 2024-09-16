@@ -1,8 +1,7 @@
 import type { Quadro } from "../types/types";
 import { criarColuna } from "./ColunaKanban.js";
 
-export function criarQuadro(quadro: Quadro) {
-    let quadroDiv = document.getElementById("quadro-kanban") as HTMLDivElement;
+export function preencherQuadro(quadroDiv: HTMLElement, quadro: Quadro) {
 
     // Criação
     let tituloQuadro = document.createElement("h1");
@@ -23,4 +22,6 @@ export function criarQuadro(quadro: Quadro) {
     for (let coluna of quadro.colunas) {
         criarColuna(colunaContainer, coluna);
     }
+
+    return quadroDiv;
 }
