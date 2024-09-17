@@ -114,7 +114,7 @@ async function abrirEditorTarefa(e: MouseEvent) {
             // Botão de salvar
             botaoSalvar.type = "submit";
             botaoSalvar.textContent = "Salvar";
-            botaoSalvar.addEventListener("click", async (e: MouseEvent) => {
+            const editarTarefa = async (e: MouseEvent) => {
                 e.preventDefault();
                 console.log(quadroView);
                 try {
@@ -133,15 +133,32 @@ async function abrirEditorTarefa(e: MouseEvent) {
                             idColuna: dadosTarefa.idColuna
                         })
                     });
+                } catch (error) {
+                    console.error("Erro ao atualizar tarefa:", error);
+                } finally {
                     dialogo.removeChild(formEditarTarefa);
                     dialogo.close();
                     recarregarQuadro(quadroView);
-                } catch (error) {
-                    console.error("Erro ao atualizar tarefa:", error);
                 }
+            }
+            botaoSalvar.addEventListener("click", editarTarefa);
+
+            // Botão de cancelar
+            const botaoCancelar = document.createElement("button");
+            botaoCancelar.textContent = "Cancelar";
+            botaoCancelar.classList.add("bg-vermelho");
+            botaoCancelar.addEventListener("click", () => {
+                dialogo.removeChild(formEditarTarefa);
+                dialogo.close();
             });
 
-            formEditarTarefa.append(labelTitulo, inputTitulo, labelDescricao, inputDescricao, botaoSalvar);
+
+            // Container dos botões
+            const botaoContainer = document.createElement("div");
+            botaoContainer.classList.add("botoes-container");
+            botaoContainer.append(botaoCancelar, botaoSalvar);
+
+            formEditarTarefa.append(labelTitulo, inputTitulo, labelDescricao, inputDescricao, botaoContainer);
         }
 
         dialogo.appendChild(formEditarTarefa);
