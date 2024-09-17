@@ -6,6 +6,7 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     let colunaDiv = document.createElement("div");
     let colunaHeader = document.createElement("div");
     let tituloColuna = document.createElement("h2");
+    let btnAdicionarColuna = document.createElement("button");
     let btnAdicionarTarefa = document.createElement("button");
 
     // Estilo
@@ -17,7 +18,8 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
 
     // Dados
     tituloColuna.innerText = coluna.nomeColuna;
-    btnAdicionarTarefa.innerText = "+";
+    btnAdicionarColuna.innerText = "+";
+    btnAdicionarTarefa.innerText = "Criar nova tarefa";
     colunaDiv.setAttribute("data-id-coluna", coluna.idColuna.toString());
 
     // Inserção
@@ -25,11 +27,13 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
 
     colunaDiv.appendChild(colunaHeader);
     colunaHeader.appendChild(tituloColuna);
-    colunaHeader.appendChild(btnAdicionarTarefa);
+    colunaHeader.appendChild(btnAdicionarColuna);
 
     for (let tarefa of coluna.tarefas) {
         criarCardTarefa(colunaDiv, tarefa);
     }
+
+    colunaDiv.appendChild(btnAdicionarTarefa);
 
     return colunaDiv;
 }
@@ -66,5 +70,9 @@ function mudarColuna(novaColuna: HTMLElement, tarefa: Element) {
             return;
         }
     }
+
+    // Insere a tarefa na nova coluna antes do botão
+    const botao = novaColuna.removeChild(novaColuna.lastChild as HTMLButtonElement);
     novaColuna.appendChild(tarefa)
+    novaColuna.appendChild(botao)
 }
