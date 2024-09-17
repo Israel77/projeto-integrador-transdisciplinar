@@ -24,8 +24,8 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     root.appendChild(colunaDiv);
 
     colunaDiv.appendChild(colunaHeader);
-    colunaHeader.appendChild(btnAdicionarTarefa);
     colunaHeader.appendChild(tituloColuna);
+    colunaHeader.appendChild(btnAdicionarTarefa);
 
     for (let tarefa of coluna.tarefas) {
         criarCardTarefa(colunaDiv, tarefa);

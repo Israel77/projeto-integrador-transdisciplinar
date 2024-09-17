@@ -1,8 +1,18 @@
 #quadro-kanban {
+    position: relative;
     margin: auto;
     max-width: min(80rem, 100vw);
     overflow: scroll;
 
+}
+
+#modal {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-self: center;
+    border: 1px;
 }
 
 .coluna-container {
@@ -25,6 +35,8 @@
 .header-coluna {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    padding-inline: .4em;
     gap: .5em;
 }
 
@@ -66,4 +78,10 @@
     background-color: var(--lighter-gray);
     padding: .3em;
     border-radius: 1em;
+}
+
+.vertical-form {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
 }

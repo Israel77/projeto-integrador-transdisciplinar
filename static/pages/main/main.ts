@@ -65,8 +65,9 @@ function adicionarEventListenersTarefas() {
     }
 }
 
-function abrirEditorTarefa(e: MouseEvent) {
-    const dialogo = document.getElementById("editar-tarefa") as HTMLDialogElement;
+async function abrirEditorTarefa(e: MouseEvent) {
+    const dialogo = document.getElementById("modal") as HTMLDialogElement;
+
     let proximoAlvo = e.target as HTMLElement;
     let idTarefa = proximoAlvo.dataset.idTarefa;
 
@@ -79,28 +80,45 @@ function abrirEditorTarefa(e: MouseEvent) {
         return;
     }
 
-    buscarDadosTarefa(idTarefa).then(
-        ((dadosTarefa: Tarefa) => {
-            const formEditarTarefa = document.createElement("form");
-            if (dadosTarefa) {
-                const inputTitulo = document.createElement("input");
-                const inputDescricao = document.createElement("input");
-                const botaoSalvar = document.createElement("button");
+    try {
+        const dadosTarefa = await buscarDadosTarefa(idTarefa) as Tarefa;
+        const formEditarTarefa = document.createElement("form");
+        formEditarTarefa.classList.add("vertical-form");
+        if (dadosTarefa) {
+            const labelTitulo = document.createElement("label");
+            const inputTitulo = document.createElement("input");
+            const labelDescricao = document.createElement("label");
+            const inputDescricao = document.createElement("input");
+            const botaoSalvar = document.createElement("button");
 
-                inputTitulo.type = "text";
-                inputTitulo.name = "titulo";
-                inputTitulo.value = dadosTarefa.titulo;
+            // Label do título
+            labelTitulo.textContent = "Título";
+            labelTitulo.htmlFor = "editar-titulo";
 
-                inputDescricao.type = "text";
-                inputDescricao.name = "descricao";
-                inputDescricao.value = dadosTarefa.descricao;
+            // Input do título
+            inputTitulo.id = "editar-titulo";
+            inputTitulo.type = "text";
+            inputTitulo.name = "titulo";
+            inputTitulo.value = dadosTarefa.titulo;
 
-                botaoSalvar.type = "submit";
-                botaoSalvar.textContent = "Salvar";
-                botaoSalvar.addEventListener("click", ((e: MouseEvent) => {
-                    e.preventDefault();
-                    console.log(quadroView)
-                    fetch(`api/v1/tarefa/atualizar`, {
+            // Label da descrição
+            labelDescricao.textContent = "Descrição";
+            labelTitulo.htmlFor = "editar-descricao";
+
+            // Input da descrição
+            inputDescricao.id = "editar-descricao";
+            inputDescricao.type = "text";
+            inputDescricao.name = "descricao";
+            inputDescricao.value = dadosTarefa.descricao;
+
+            // Botão de salvar
+            botaoSalvar.type = "submit";
+            botaoSalvar.textContent = "Salvar";
+            botaoSalvar.addEventListener("click", async (e: MouseEvent) => {
+                e.preventDefault();
+                console.log(quadroView);
+                try {
+                    await fetch(`api/v1/tarefa/atualizar`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"
@@ -114,19 +132,23 @@ function abrirEditorTarefa(e: MouseEvent) {
                             // TODO: Mover entre colunas
                             idColuna: dadosTarefa.idColuna
                         })
-                    }).then((() => {
-                        dialogo.removeChild(formEditarTarefa);
-                        dialogo.close();
-                        recarregarQuadro(quadroView);
-                    }))
-                }));
+                    });
+                    dialogo.removeChild(formEditarTarefa);
+                    dialogo.close();
+                    recarregarQuadro(quadroView);
+                } catch (error) {
+                    console.error("Erro ao atualizar tarefa:", error);
+                }
+            });
 
-                formEditarTarefa.append(inputTitulo, inputDescricao, botaoSalvar);
-            }
+            formEditarTarefa.append(labelTitulo, inputTitulo, labelDescricao, inputDescricao, botaoSalvar);
+        }
 
-            dialogo.appendChild(formEditarTarefa);
-            dialogo.showModal();
-        }))
+        dialogo.appendChild(formEditarTarefa);
+        dialogo.showModal();
+    } catch (error) {
+        console.error("Erro ao buscar dados da tarefa:", error);
+    }
 }
 
 function recarregarQuadro(quadroView: QuadroView) {
