@@ -142,10 +142,6 @@ function recarregarQuadro(quadroView: QuadroView) {
 
 (async () => {
     const dadosLogin = await verificarLogin();
-    if (!dadosLogin.hasOwnProperty("id")) {
-        window.location.href = "/";
-        return;
-    }
 
     inicializarQuadro(dadosLogin as RespostaLogin);
 })()
