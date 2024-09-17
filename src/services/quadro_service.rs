@@ -86,7 +86,7 @@ pub async fn consultar_quadro_por_id(
 
     let colunas_models = query_as!(
         models::coluna::Coluna,
-        "SELECT * FROM kanban.colunas WHERE pk_quadro=$1",
+        "SELECT * FROM kanban.colunas WHERE pk_quadro=$1 ORDER BY pk_coluna",
         quadro_model.pk_quadro
     )
     .fetch_all(pool)
@@ -96,7 +96,7 @@ pub async fn consultar_quadro_por_id(
     for coluna_model in colunas_models {
         let tarefas_models = query_as!(
             models::tarefa::Tarefa,
-            "SELECT * FROM kanban.tarefas WHERE pk_coluna=$1",
+            "SELECT * FROM kanban.tarefas WHERE pk_coluna=$1 ORDER BY pk_tarefa",
             coluna_model.pk_coluna
         )
         .fetch_all(pool)
