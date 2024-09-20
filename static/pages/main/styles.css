@@ -3,7 +3,13 @@
     margin: auto;
     max-width: min(80rem, 100vw);
     overflow: scroll;
+}
 
+#quadro-header {
+    position: relative;
+    margin: auto;
+    max-width: min(80rem, 100vw);
+    overflow: scroll;
 }
 
 #modal {
@@ -83,5 +89,16 @@
 .vertical-form {
     display: flex;
     flex-direction: column;
+    padding: .7rem;
     gap: .5em;
+}
+
+.botoes-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+button {
+    border-radius: .6em;
 }

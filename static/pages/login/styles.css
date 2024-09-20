@@ -9,22 +9,6 @@
     font-size: 20px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: .5em;
-}
-
-input {
-    padding: .5em;
-    border-radius: .4rem;
-    border: 1px solid var(--dark-gray);
-}
-
-button {
-    font-size: 1.2rem;
-}
-
 #login {
     margin: auto;
     max-width: min(30rem, 100vw);
