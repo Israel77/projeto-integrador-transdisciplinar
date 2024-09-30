@@ -51,6 +51,7 @@ async fn main() -> std::io::Result<()> {
                 scope("/api/v1")
                     .service(routes::quadro::retornar_quadros)
                     .service(routes::tarefas::atualizar_tarefa)
+                    .service(routes::tarefas::atualizar_coluna_tarefa)
                     .service(routes::tarefas::atualizar_descricao_tarefa)
                     .service(routes::tarefas::atualizar_titulo_tarefa)
                     .service(routes::tarefas::obter_dados_tarefa)

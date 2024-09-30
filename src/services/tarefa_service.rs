@@ -191,11 +191,14 @@ pub async fn editar_descricao_tarefa(
 pub async fn editar_coluna_tarefa(
     pool: &sqlx::PgPool,
     id_tarefa: &Uuid,
-    pk_coluna: i32,
+    id_coluna: &Uuid,
 ) -> Result<(), ListaErros> {
     query!(
-        "UPDATE kanban.tarefas SET pk_coluna=$1 WHERE id_tarefa=$2",
-        pk_coluna,
+        "UPDATE kanban.tarefas t SET
+        pk_coluna=c.pk_coluna
+        FROM kanban.colunas c
+        WHERE c.id_coluna=$1 AND t.id_tarefa=$2",
+        id_coluna,
         id_tarefa
     )
     .execute(pool)

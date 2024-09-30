@@ -1,4 +1,4 @@
-use std::vec;
+use std::{sync::Arc, vec};
 
 use actix_session::Session;
 use actix_web::{delete, get, put, web, HttpResponse, Responder};
@@ -10,8 +10,8 @@ use crate::{
     services::{
         coluna_service::consultar_pk_por_id_coluna,
         tarefa_service::{
-            apagar_tarefa, consultar_dados_tarefa, editar_descricao_tarefa, editar_tarefa,
-            editar_titulo_tarefa, gravar_nova_tarefa,
+            apagar_tarefa, consultar_dados_tarefa, editar_coluna_tarefa, editar_descricao_tarefa,
+            editar_tarefa, editar_titulo_tarefa, gravar_nova_tarefa,
         },
     },
 };
@@ -38,6 +38,14 @@ struct AtualizarDescricaoTarefaDTO {
     #[serde(rename = "idTarefa")]
     id_tarefa: String,
     descricao: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct AtualizarColunaTarefaDTO {
+    #[serde(rename = "idTarefa")]
+    id_tarefa: Arc<str>,
+    #[serde(rename = "idColuna")]
+    id_coluna: Arc<str>,
 }
 
 #[derive(Deserialize)]
@@ -175,6 +183,28 @@ pub async fn atualizar_descricao_tarefa(
             .map(|descricao| descricao.as_str()),
     )
     .await;
+
+    if let Ok(_) = resultado {
+        HttpResponse::Ok().json("Ok")
+    } else {
+        resultado.unwrap_err().as_response()
+    }
+}
+
+#[put("/tarefa/atualizar/coluna")]
+pub async fn atualizar_coluna_tarefa(
+    dados_tarefa: web::Json<AtualizarColunaTarefaDTO>,
+    pool: web::Data<sqlx::PgPool>,
+    session: Session,
+) -> impl Responder {
+    // TODO: Validar se tarefa pertence ao usuário logado
+    if session.get::<String>("id_usuario").is_err() {
+        return ListaErros::ErroUsuarioNaoLogado.as_response();
+    }
+
+    let id_tarefa = Uuid::parse_str(&dados_tarefa.id_tarefa.clone()).unwrap();
+    let id_coluna = Uuid::parse_str(&dados_tarefa.id_coluna.clone()).unwrap();
+    let resultado = editar_coluna_tarefa(&pool, &id_tarefa, &id_coluna).await;
 
     if let Ok(_) = resultado {
         HttpResponse::Ok().json("Ok")

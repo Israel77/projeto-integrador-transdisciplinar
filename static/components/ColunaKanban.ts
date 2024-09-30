@@ -75,4 +75,15 @@ function mudarColuna(novaColuna: HTMLElement, tarefa: Element) {
     const botao = novaColuna.removeChild(novaColuna.lastChild as HTMLButtonElement);
     novaColuna.appendChild(tarefa)
     novaColuna.appendChild(botao)
+
+    fetch("/api/v1/tarefa/atualizar/coluna", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            idTarefa: tarefa.getAttribute("data-id-tarefa"),
+            idColuna: novaColuna.getAttribute("data-id-coluna")
+        })
+    })
 }
