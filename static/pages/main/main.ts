@@ -88,7 +88,7 @@ async function abrirEditorTarefa(e: MouseEvent) {
             const labelTitulo = document.createElement("label");
             const inputTitulo = document.createElement("input");
             const labelDescricao = document.createElement("label");
-            const inputDescricao = document.createElement("input");
+            const inputDescricao = document.createElement("textarea");
             const botaoSalvar = document.createElement("button");
 
             // Label do título
@@ -107,7 +107,6 @@ async function abrirEditorTarefa(e: MouseEvent) {
 
             // Input da descrição
             inputDescricao.id = "editar-descricao";
-            inputDescricao.type = "text";
             inputDescricao.name = "descricao";
             inputDescricao.value = dadosTarefa.descricao;
 
