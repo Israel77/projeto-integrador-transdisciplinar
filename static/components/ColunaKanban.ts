@@ -1,11 +1,12 @@
 import type { Coluna as Coluna } from "../types/types";
 import { criarCardTarefa } from "./CardTarefa.js";
+import { mudarNomeColuna } from "../services/mudarNomeColuna.js";
 
 export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     // Criação
     let colunaDiv = document.createElement("div");
     let colunaHeader = document.createElement("div");
-    let tituloColuna = document.createElement("h2");
+    let tituloColuna = document.createElement("input");
     let btnAdicionarColuna = document.createElement("button");
     let btnAdicionarTarefa = document.createElement("button");
 
@@ -14,10 +15,14 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     colunaDiv.addEventListener("dragover", dragover)
     colunaDiv.classList.add("coluna-kanban")
     tituloColuna.classList.add("titulo-coluna")
+    tituloColuna.setAttribute("type", "text");
+    tituloColuna.addEventListener("input", async () => {
+        await mudarNomeColuna(coluna.idColuna, tituloColuna.value);
+    });
     colunaHeader.classList.add("header-coluna")
 
     // Dados
-    tituloColuna.innerText = coluna.nomeColuna;
+    tituloColuna.value = coluna.nomeColuna;
     btnAdicionarColuna.innerText = "+";
 
     btnAdicionarTarefa.innerText = "Criar nova tarefa";

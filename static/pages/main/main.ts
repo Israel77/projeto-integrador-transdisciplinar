@@ -277,7 +277,6 @@ function abrirCriadorTarefa(e: MouseEvent) {
     dialogo.showModal();
 }
 
-
 function recarregarQuadro(quadroView: QuadroView) {
     console.log("Recarregando quadro");
     if (quadroView.quadroDiv !== undefined) {
