@@ -19,7 +19,10 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     // Dados
     tituloColuna.innerText = coluna.nomeColuna;
     btnAdicionarColuna.innerText = "+";
+
     btnAdicionarTarefa.innerText = "Criar nova tarefa";
+    btnAdicionarTarefa.classList.add("btn-adicionar-tarefa");
+
     colunaDiv.setAttribute("data-id-coluna", coluna.idColuna.toString());
 
     // Inserção

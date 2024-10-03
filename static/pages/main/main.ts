@@ -52,6 +52,7 @@ function carregarDadosQuadro() {
                 document.body.appendChild(quadroView.quadroDiv);
             }).then(() => {
                 adicionarEventListenersTarefas();
+                adicionarEventListenersBotaoCriarTarefa();
             });
         } else {
             resposta.json().then((err: MensagemErro) => {
@@ -62,6 +63,7 @@ function carregarDadosQuadro() {
 
 }
 
+// Edição de tarefas
 function adicionarEventListenersTarefas() {
     // Adicionar event listeners nas tarefas
     let tarefas = document.querySelectorAll("[data-id-tarefa]");
@@ -89,87 +91,199 @@ async function abrirEditorTarefa(e: MouseEvent) {
         const dadosTarefa = await buscarDadosTarefa(idTarefa) as Tarefa;
         const formEditarTarefa = document.createElement("form");
         formEditarTarefa.classList.add("vertical-form");
+        const labelTitulo = document.createElement("label");
+        const inputTitulo = document.createElement("input");
+        const labelDescricao = document.createElement("label");
+        const inputDescricao = document.createElement("textarea");
+        const botaoSalvar = document.createElement("button");
+
+        // Label do título
+        labelTitulo.textContent = "Título";
+        labelTitulo.htmlFor = "editar-titulo";
+
+        // Input do título
+        inputTitulo.id = "editar-titulo";
+        inputTitulo.type = "text";
+        inputTitulo.name = "titulo";
+
+        // Label da descrição
+        labelDescricao.textContent = "Descrição";
+        labelTitulo.htmlFor = "editar-descricao";
+
+        // Input da descrição
+        inputDescricao.id = "editar-descricao";
+        inputDescricao.name = "descricao";
+
         if (dadosTarefa) {
-            const labelTitulo = document.createElement("label");
-            const inputTitulo = document.createElement("input");
-            const labelDescricao = document.createElement("label");
-            const inputDescricao = document.createElement("textarea");
-            const botaoSalvar = document.createElement("button");
-
-            // Label do título
-            labelTitulo.textContent = "Título";
-            labelTitulo.htmlFor = "editar-titulo";
-
-            // Input do título
-            inputTitulo.id = "editar-titulo";
-            inputTitulo.type = "text";
-            inputTitulo.name = "titulo";
             inputTitulo.value = dadosTarefa.titulo;
-
-            // Label da descrição
-            labelDescricao.textContent = "Descrição";
-            labelTitulo.htmlFor = "editar-descricao";
-
-            // Input da descrição
-            inputDescricao.id = "editar-descricao";
-            inputDescricao.name = "descricao";
             inputDescricao.value = dadosTarefa.descricao;
+        }
 
-            // Botão de salvar
-            botaoSalvar.type = "submit";
-            botaoSalvar.textContent = "Salvar";
-            const editarTarefa = async (e: MouseEvent) => {
-                e.preventDefault();
-                console.log(quadroView);
-                try {
-                    await fetch(`api/v1/tarefa/atualizar`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            idTarefa: idTarefa,
-                            titulo: inputTitulo.value,
-                            descricao: inputDescricao.value,
-                            // TODO: Adicionar tags
-                            tags: dadosTarefa.tags,
-                            // TODO: Mover entre colunas
-                            idColuna: dadosTarefa.idColuna
-                        })
-                    });
-                } catch (error) {
-                    console.error("Erro ao atualizar tarefa:", error);
-                } finally {
-                    dialogo.removeChild(formEditarTarefa);
-                    dialogo.close();
-                    recarregarQuadro(quadroView);
-                }
-            }
-            botaoSalvar.addEventListener("click", editarTarefa);
-
-            // Botão de cancelar
-            const botaoCancelar = document.createElement("button");
-            botaoCancelar.textContent = "Cancelar";
-            botaoCancelar.classList.add("bg-vermelho");
-            botaoCancelar.addEventListener("click", () => {
+        // Botão de salvar
+        botaoSalvar.type = "submit";
+        botaoSalvar.textContent = "Salvar";
+        const editarTarefa = async (e: MouseEvent) => {
+            e.preventDefault();
+            console.log(quadroView);
+            try {
+                await fetch(`api/v1/tarefa/atualizar`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        idTarefa: idTarefa,
+                        titulo: inputTitulo.value,
+                        descricao: inputDescricao.value,
+                        // TODO: Adicionar tags
+                        tags: dadosTarefa.tags,
+                        // TODO: Mover entre colunas
+                        idColuna: dadosTarefa.idColuna
+                    })
+                });
+            } catch (error) {
+                console.error("Erro ao atualizar tarefa:", error);
+            } finally {
                 dialogo.removeChild(formEditarTarefa);
                 dialogo.close();
-            });
-
-
-            // Container dos botões
-            const botaoContainer = document.createElement("div");
-            botaoContainer.classList.add("botoes-container");
-            botaoContainer.append(botaoCancelar, botaoSalvar);
-
-            formEditarTarefa.append(labelTitulo, inputTitulo, labelDescricao, inputDescricao, botaoContainer);
+                recarregarQuadro(quadroView);
+            }
         }
+        botaoSalvar.addEventListener("click", editarTarefa);
+
+        // Botão de cancelar
+        const botaoCancelar = document.createElement("button");
+        botaoCancelar.textContent = "Cancelar";
+        botaoCancelar.classList.add("bg-vermelho");
+        botaoCancelar.addEventListener("click", () => {
+            dialogo.removeChild(formEditarTarefa);
+            dialogo.close();
+        });
+
+
+        // Container dos botões
+        const botaoContainer = document.createElement("div");
+        botaoContainer.classList.add("botoes-container");
+        botaoContainer.append(botaoCancelar, botaoSalvar);
+
+        formEditarTarefa.append(labelTitulo, inputTitulo, labelDescricao, inputDescricao, botaoContainer);
 
         dialogo.appendChild(formEditarTarefa);
         dialogo.showModal();
     } catch (error) {
         console.error("Erro ao buscar dados da tarefa:", error);
     }
+}
+
+// Criação de tarefas
+function adicionarEventListenersBotaoCriarTarefa() {
+    const botoesAdicionarTarefa = document.getElementsByClassName("btn-adicionar-tarefa");
+    for (const botaoAdicionarTarefa of botoesAdicionarTarefa) {
+        botaoAdicionarTarefa.addEventListener("click", abrirCriadorTarefa);
+    }
+}
+
+function abrirCriadorTarefa(e: MouseEvent) {
+    const dialogo = document.getElementById("modal") as HTMLDialogElement;
+
+    const formCriarTarefa = document.createElement("form");
+    formCriarTarefa.classList.add("vertical-form");
+
+    dialogo.appendChild(formCriarTarefa);
+
+    formCriarTarefa.classList.add("vertical-form");
+    const labelTitulo = document.createElement("label");
+    const inputTitulo = document.createElement("input");
+    const labelDescricao = document.createElement("label");
+    const inputDescricao = document.createElement("textarea");
+    const labelColuna = document.createElement("label");
+    const seletorColuna = document.createElement("select");
+    const botaoSalvar = document.createElement("button");
+
+    // Label do título
+    labelTitulo.textContent = "Título";
+    labelTitulo.htmlFor = "editar-titulo";
+
+    // Input do título
+    inputTitulo.id = "editar-titulo";
+    inputTitulo.type = "text";
+    inputTitulo.name = "titulo";
+
+    // Label da descrição
+    labelDescricao.textContent = "Descrição";
+    labelTitulo.htmlFor = "editar-descricao";
+
+    // Input da descrição
+    inputDescricao.id = "editar-descricao";
+    inputDescricao.name = "descricao";
+
+    // Label do seletor de coluna
+    labelColuna.textContent = "Coluna";
+    labelColuna.htmlFor = "seletor-coluna";
+
+    // Seletor da coluna
+    seletorColuna.id = "seletor-coluna";
+    seletorColuna.name = "coluna";
+    for (const coluna of quadroView.quadro?.colunas || []) {
+        const opcao = document.createElement("option");
+        opcao.value = coluna.idColuna;
+        opcao.textContent = coluna.nomeColuna;
+        seletorColuna.appendChild(opcao);
+    }
+
+    // Botão de salvar
+    botaoSalvar.type = "submit";
+    botaoSalvar.textContent = "Salvar";
+    const criarTarefa = async (e: MouseEvent) => {
+        e.preventDefault();
+        try {
+            await fetch(`api/v1/tarefa/criar`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    titulo: inputTitulo.value,
+                    descricao: inputDescricao.value,
+                    idColuna: seletorColuna.value
+                })
+            });
+        } catch (error) {
+            console.error("Erro ao atualizar tarefa:", error);
+        } finally {
+            dialogo.removeChild(formCriarTarefa);
+            dialogo.close();
+            recarregarQuadro(quadroView);
+        }
+    }
+    botaoSalvar.addEventListener("click", criarTarefa);
+
+    // Botão de cancelar
+    const botaoCancelar = document.createElement("button");
+    botaoCancelar.textContent = "Cancelar";
+    botaoCancelar.classList.add("bg-vermelho");
+    botaoCancelar.addEventListener("click", () => {
+        dialogo.removeChild(formCriarTarefa);
+        dialogo.close();
+    });
+
+
+    // Container dos botões
+    const botaoContainer = document.createElement("div");
+    botaoContainer.classList.add("botoes-container");
+    botaoContainer.append(botaoCancelar, botaoSalvar);
+
+    formCriarTarefa.append(
+        labelColuna,
+        seletorColuna,
+        labelTitulo,
+        inputTitulo,
+        labelDescricao,
+        inputDescricao,
+        botaoContainer
+    );
+
+    dialogo.showModal();
 }
 
 function recarregarQuadro(quadroView: QuadroView) {
