@@ -12,6 +12,12 @@ type QuadroView = {
 
 let quadroView: QuadroView = {};
 
+(async () => {
+    const dadosLogin = await verificarLogin();
+
+    inicializarQuadro(dadosLogin as RespostaLogin);
+})()
+
 function inicializarQuadro(dadosLogin: RespostaLogin) {
     if (!dadosLogin.hasOwnProperty("id")) {
         window.location.href = "/";
@@ -29,7 +35,6 @@ function inicializarQuadro(dadosLogin: RespostaLogin) {
 
     carregarDadosQuadro();
 }
-
 
 function carregarDadosQuadro() {
     fetch(`/api/v1/quadro/${quadroView.idQuadro}`, {
@@ -176,11 +181,3 @@ function recarregarQuadro(quadroView: QuadroView) {
     }
     carregarDadosQuadro();
 }
-
-
-(async () => {
-    const dadosLogin = await verificarLogin();
-
-    inicializarQuadro(dadosLogin as RespostaLogin);
-})()
-
