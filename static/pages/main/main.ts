@@ -1,8 +1,10 @@
 import { preencherQuadro } from "../../components/QuadroKanban.js";
-import { buscarDadosTarefa } from "../../services/buscarDadosTarefa.js";
-import { fazerLogout } from "../../services/fazerLogout.js";
-import { RespostaLogin, verificarLogin } from "../../services/verificarLogin.js";
-import type { MensagemErro, Quadro, Tarefa } from "../../types/types";
+import * as buscarDadosTarefaService from "../../services/buscarDadosTarefa.js";
+import * as criarTarefaService from "../../services/criarTarefa.js";
+import * as editarTarefaService from "../../services/editarTarefa.js";
+import * as fazerLogoutService from "../../services/fazerLogout.js";
+import * as verificarLoginService from "../../services/verificarLogin.js";
+import type { MensagemErro, Quadro, Tag, Tarefa } from "../../types/types";
 
 type QuadroView = {
     quadroDiv?: HTMLDivElement;
@@ -13,12 +15,12 @@ type QuadroView = {
 let quadroView: QuadroView = {};
 
 (async () => {
-    const dadosLogin = await verificarLogin();
+    const dadosLogin = await verificarLoginService.verificarLogin();
 
-    inicializarQuadro(dadosLogin as RespostaLogin);
+    inicializarQuadro(dadosLogin as verificarLoginService.RespostaLogin);
 })()
 
-function inicializarQuadro(dadosLogin: RespostaLogin) {
+function inicializarQuadro(dadosLogin: verificarLoginService.RespostaLogin) {
     if (!dadosLogin.hasOwnProperty("id")) {
         window.location.href = "/";
         return;
@@ -26,12 +28,12 @@ function inicializarQuadro(dadosLogin: RespostaLogin) {
 
     const botaoLogout = document.getElementById("botao-logout") as HTMLButtonElement;
     botaoLogout.addEventListener("click", async () => {
-        await fazerLogout();
+        await fazerLogoutService.fazerLogout();
         window.location.href = "/";
     });
 
     // Por enquanto, cada usuário terá apenas um quadro
-    quadroView.idQuadro = (dadosLogin as RespostaLogin).quadros[0];
+    quadroView.idQuadro = (dadosLogin as verificarLoginService.RespostaLogin).quadros[0];
 
     carregarDadosQuadro();
 }
@@ -88,7 +90,7 @@ async function abrirEditorTarefa(e: MouseEvent) {
     }
 
     try {
-        const dadosTarefa = await buscarDadosTarefa(idTarefa) as Tarefa;
+        const dadosTarefa = await buscarDadosTarefaService.buscarDadosTarefa(idTarefa) as Tarefa;
         const formEditarTarefa = document.createElement("form");
         formEditarTarefa.classList.add("vertical-form");
         const labelTitulo = document.createElement("label");
@@ -122,25 +124,17 @@ async function abrirEditorTarefa(e: MouseEvent) {
         // Botão de salvar
         botaoSalvar.type = "submit";
         botaoSalvar.textContent = "Salvar";
-        const editarTarefa = async (e: MouseEvent) => {
+        async function __editarTarefa(e: MouseEvent) {
             e.preventDefault();
             console.log(quadroView);
             try {
-                await fetch(`api/v1/tarefa/atualizar`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        idTarefa: idTarefa,
-                        titulo: inputTitulo.value,
-                        descricao: inputDescricao.value,
-                        // TODO: Adicionar tags
-                        tags: dadosTarefa.tags,
-                        // TODO: Mover entre colunas
-                        idColuna: dadosTarefa.idColuna
-                    })
-                });
+                await editarTarefaService.editarTarefa(
+                    idTarefa,
+                    dadosTarefa.idColuna,
+                    inputTitulo.value,
+                    inputDescricao.value,
+                    dadosTarefa.tags
+                );
             } catch (error) {
                 console.error("Erro ao atualizar tarefa:", error);
             } finally {
@@ -149,7 +143,7 @@ async function abrirEditorTarefa(e: MouseEvent) {
                 recarregarQuadro(quadroView);
             }
         }
-        botaoSalvar.addEventListener("click", editarTarefa);
+        botaoSalvar.addEventListener("click", __editarTarefa);
 
         // Botão de cancelar
         const botaoCancelar = document.createElement("button");
@@ -166,7 +160,13 @@ async function abrirEditorTarefa(e: MouseEvent) {
         botaoContainer.classList.add("botoes-container");
         botaoContainer.append(botaoCancelar, botaoSalvar);
 
-        formEditarTarefa.append(labelTitulo, inputTitulo, labelDescricao, inputDescricao, botaoContainer);
+        formEditarTarefa.append(
+            labelTitulo,
+            inputTitulo,
+            labelDescricao,
+            inputDescricao,
+            botaoContainer
+        );
 
         dialogo.appendChild(formEditarTarefa);
         dialogo.showModal();
@@ -174,6 +174,7 @@ async function abrirEditorTarefa(e: MouseEvent) {
         console.error("Erro ao buscar dados da tarefa:", error);
     }
 }
+
 
 // Criação de tarefas
 function adicionarEventListenersBotaoCriarTarefa() {
@@ -234,20 +235,10 @@ function abrirCriadorTarefa(e: MouseEvent) {
     // Botão de salvar
     botaoSalvar.type = "submit";
     botaoSalvar.textContent = "Salvar";
-    const criarTarefa = async (e: MouseEvent) => {
+    const __criarTarefa = async (e: MouseEvent) => {
         e.preventDefault();
         try {
-            await fetch(`api/v1/tarefa/criar`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    titulo: inputTitulo.value,
-                    descricao: inputDescricao.value,
-                    idColuna: seletorColuna.value
-                })
-            });
+            await criarTarefaService.criarTarefa(inputTitulo.value, inputDescricao.value, seletorColuna.value);
         } catch (error) {
             console.error("Erro ao atualizar tarefa:", error);
         } finally {
@@ -256,7 +247,7 @@ function abrirCriadorTarefa(e: MouseEvent) {
             recarregarQuadro(quadroView);
         }
     }
-    botaoSalvar.addEventListener("click", criarTarefa);
+    botaoSalvar.addEventListener("click", __criarTarefa);
 
     // Botão de cancelar
     const botaoCancelar = document.createElement("button");
@@ -285,6 +276,7 @@ function abrirCriadorTarefa(e: MouseEvent) {
 
     dialogo.showModal();
 }
+
 
 function recarregarQuadro(quadroView: QuadroView) {
     console.log("Recarregando quadro");
