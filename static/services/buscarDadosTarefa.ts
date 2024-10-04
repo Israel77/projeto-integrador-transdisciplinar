@@ -1,7 +1,8 @@
+import { appConfig } from "../config.js";
 import type { MensagemErro, Tarefa } from "../types/types";
 
 export const buscarDadosTarefa = async (idTarefa: string) => {
-    const resposta = await fetch(`/api/v1/tarefa/${idTarefa}`, {
+    const resposta = await fetch(`${appConfig.baseApiUrl}/api/v1/tarefa/${idTarefa}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"

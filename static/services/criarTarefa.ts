@@ -1,5 +1,7 @@
+import { appConfig } from "../config.js";
+
 export async function criarTarefa(titulo: string, descricao: string, idColuna: string) {
-    await fetch(`api/v1/tarefa/criar`, {
+    await fetch(`${appConfig.baseApiUrl}/api/v1/tarefa/criar`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

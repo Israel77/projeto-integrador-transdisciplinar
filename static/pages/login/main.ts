@@ -1,3 +1,4 @@
+import { appConfig } from "../../config.js";
 import { RequisicaoLogin } from "../../types/types";
 
 (() => {
@@ -15,7 +16,7 @@ import { RequisicaoLogin } from "../../types/types";
             senha: senha.value
         };
 
-        fetch('/api/v1/login', {
+        fetch(`${appConfig.baseApiUrl}/api/v1/login`, {
             method: 'POST',
             body: JSON.stringify(requisicao),
             headers: {

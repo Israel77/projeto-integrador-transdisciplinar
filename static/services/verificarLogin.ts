@@ -1,3 +1,4 @@
+import { appConfig } from "../config.js";
 import type { MensagemErro } from "../types/types.d.ts";
 
 export type RespostaLogin = {
@@ -6,7 +7,7 @@ export type RespostaLogin = {
 }
 
 export const verificarLogin = async (): Promise<RespostaLogin | MensagemErro> => {
-    const resposta = await fetch("/api/v1/verificar-login", {
+    const resposta = await fetch(`${appConfig.baseApiUrl}/api/v1/verificar-login`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"

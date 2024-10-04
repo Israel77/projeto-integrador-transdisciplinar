@@ -30,3 +30,7 @@ export type MensagemErro = {
     "message": string
 }
 export type Tag = string;
+
+export type AppConfig = {
+    "baseApiUrl": string,
+}

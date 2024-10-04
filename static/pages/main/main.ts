@@ -1,4 +1,5 @@
 import { preencherQuadro } from "../../components/QuadroKanban.js";
+import { appConfig } from "../../config.js";
 import * as buscarDadosTarefaService from "../../services/buscarDadosTarefa.js";
 import * as criarTarefaService from "../../services/criarTarefa.js";
 import * as editarTarefaService from "../../services/editarTarefa.js";
@@ -39,7 +40,7 @@ function inicializarQuadro(dadosLogin: verificarLoginService.RespostaLogin) {
 }
 
 function carregarDadosQuadro() {
-    fetch(`/api/v1/quadro/${quadroView.idQuadro}`, {
+    fetch(`${appConfig.baseApiUrl}/api/v1/quadro/${quadroView.idQuadro}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"

@@ -1,6 +1,7 @@
 import type { Coluna as Coluna } from "../types/types";
 import { criarCardTarefa } from "./CardTarefa.js";
 import { mudarNomeColuna } from "../services/mudarNomeColuna.js";
+import { appConfig } from "../config.js";
 
 export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     // Criação
@@ -82,7 +83,7 @@ function mudarColuna(novaColuna: HTMLElement, tarefa: Element) {
 
     novaColuna.appendChild(tarefa)
 
-    fetch("/api/v1/tarefa/atualizar/coluna", {
+    fetch(`${appConfig.baseApiUrl}/api/v1/tarefa/atualizar/coluna`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
