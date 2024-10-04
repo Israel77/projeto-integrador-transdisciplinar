@@ -1,3 +1,4 @@
+import { deletarTarefa } from "../services/deletarTarefa.js";
 import type { Tarefa } from "../types/types";
 import { criarTag } from "./TagTarefa.js";
 
@@ -17,10 +18,17 @@ export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivEleme
     tarefaDiv.appendChild(pDescricao);
     tarefaDiv.appendChild(secaoTags);
 
+    // Eventos
+    tarefaDiv.addEventListener("dragstart", drag)
+    botaoDeletar.addEventListener("click", (e: MouseEvent) => {
+        e.stopPropagation();
+        deletarTarefa(tarefa.id);
+        root.removeChild(tarefaDiv);
+    });
+
 
     // Estilos
     tarefaDiv.setAttribute("draggable", "true")
-    tarefaDiv.addEventListener("dragstart", drag)
 
     botaoDeletar.classList.add("btn-deletar", "bg-vermelho");
     tarefaDiv.classList.add("card");

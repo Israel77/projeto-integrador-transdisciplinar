@@ -68,7 +68,7 @@ function carregarDadosQuadro() {
 // Edição de tarefas
 function adicionarEventListenersTarefas() {
     // Adicionar event listeners nas tarefas
-    let tarefas = document.querySelectorAll("[data-id-tarefa]");
+    let tarefas = document.querySelectorAll(".card[data-id-tarefa]");
     for (const tarefa of tarefas) {
         tarefa.addEventListener("click", abrirEditorTarefa);
     }
