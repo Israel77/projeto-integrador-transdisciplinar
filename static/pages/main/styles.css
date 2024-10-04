@@ -99,6 +99,11 @@
     justify-content: space-between;
 }
 
+.btn-deletar {
+    max-width: fit-content;
+}
+
+
 button {
     border-radius: .6em;
 }

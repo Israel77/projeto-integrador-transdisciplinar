@@ -7,24 +7,32 @@ export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivEleme
     let pTitulo = document.createElement("p");
     let pDescricao = document.createElement("p");
     let secaoTags = document.createElement("div");
+    let botaoDeletar = document.createElement("button");
 
     // Inserção
     root.appendChild(tarefaDiv);
+
+    tarefaDiv.appendChild(botaoDeletar);
     tarefaDiv.appendChild(pTitulo);
     tarefaDiv.appendChild(pDescricao);
-    tarefaDiv.appendChild(secaoTags)
+    tarefaDiv.appendChild(secaoTags);
 
 
     // Estilos
     tarefaDiv.setAttribute("draggable", "true")
     tarefaDiv.addEventListener("dragstart", drag)
+
+    botaoDeletar.classList.add("btn-deletar", "bg-vermelho");
     tarefaDiv.classList.add("card");
     pTitulo.classList.add("titulo-card");
     pDescricao.classList.add("descricao-card");
     secaoTags.classList.add("tag-container");
 
     // Dados
-    tarefaDiv.setAttribute("data-id-tarefa", tarefa.id.toString());
+    tarefaDiv.setAttribute("data-id-tarefa", tarefa.id);
+
+    botaoDeletar.setAttribute("data-id-tarefa", tarefa.id);
+    botaoDeletar.innerText = "X";
     pTitulo.innerText = tarefa.titulo;
     pDescricao.innerText = tarefa.descricao;
     for (let tag of tarefa.tags) {
