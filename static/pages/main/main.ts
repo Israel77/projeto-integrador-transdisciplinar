@@ -185,6 +185,18 @@ function adicionarEventListenersBotaoCriarTarefa() {
 }
 
 function abrirCriadorTarefa(e: MouseEvent) {
+    let idColuna: string | undefined;
+    if (e.target instanceof HTMLElement) {
+        let current = e.target;
+        while (current.parentElement) {
+            if (current.dataset.idColuna !== undefined) {
+                idColuna = current.dataset.idColuna;
+                break;
+            }
+            current = current.parentElement;
+        }
+    }
+
     const dialogo = document.getElementById("modal") as HTMLDialogElement;
 
     const formCriarTarefa = document.createElement("form");
@@ -230,6 +242,9 @@ function abrirCriadorTarefa(e: MouseEvent) {
         opcao.value = coluna.idColuna;
         opcao.textContent = coluna.nomeColuna;
         seletorColuna.appendChild(opcao);
+    }
+    if (idColuna !== undefined) {
+        seletorColuna.value = idColuna;
     }
 
     // Botão de salvar
