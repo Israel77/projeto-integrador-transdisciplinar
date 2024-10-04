@@ -31,17 +31,18 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     colunaDiv.setAttribute("data-id-coluna", coluna.idColuna.toString());
 
     // Inserção
-    root.appendChild(colunaDiv);
 
     colunaDiv.appendChild(colunaHeader);
     colunaHeader.appendChild(tituloColuna);
     colunaHeader.appendChild(btnAdicionarColuna);
 
+    colunaDiv.appendChild(btnAdicionarTarefa);
+
     for (let tarefa of coluna.tarefas) {
         criarCardTarefa(colunaDiv, tarefa);
     }
 
-    colunaDiv.appendChild(btnAdicionarTarefa);
+    root.appendChild(colunaDiv);
 
     return colunaDiv;
 }
@@ -79,10 +80,7 @@ function mudarColuna(novaColuna: HTMLElement, tarefa: Element) {
         }
     }
 
-    // Insere a tarefa na nova coluna antes do botão
-    const botao = novaColuna.removeChild(novaColuna.lastChild as HTMLButtonElement);
     novaColuna.appendChild(tarefa)
-    novaColuna.appendChild(botao)
 
     fetch("/api/v1/tarefa/atualizar/coluna", {
         method: "PUT",
