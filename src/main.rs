@@ -6,7 +6,6 @@ mod services;
 use std::env;
 
 use actix_cors::Cors;
-use actix_files::Files;
 use actix_session::{storage::RedisSessionStore, SessionMiddleware};
 use actix_web::{
     cookie::Key,
@@ -42,10 +41,6 @@ async fn main() -> std::io::Result<()> {
         .expect(format!("Erro ao conectar ao Redis: {}", redis_url).as_str());
 
     HttpServer::new(move || {
-        // let cors = Cors::default()
-        //     .allow_any_header()
-        //     .allow_any_method()
-        //     .allowed_origin("http://localhost:6969");
         let cors = Cors::permissive().supports_credentials();
 
         App::new()
@@ -71,11 +66,6 @@ async fn main() -> std::io::Result<()> {
                     .service(routes::auth::logout)
                     .service(routes::auth::verificar_login),
             )
-            .service(Files::new("/login", "./static/pages/login/").index_file("index.html"))
-            .service(Files::new("/main", "./static/pages/main/").index_file("index.html"))
-            .service(Files::new("/components", "./static/components"))
-            .service(Files::new("/services", "./static/services"))
-            .service(Files::new("/", "./static").index_file("index.html"))
     })
     .bind(("0.0.0.0", 8080))?
     .run()
