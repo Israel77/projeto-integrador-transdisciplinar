@@ -18,6 +18,7 @@ import { RequisicaoLogin } from "../../types/types";
 
         fetch(`${appConfig.baseApiUrl}/api/v1/login`, {
             method: 'POST',
+            credentials: 'include',
             body: JSON.stringify(requisicao),
             headers: {
                 'Content-Type': 'application/json'
@@ -26,7 +27,7 @@ import { RequisicaoLogin } from "../../types/types";
             .then(resposta => {
                 if (resposta.ok) {
                     console.log("Login realizado com sucesso!");
-                    window.location.href = '/';
+                    window.location.href = '/main';
                 }
             })
             .catch(erro => console.error(erro));

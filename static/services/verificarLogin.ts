@@ -9,6 +9,7 @@ export type RespostaLogin = {
 export const verificarLogin = async (): Promise<RespostaLogin | MensagemErro> => {
     const resposta = await fetch(`${appConfig.baseApiUrl}/api/v1/verificar-login`, {
         method: "GET",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         }

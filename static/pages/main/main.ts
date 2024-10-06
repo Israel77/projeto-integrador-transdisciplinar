@@ -42,6 +42,7 @@ function inicializarQuadro(dadosLogin: verificarLoginService.RespostaLogin) {
 function carregarDadosQuadro() {
     fetch(`${appConfig.baseApiUrl}/api/v1/quadro/${quadroView.idQuadro}`, {
         method: "GET",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         }

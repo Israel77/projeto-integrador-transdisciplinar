@@ -11,6 +11,10 @@
     "author": "Israel Batista",
     "license": "AGPL-3.0-or-later",
     "devDependencies": {
+        "@types/express": "^5.0.0",
         "typescript": "^5.5.4"
+    },
+    "dependencies": {
+        "express": "^4.21.0"
     }
 }

@@ -5,6 +5,7 @@ mod services;
 
 use std::env;
 
+use actix_cors::Cors;
 use actix_files::Files;
 use actix_session::{storage::RedisSessionStore, SessionMiddleware};
 use actix_web::{
@@ -41,12 +42,19 @@ async fn main() -> std::io::Result<()> {
         .expect(format!("Erro ao conectar ao Redis: {}", redis_url).as_str());
 
     HttpServer::new(move || {
+        // let cors = Cors::default()
+        //     .allow_any_header()
+        //     .allow_any_method()
+        //     .allowed_origin("http://localhost:6969");
+        let cors = Cors::permissive().supports_credentials();
+
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .wrap(SessionMiddleware::new(
                 redis_store.clone(),
                 secret_key.clone(),
             ))
+            .wrap(cors)
             .service(
                 scope("/api/v1")
                     .service(routes::quadro::retornar_quadros)
