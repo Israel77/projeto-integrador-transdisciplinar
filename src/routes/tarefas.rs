@@ -219,10 +219,17 @@ pub async fn criar_tarefa(
     pool: web::Data<sqlx::PgPool>,
     session: Session,
 ) -> impl Responder {
-    //TODO: Analisar a necessidade de validar se a tarefa pertence ao usuário logado
-    if session.get::<String>("id_usuario").is_err() {
+    let id_usuario = session.get::<String>("id_usuario");
+
+    if id_usuario.is_err() || id_usuario.as_ref().unwrap().is_none() {
         return ListaErros::ErroUsuarioNaoLogado.as_response();
     }
+
+    let id_usuario = Uuid::parse_str(id_usuario.unwrap().unwrap().as_str());
+    if let Err(_) = id_usuario {
+        return ListaErros::ErroAuteticacao.as_response();
+    }
+    let id_usuario = id_usuario.unwrap();
 
     let resultado_pk_coluna = consultar_pk_por_id_coluna(
         &pool,
@@ -244,6 +251,7 @@ pub async fn criar_tarefa(
                 .map(|descricao| descricao.as_str()),
             pk_coluna,
             vec![],
+            id_usuario,
         )
         .await;
 

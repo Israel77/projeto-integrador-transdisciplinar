@@ -41,12 +41,17 @@ pub async fn gravar_nova_tarefa(
     descricao: Option<&str>,
     pk_coluna: i32,
     tags: Vec<i32>,
+    id_usuario: Uuid,
 ) -> Result<Uuid, ListaErros> {
     let dados_tarefa = query!(
-        "INSERT INTO kanban.tarefas (titulo_tarefa, descricao_tarefa, pk_coluna) VALUES ($1, $2, $3) RETURNING id_tarefa, pk_tarefa",
+        "INSERT INTO kanban.tarefas (titulo_tarefa, descricao_tarefa, pk_coluna, id_usuario)
+        VALUES ($1, $2, $3, $4) 
+        RETURNING id_tarefa, pk_tarefa",
         titulo,
         descricao,
-        pk_coluna)
+        pk_coluna,
+        id_usuario
+    )
     .fetch_one(pool)
     .await?;
 

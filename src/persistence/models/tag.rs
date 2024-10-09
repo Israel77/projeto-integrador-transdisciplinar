@@ -7,4 +7,5 @@ pub struct Tag {
     pub pk_tag: i32,
     pub id_tag: Uuid,
     pub nome_tag: Arc<str>,
+    pub id_usuario: Uuid,
 }

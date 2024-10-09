@@ -160,7 +160,7 @@ pub async fn verificar_quadro_pertence_ao_usuario(
         ON q.pk_usuario = u.pk_usuario
         WHERE
         id_quadro=$1 AND
-        id_usuario=$2;",
+        u.id_usuario=$2;",
         Uuid::parse_str(id_quadro).unwrap(),
         Uuid::parse_str(id_usuario).unwrap(),
     )

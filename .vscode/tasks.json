@@ -33,7 +33,7 @@
             "group": "none"
         },
         {
-            "label": "Start app",
+            "label": "Start backend server",
             "type": "shell",
             "command": "cargo",
             "args": [
@@ -42,6 +42,28 @@
                 "run",
             ],
             "dependsOn": "Run Redis",
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "Compile typescript",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "--prefix=static",
+                "run",
+                "compile-watch"
+            ],
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "Start frontend server",
+            "type": "shell",
+            "command": "node",
+            "args": [
+                "static/server.js",
+            ],
             "problemMatcher": [],
             "group": "build"
         }
