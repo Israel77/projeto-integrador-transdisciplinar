@@ -1,0 +1,31 @@
+meta {
+  name: criar-coluna
+  type: http
+  seq: 13
+}
+
+put {
+  url: http://localhost:8080/api/v1/coluna/criar
+  body: json
+  auth: none
+}
+
+headers {
+  ~Cookie: id=YhHLPGhb4qJQGBRKwRFvQJAJV1+4yJAUNuDlh1iDd2lNsuPPFS4DuDu8lF2aVS96zwzcHaBx80i13bTn%2FJbPfs1hOeabqlYlBqwbD8AyexR5YIL%2FLHo58gxEOaA%3D
+}
+
+body:json {
+  {
+    "nomeColuna": "Teste",
+    "ordemColuna": 4,
+    "idQuadro": "ba3f8255-a915-4634-b9e3-e1ff37cd4f60"
+  }
+}
+
+script:pre-request {
+  const cookie = bru.getVar("cookie");
+  
+  if(cookie) {
+    req.setHeader("Cookie", cookie.split(";")[0])
+  }
+}

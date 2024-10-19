@@ -21,6 +21,8 @@ pub enum ListaErros {
     ErroSenhaCurta,
     ErroUsuarioJaExistente(String),
     ErroEmailJaExistente(String),
+    // Erros de entrada inválida
+    ErroUuidInvalid(String),
     // Erros de query
     ErroSQL(sqlx::Error),
 }
@@ -70,6 +72,11 @@ impl ListaErros {
                 code: "203".to_string(),
                 message: format!("Email {} já está cadastrado", email),
                 status_code: 400,
+            },
+            ListaErros::ErroUuidInvalid(uuid) => MensagemErro {
+                code: "301".to_string(),
+                message: format!("Não foi possível converter {} para um Uuid válido", uuid),
+                status_code: 422,
             },
             ListaErros::ErroSQL(erro) => MensagemErro {
                 code: "901".to_string(),

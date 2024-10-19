@@ -61,6 +61,7 @@ async fn main() -> std::io::Result<()> {
                     .service(routes::tarefas::deletar_tarefa)
                     .service(routes::tarefas::criar_tarefa)
                     .service(routes::coluna::mudar_nome_coluna)
+                    .service(routes::coluna::criar_nova_coluna)
                     .service(routes::auth::sign_up)
                     .service(routes::auth::login)
                     .service(routes::auth::logout)
