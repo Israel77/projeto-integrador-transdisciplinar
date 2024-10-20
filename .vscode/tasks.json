@@ -38,6 +38,8 @@
             "command": "cargo",
             "args": [
                 "watch",
+                "-i",
+                "static",
                 "-x",
                 "run",
             ],
