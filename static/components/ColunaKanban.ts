@@ -32,7 +32,6 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     colunaDiv.setAttribute("data-id-coluna", coluna.idColuna.toString());
 
     // Inserção
-
     colunaDiv.appendChild(colunaHeader);
     colunaHeader.appendChild(tituloColuna);
     colunaHeader.appendChild(btnAdicionarColuna);

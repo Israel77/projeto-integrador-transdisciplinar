@@ -1,6 +1,7 @@
 import { preencherQuadro } from "../../components/QuadroKanban.js";
 import { appConfig } from "../../config.js";
 import * as buscarDadosTarefaService from "../../services/buscarDadosTarefa.js";
+import { criarNovaColuna } from "../../services/criarNovaColuna.js";
 import * as criarTarefaService from "../../services/criarTarefa.js";
 import * as editarTarefaService from "../../services/editarTarefa.js";
 import * as fazerLogoutService from "../../services/fazerLogout.js";
@@ -55,8 +56,7 @@ function carregarDadosQuadro() {
                 preencherQuadro(quadroView.quadroDiv, quadro);
                 document.body.appendChild(quadroView.quadroDiv);
             }).then(() => {
-                adicionarEventListenersTarefas();
-                adicionarEventListenersBotaoCriarTarefa();
+                adicionarEventListeners();
             });
         } else {
             resposta.json().then((err: MensagemErro) => {
@@ -65,6 +65,109 @@ function carregarDadosQuadro() {
         }
     });
 
+}
+
+function adicionarEventListeners() {
+    adicionarEventListenerBotaoCriarColuna();
+    adicionarEventListenersTarefas();
+    adicionarEventListenersBotaoCriarTarefa();
+}
+
+function adicionarEventListenerBotaoCriarColuna() {
+    const botaoCriarColuna = document.getElementById("criar-coluna");
+    botaoCriarColuna?.addEventListener("click", abrirCriadorColuna);
+}
+
+function abrirCriadorColuna(e: MouseEvent) {
+    const dialogo = document.getElementById("modal") as HTMLDialogElement;
+
+    const formCriarColuna = document.createElement("form");
+    formCriarColuna.classList.add("vertical-form");
+    dialogo.appendChild(formCriarColuna);
+
+    // Definir ponto de inserção
+    const divInserirInicio = document.createElement("div");
+    const inputInserirInicio = document.createElement("input");
+    const labelInserirInicio = document.createElement("label");
+
+    const divInserirApos = document.createElement("div");
+    const inputInserirApos = document.createElement("input");
+    const labelInserirApos = document.createElement("label");
+    const seletorInserirApos = document.createElement("select");
+
+    inputInserirInicio.name = "selecionar-pos-coluna";
+    inputInserirInicio.type = "radio";
+    inputInserirInicio.id = "inserir-coluna-inicio";
+    inputInserirInicio.checked = true;
+    labelInserirInicio.innerText = "Inserir coluna no início";
+    divInserirInicio.append(inputInserirInicio, labelInserirInicio);
+    divInserirInicio.classList.add("container-radio-button");
+
+    inputInserirApos.name = "selecionar-pos-coluna";
+    inputInserirApos.type = "radio";
+    inputInserirApos.id = "inserir-coluna-apos";
+    labelInserirApos.innerText = "Inserir coluna após: ";
+    divInserirApos.append(inputInserirApos, labelInserirApos, seletorInserirApos);
+    divInserirApos.classList.add("container-radio-button");
+
+    // Obter nomes das colunas atuais e incluir no seletor
+    for (const coluna of quadroView.quadro?.colunas || []) {
+        const opcaoColuna = document.createElement("option");
+        opcaoColuna.value = coluna.ordemColuna.toString();
+        opcaoColuna.innerText = coluna.nomeColuna;
+
+        seletorInserirApos.appendChild(opcaoColuna);
+    }
+
+    // Definir nome da coluna
+    const inputNomeColuna = document.createElement("input");
+    const labelNomeColuna = document.createElement("label");
+
+    labelNomeColuna.textContent = "Nome da nova coluna";
+    labelNomeColuna.htmlFor = "nome-nova-coluna";
+
+    inputNomeColuna.id = "nome-nova-coluna";
+
+    // Botão de salvar
+    const botaoSalvar = document.createElement("button");
+    botaoSalvar.type = "submit";
+    botaoSalvar.textContent = "Salvar";
+    const __criarColuna = async (e: MouseEvent) => {
+        e.preventDefault();
+        try {
+            await criarNovaColuna(quadroView.idQuadro as string,
+                inputNomeColuna.value,
+                inputInserirApos.checked ? parseInt(seletorInserirApos.value) : 1);
+        } catch (error) {
+            console.error("Erro ao atualizar tarefa:", error);
+        } finally {
+            dialogo.removeChild(formCriarColuna);
+            dialogo.close();
+            recarregarQuadro(quadroView);
+        }
+    }
+    botaoSalvar.addEventListener("click", __criarColuna);
+
+    // Botão de cancelar
+    const botaoCancelar = document.createElement("button");
+    botaoCancelar.textContent = "Cancelar";
+    botaoCancelar.classList.add("bg-vermelho");
+    botaoCancelar.addEventListener("click", () => {
+        dialogo.removeChild(formCriarColuna);
+        dialogo.close();
+    });
+
+    // Container dos botões
+    const botaoContainer = document.createElement("div");
+    botaoContainer.classList.add("botoes-container");
+    botaoContainer.append(botaoCancelar, botaoSalvar);
+
+    formCriarColuna.append(divInserirInicio,
+        divInserirApos,
+        labelNomeColuna,
+        inputNomeColuna,
+        botaoContainer);
+    dialogo.showModal();
 }
 
 // Edição de tarefas
@@ -91,41 +194,42 @@ async function abrirEditorTarefa(e: MouseEvent) {
         return;
     }
 
+    const dadosTarefa = await buscarDadosTarefaService.buscarDadosTarefa(idTarefa) as Tarefa;
+    const formEditarTarefa = document.createElement("form");
+    formEditarTarefa.classList.add("vertical-form");
+    const labelTitulo = document.createElement("label");
+    const inputTitulo = document.createElement("input");
+    const labelDescricao = document.createElement("label");
+    const inputDescricao = document.createElement("textarea");
+    const botaoSalvar = document.createElement("button");
+
+    // Label do título
+    labelTitulo.textContent = "Título";
+    labelTitulo.htmlFor = "editar-titulo";
+
+    // Input do título
+    inputTitulo.id = "editar-titulo";
+    inputTitulo.type = "text";
+    inputTitulo.name = "titulo";
+
+    // Label da descrição
+    labelDescricao.textContent = "Descrição";
+    labelTitulo.htmlFor = "editar-descricao";
+
+    // Input da descrição
+    inputDescricao.id = "editar-descricao";
+    inputDescricao.name = "descricao";
+
+    if (dadosTarefa) {
+        inputTitulo.value = dadosTarefa.titulo;
+        inputDescricao.value = dadosTarefa.descricao;
+    }
+
+    // Botão de salvar
+    botaoSalvar.type = "submit";
+    botaoSalvar.textContent = "Salvar";
+
     try {
-        const dadosTarefa = await buscarDadosTarefaService.buscarDadosTarefa(idTarefa) as Tarefa;
-        const formEditarTarefa = document.createElement("form");
-        formEditarTarefa.classList.add("vertical-form");
-        const labelTitulo = document.createElement("label");
-        const inputTitulo = document.createElement("input");
-        const labelDescricao = document.createElement("label");
-        const inputDescricao = document.createElement("textarea");
-        const botaoSalvar = document.createElement("button");
-
-        // Label do título
-        labelTitulo.textContent = "Título";
-        labelTitulo.htmlFor = "editar-titulo";
-
-        // Input do título
-        inputTitulo.id = "editar-titulo";
-        inputTitulo.type = "text";
-        inputTitulo.name = "titulo";
-
-        // Label da descrição
-        labelDescricao.textContent = "Descrição";
-        labelTitulo.htmlFor = "editar-descricao";
-
-        // Input da descrição
-        inputDescricao.id = "editar-descricao";
-        inputDescricao.name = "descricao";
-
-        if (dadosTarefa) {
-            inputTitulo.value = dadosTarefa.titulo;
-            inputDescricao.value = dadosTarefa.descricao;
-        }
-
-        // Botão de salvar
-        botaoSalvar.type = "submit";
-        botaoSalvar.textContent = "Salvar";
         async function __editarTarefa(e: MouseEvent) {
             e.preventDefault();
             console.log(quadroView);

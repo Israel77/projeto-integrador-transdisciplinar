@@ -45,13 +45,24 @@ pub async fn criar_nova_coluna(
     ordem_coluna: i32,
     id_usuario: &Uuid,
 ) -> Result<Coluna, ListaErros> {
+    let pk_quadro = query!(
+        "SELECT pk_quadro FROM kanban.quadros
+        WHERE id_quadro = $1",
+        id_quadro,
+    )
+    .fetch_one(pool)
+    .await?
+    .pk_quadro;
+
     // Atualiza a ordem de todas as colunas posteriores
     // à que será criada
     query!(
         "UPDATE kanban.colunas
         SET ordem_coluna = ordem_coluna + 1
-        WHERE ordem_coluna >= $1",
-        ordem_coluna
+        WHERE ordem_coluna >= $1
+        AND pk_quadro = $2",
+        ordem_coluna,
+        pk_quadro
     )
     .execute(pool)
     .await?;
