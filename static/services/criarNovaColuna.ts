@@ -12,7 +12,7 @@ export async function criarNovaColuna(idQuadro: string, nomeColuna: string, orde
             ordemColuna,
             nomeColuna,
         })
-    }) as Response & {
+    }) as Omit<Response, 'json'> & {
         json: () => Promise<{
             idQuadro: string,
             idUsuario: string,
