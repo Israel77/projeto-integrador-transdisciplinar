@@ -84,3 +84,49 @@ pub async fn criar_nova_coluna(
 
     Ok(coluna)
 }
+
+pub async fn deletar_coluna(
+    pool: &sqlx::PgPool,
+    id_coluna: &Uuid,
+    id_usuario: &Uuid,
+) -> Result<(), ListaErros> {
+    let row = query!(
+        "SELECT pk_quadro, ordem_coluna FROM kanban.colunas
+        WHERE id_coluna = $1",
+        id_coluna,
+    )
+    .fetch_one(pool)
+    .await?;
+
+    let pk_quadro = row.pk_quadro;
+    let ordem_coluna = row.ordem_coluna;
+
+    // Apaga a coluna
+    query!(
+        "DELETE FROM kanban.colunas
+        WHERE id_coluna = $1
+        AND id_usuario = $2
+    ",
+        id_coluna,
+        id_usuario
+    )
+    .execute(pool)
+    .await?;
+
+    // Atualiza a ordem de todas as colunas posteriores
+    // à que será apagada
+    query!(
+        "UPDATE kanban.colunas
+        SET ordem_coluna = ordem_coluna - 1
+        WHERE ordem_coluna > $1
+        AND pk_quadro = $2
+        AND id_usuario = $3",
+        ordem_coluna,
+        pk_quadro,
+        id_usuario
+    )
+    .execute(pool)
+    .await?;
+
+    Ok(())
+}
