@@ -1,6 +1,7 @@
 import type { Coluna as Coluna } from "../types/types";
 import { criarCardTarefa } from "./CardTarefa.js";
 import { mudarNomeColuna } from "../services/mudarNomeColuna.js";
+import { apagarColuna } from "../services/apagarColuna.js";
 import { appConfig } from "../config.js";
 
 export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
@@ -8,23 +9,27 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     let colunaDiv = document.createElement("div");
     let colunaHeader = document.createElement("div");
     let tituloColuna = document.createElement("input");
-    let btnAdicionarColuna = document.createElement("button");
+    let btnRemoverColuna = document.createElement("button");
     let btnAdicionarTarefa = document.createElement("button");
 
     // Estilo
-    colunaDiv.addEventListener("drop", drop)
-    colunaDiv.addEventListener("dragover", dragover)
     colunaDiv.classList.add("coluna-kanban")
     tituloColuna.classList.add("titulo-coluna")
+    btnRemoverColuna.classList.add("bg-vermelho")
     tituloColuna.setAttribute("type", "text");
     tituloColuna.addEventListener("input", async () => {
         await mudarNomeColuna(coluna.idColuna, tituloColuna.value);
     });
     colunaHeader.classList.add("header-coluna")
 
+    // Eventos
+    colunaDiv.addEventListener("drop", drop)
+    colunaDiv.addEventListener("dragover", dragover)
+    btnRemoverColuna.addEventListener("click", removerColuna);
+
     // Dados
     tituloColuna.value = coluna.nomeColuna;
-    btnAdicionarColuna.innerText = "+";
+    btnRemoverColuna.innerText = "x";
 
     btnAdicionarTarefa.innerText = "Criar nova tarefa";
     btnAdicionarTarefa.classList.add("btn-adicionar-tarefa");
@@ -34,7 +39,7 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     // Inserção
     colunaDiv.appendChild(colunaHeader);
     colunaHeader.appendChild(tituloColuna);
-    colunaHeader.appendChild(btnAdicionarColuna);
+    colunaHeader.appendChild(btnRemoverColuna);
 
     colunaDiv.appendChild(btnAdicionarTarefa);
 
@@ -93,4 +98,24 @@ function mudarColuna(novaColuna: HTMLElement, tarefa: Element) {
             idColuna: novaColuna.getAttribute("data-id-coluna")
         })
     })
+}
+
+function removerColuna(ev: MouseEvent) {
+    // Apenas insere a tarefa se o alvo for uma coluna
+    let target = ev.target as HTMLElement;
+    let idColuna = target.dataset.idColuna;
+    while (idColuna == undefined) {
+        if (target.parentElement) {
+            // Se não for uma coluna, tenta o elemento pai
+            target = target.parentElement
+            idColuna = target.dataset.idColuna;
+        } else {
+            // Se o alvo não está contido em uma coluna, não faz nada
+            return;
+        }
+    }
+
+    apagarColuna(idColuna);
+
+    target.parentNode?.removeChild(target);
 }
