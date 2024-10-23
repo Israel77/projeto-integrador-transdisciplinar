@@ -103,6 +103,11 @@
     max-width: fit-content;
 }
 
+.container-radio-button {
+    display: flex;
+    gap: .3em;
+    flex-wrap: wrap;
+}
 
 button {
     border-radius: .6em;
