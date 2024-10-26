@@ -1,4 +1,4 @@
-import { deletarTarefa } from "../../services/deletarTarefa.js";
+import { abrirDialogoApagarColuna } from "./dialogos/ConfirmarApagarColuna.js";
 import { abrirDialogoApagarTarefa } from "./dialogos/ConfirmarApagarTarefa.js";
 import { abrirCriadorColuna } from "./dialogos/CriadorColuna.js";
 import { abrirCriadorTarefa } from "./dialogos/CriadorTarefa.js";
@@ -8,6 +8,7 @@ import { QuadroView } from "./quadro.js";
 export function adicionarEventListeners(quadroView: QuadroView) {
     // Colunas
     adicionarEventListenerBotaoCriarColuna(quadroView);
+    adicionarEventListenersBotaoDeletarColuna(quadroView);
     // Tarefas
     adicionarEventListenersEditarTarefas(quadroView);
     adicionarEventListenersBotaoCriarTarefa(quadroView);
@@ -60,19 +61,68 @@ function adicionarEventListenersBotaoDeletarTarefa(quadroView: QuadroView) {
             }
 
             let tituloTarefa: string | undefined;
-            console.log(tarefaDiv.children);
             for (const child of tarefaDiv.children) {
                 if (child.classList.contains("titulo-card")) {
                     tituloTarefa = child.innerHTML;
                     break;
                 }
             }
-            if (tituloTarefa === undefined) {
-                console.error("Tarefa sem título?")
+            if (tituloTarefa === undefined) return;
+
+            abrirDialogoApagarTarefa(quadroView, colunaDiv, tarefaDiv, tarefaDiv.dataset.idTarefa, tituloTarefa);
+        });
+    }
+}
+
+function adicionarEventListenersBotaoDeletarColuna(quadroView: QuadroView) {
+    const botoesDeletarColuna = document.getElementsByClassName("btn-remover-coluna");
+
+    for (const botao of botoesDeletarColuna) {
+        botao.addEventListener("click", (ev: MouseEvent) => {// Apenas remove se o alvo for uma coluna
+            let colunaDiv = ev.target as HTMLElement;
+            let idColuna = colunaDiv.dataset.idColuna;
+            while (idColuna == undefined) {
+                if (colunaDiv.parentElement) {
+                    // Se não for uma coluna, tenta o elemento pai
+                    colunaDiv = colunaDiv.parentElement
+                    idColuna = colunaDiv.dataset.idColuna;
+                } else {
+                    // Se o alvo não está contido em uma coluna, não faz nada
+                    return;
+                }
+            }
+
+            let colunaContainer = colunaDiv.parentElement;
+            if (colunaContainer == null) {
+                console.error("Coluna sem elemento pai.")
                 return;
             }
 
-            abrirDialogoApagarTarefa(quadroView, colunaDiv, tarefaDiv, tarefaDiv.dataset.idTarefa, tituloTarefa);
+            let nomeColuna: string | undefined;
+            let header: Element | undefined = undefined;
+            for (const child of colunaDiv.children) {
+                if (child.classList.contains("header-coluna")) {
+                    header = child;
+                    break;
+                }
+            }
+            if (header == undefined) return;
+
+            for (const child of header?.children) {
+                if (child.classList.contains("titulo-coluna")) {
+                    if (child.tagName !== "INPUT") {
+                        console.error("Tag input esperada para o título da coluna");
+                        return;
+                    }
+
+                    nomeColuna = (child as HTMLInputElement).value || "";
+                    break;
+                }
+            }
+
+            if (nomeColuna === undefined) return;
+
+            abrirDialogoApagarColuna(quadroView, colunaContainer, colunaDiv, idColuna, nomeColuna);
         });
     }
 }

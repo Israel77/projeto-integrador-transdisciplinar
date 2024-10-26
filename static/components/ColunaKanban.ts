@@ -25,11 +25,12 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
     // Eventos
     colunaDiv.addEventListener("drop", drop)
     colunaDiv.addEventListener("dragover", dragover)
-    btnRemoverColuna.addEventListener("click", removerColuna);
 
     // Dados
     tituloColuna.value = coluna.nomeColuna;
+
     btnRemoverColuna.innerText = "x";
+    btnRemoverColuna.classList.add("btn-remover-coluna");
 
     btnAdicionarTarefa.innerText = "Criar nova tarefa";
     btnAdicionarTarefa.classList.add("btn-adicionar-tarefa");
@@ -98,24 +99,4 @@ function mudarColuna(novaColuna: HTMLElement, tarefa: Element) {
             idColuna: novaColuna.getAttribute("data-id-coluna")
         })
     })
-}
-
-function removerColuna(ev: MouseEvent) {
-    // Apenas insere a tarefa se o alvo for uma coluna
-    let target = ev.target as HTMLElement;
-    let idColuna = target.dataset.idColuna;
-    while (idColuna == undefined) {
-        if (target.parentElement) {
-            // Se não for uma coluna, tenta o elemento pai
-            target = target.parentElement
-            idColuna = target.dataset.idColuna;
-        } else {
-            // Se o alvo não está contido em uma coluna, não faz nada
-            return;
-        }
-    }
-
-    apagarColuna(idColuna);
-
-    target.parentNode?.removeChild(target);
 }
