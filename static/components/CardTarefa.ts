@@ -20,12 +20,6 @@ export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivEleme
 
     // Eventos
     tarefaDiv.addEventListener("dragstart", drag)
-    botaoDeletar.addEventListener("click", (e: MouseEvent) => {
-        e.stopPropagation();
-        deletarTarefa(tarefa.id);
-        root.removeChild(tarefaDiv);
-    });
-
 
     // Estilos
     tarefaDiv.setAttribute("draggable", "true")
@@ -39,7 +33,6 @@ export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivEleme
     // Dados
     tarefaDiv.setAttribute("data-id-tarefa", tarefa.id);
 
-    botaoDeletar.setAttribute("data-id-tarefa", tarefa.id);
     botaoDeletar.innerText = "Apagar tarefa";
     pTitulo.innerText = tarefa.titulo;
     pDescricao.innerText = tarefa.descricao;
