@@ -5,11 +5,26 @@
     overflow: scroll;
 }
 
+#quadro-kanban>h1,
+#quadro-kanban>button {
+    margin-inline-start: 1rem;
+}
+
 #quadro-header {
-    position: relative;
-    margin: auto;
+    display: flex;
     max-width: min(80rem, 100vw);
     overflow: scroll;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4rem;
+    padding-inline-start: 1rem;
+    width: fit-content;
+}
+
+#quadro-header p {
+    font-size: 1.2rem;
 }
 
 #modal {
@@ -23,11 +38,11 @@
 
 .coluna-container {
     background-color: var(--lighter-gray);
-    margin-top: 2em;
+    margin-top: .5rem;
     padding: 1em;
     display: flex;
     flex-direction: row;
-    gap: .4em;
+    gap: 1rem;
     overflow: scroll;
 }
 
@@ -42,7 +57,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-inline: .4em;
     gap: .5em;
 }
 
@@ -57,7 +71,7 @@
     flex-direction: column;
     border-radius: 8px;
     gap: .5em;
-    padding: 0em 0.5em;
+    padding: 0.5em;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 8%);
 }
 
@@ -111,4 +125,8 @@
 
 button {
     border-radius: .6em;
+}
+
+button#criar-coluna {
+    margin-top: 2rem;
 }

@@ -4,7 +4,7 @@ use actix_session::Session;
 use actix_web::{get, post, web, HttpRequest, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use sqlx::PgPool;
+use sqlx::{query, types::Uuid, PgPool};
 
 use crate::{
     errors::error::ListaErros,
@@ -78,7 +78,28 @@ pub async fn sign_up(
 pub async fn verificar_login(pool: web::Data<PgPool>, session: Session) -> impl Responder {
     if let Some(id_usuario) = session.get::<String>("id_usuario").ok().flatten() {
         let quadros = consultar_ids_quadros_usuario(&pool, &id_usuario).await.ok();
-        HttpResponse::Ok().json(json!({"id": id_usuario, "quadros": quadros}))
+
+        let nome_usuario = query!(
+            "
+        SELECT nome_usuario FROM kanban.usuarios
+        WHERE id_usuario = $1
+        ",
+            Uuid::parse_str(&id_usuario).unwrap()
+        )
+        .fetch_one(pool.get_ref())
+        .await;
+
+        if let Err(_) = nome_usuario {
+            return ListaErros::ErroUsuarioNaoEncontrado(id_usuario).as_response();
+        }
+
+        let nome_usuario = nome_usuario.unwrap().nome_usuario;
+
+        HttpResponse::Ok().json(json!({
+            "id": id_usuario,
+            "nomeUsuario": nome_usuario,
+            "quadros": quadros
+        }))
     } else {
         ListaErros::ErroUsuarioNaoLogado.as_response()
     }

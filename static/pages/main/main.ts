@@ -17,10 +17,38 @@ type QuadroView = {
 let quadroView: QuadroView = {};
 
 (async () => {
-    const dadosLogin = await verificarLoginService.verificarLogin();
+    const dadosLogin = await verificarLoginService.verificarLogin() as verificarLoginService.RespostaLogin;
 
-    inicializarQuadro(dadosLogin as verificarLoginService.RespostaLogin);
+    preencherHeader(dadosLogin);
+    inicializarQuadro(dadosLogin);
 })()
+
+function preencherHeader(dadosLogin: verificarLoginService.RespostaLogin) {
+    const headerDiv = document.getElementById("quadro-header") as HTMLDivElement;
+
+    // Cumprimento
+    const pCumprimento = document.createElement("p");
+    const hora = new Date();
+    let cumprimento: string;
+
+    if (0 <= hora.getHours() && hora.getHours() < 12) {
+        cumprimento = "Bom dia, " + dadosLogin.nomeUsuario;
+    } else if (12 <= hora.getHours() && hora.getHours() < 18) {
+        cumprimento = "Boa tarde, " + dadosLogin.nomeUsuario;
+    } else {
+        cumprimento = "Boa noite, " + dadosLogin.nomeUsuario;
+    }
+    pCumprimento.innerText = cumprimento;
+
+    // Botão de sair
+    const botaoSair = document.createElement('button');
+
+    botaoSair.id = 'botao-logout';
+    botaoSair.className = 'bg-vermelho';
+    botaoSair.textContent = 'Sair';
+
+    headerDiv.append(pCumprimento, botaoSair);
+}
 
 function inicializarQuadro(dadosLogin: verificarLoginService.RespostaLogin) {
     if (!dadosLogin.hasOwnProperty("id")) {
