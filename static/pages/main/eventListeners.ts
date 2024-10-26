@@ -1,4 +1,6 @@
-import { abrirCriadorColuna, abrirEditorTarefa, abrirCriadorTarefa } from "./dialogos.js";
+import { abrirCriadorColuna } from "./dialogos/CriadorColuna.js";
+import { abrirCriadorTarefa } from "./dialogos/CriadorTarefa.js";
+import { abrirEditorTarefa } from "./dialogos/EditorTarefa.js";
 import { QuadroView } from "./quadro.js";
 
 export function adicionarEventListeners(quadroView: QuadroView) {
