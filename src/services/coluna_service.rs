@@ -59,7 +59,7 @@ pub async fn criar_nova_coluna(
     query!(
         "UPDATE kanban.colunas
         SET ordem_coluna = ordem_coluna + 1
-        WHERE ordem_coluna > $1
+        WHERE ordem_coluna >= $1
         AND pk_quadro = $2",
         ordem_coluna,
         pk_quadro
