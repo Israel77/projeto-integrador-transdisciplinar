@@ -24,7 +24,7 @@ export function abrirDialogoApagarColuna(quadroView: QuadroView,
         e.preventDefault();
         console.log(quadroView);
         try {
-            apagarColuna(idColuna);
+            await apagarColuna(idColuna);
             colunaContainer.removeChild(colunaDiv);
             if (quadroView.quadro) {
                 quadroView.quadro.colunas = quadroView.quadro.colunas.filter(
