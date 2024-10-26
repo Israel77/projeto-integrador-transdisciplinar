@@ -60,7 +60,7 @@ export function abrirCriadorColuna(e: MouseEvent, quadroView: QuadroView) {
         try {
             await criarNovaColuna(quadroView.idQuadro as string,
                 inputNomeColuna.value,
-                inputInserirApos.checked ? parseInt(seletorInserirApos.value) : 1);
+                inputInserirApos.checked ? parseInt(seletorInserirApos.value) + 1 : 1);
         } catch (error) {
             console.error("Erro ao atualizar tarefa:", error);
         } finally {
