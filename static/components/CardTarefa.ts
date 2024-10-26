@@ -13,10 +13,10 @@ export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivEleme
     // Inserção
     root.appendChild(tarefaDiv);
 
-    tarefaDiv.appendChild(botaoDeletar);
     tarefaDiv.appendChild(pTitulo);
     tarefaDiv.appendChild(pDescricao);
     tarefaDiv.appendChild(secaoTags);
+    tarefaDiv.appendChild(botaoDeletar);
 
     // Eventos
     tarefaDiv.addEventListener("dragstart", drag)
@@ -40,7 +40,7 @@ export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivEleme
     tarefaDiv.setAttribute("data-id-tarefa", tarefa.id);
 
     botaoDeletar.setAttribute("data-id-tarefa", tarefa.id);
-    botaoDeletar.innerText = "X";
+    botaoDeletar.innerText = "Apagar tarefa";
     pTitulo.innerText = tarefa.titulo;
     pDescricao.innerText = tarefa.descricao;
     for (let tag of tarefa.tags) {
