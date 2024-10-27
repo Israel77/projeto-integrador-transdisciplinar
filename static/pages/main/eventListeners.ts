@@ -122,7 +122,7 @@ function adicionarEventListenersBotaoDeletarColuna(quadroView: QuadroView) {
 
             if (nomeColuna === undefined) return;
 
-            abrirDialogoApagarColuna(quadroView, colunaContainer, colunaDiv, idColuna, nomeColuna);
+            abrirDialogoApagarColuna(quadroView, idColuna, nomeColuna);
         });
     }
 }

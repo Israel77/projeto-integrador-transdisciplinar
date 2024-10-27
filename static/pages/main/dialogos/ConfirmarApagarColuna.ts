@@ -1,9 +1,7 @@
 import { apagarColuna } from "../../../services/apagarColuna.js";
-import { QuadroView } from "../quadro.js";
+import { atualizarView, QuadroView } from "../quadro.js";
 
 export function abrirDialogoApagarColuna(quadroView: QuadroView,
-    colunaContainer: HTMLElement,
-    colunaDiv: HTMLElement,
     idColuna: string,
     nomeColuna: string) {
 
@@ -25,11 +23,27 @@ export function abrirDialogoApagarColuna(quadroView: QuadroView,
         console.log(quadroView);
         try {
             await apagarColuna(idColuna);
-            colunaContainer.removeChild(colunaDiv);
+
+            // Insere as tarefas na primeira coluna do quadro
             if (quadroView.quadro) {
-                quadroView.quadro.colunas = quadroView.quadro.colunas.filter(
-                    coluna => coluna.idColuna != idColuna
-                )
+                const colunaIndex = quadroView.quadro
+                    .colunas
+                    .findIndex(coluna => coluna.idColuna == idColuna);
+                const tarefas = quadroView.quadro.colunas[colunaIndex].tarefas;
+
+                let tarefa = tarefas?.pop();
+                while (tarefa !== undefined) {
+                    tarefa &&
+                        // Se a coluna a ser removida for a primeira, inserir
+                        // tarefas na segunda coluna
+                        quadroView.quadro.colunas[colunaIndex !== 0 ? 0 : 1]
+                            .tarefas
+                            .push(tarefa);
+
+                    tarefa = tarefas?.pop();
+                }
+                quadroView.quadro.colunas.splice(colunaIndex, 1);
+                atualizarView(quadroView);
             }
         } catch (error) {
             console.error("Erro ao apagar a tarefa:", error);

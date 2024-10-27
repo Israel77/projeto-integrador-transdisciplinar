@@ -128,5 +128,19 @@ pub async fn deletar_coluna(
     .execute(pool)
     .await?;
 
+    // Retorna todas as tarefas para a primeira coluna
+    query!(
+        "
+        UPDATE kanban.tarefas t
+        SET pk_coluna = (
+            SELECT pk_coluna FROM kanban.colunas c
+            WHERE ordem_coluna = (SELECT MIN(ordem_coluna) FROM kanban.colunas
+            WHERE id_usuario = t.id_usuario))
+        WHERE t.pk_coluna IS NULL;
+        "
+    )
+    .execute(pool)
+    .await?;
+
     Ok(())
 }

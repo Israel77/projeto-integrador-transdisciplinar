@@ -68,6 +68,20 @@ export function recarregarQuadro(quadroView: QuadroView) {
     carregarDadosQuadro(quadroView);
 }
 
+export function atualizarView(quadroView: QuadroView) {
+
+    if (quadroView.quadroDiv !== undefined) {
+        while (quadroView.quadroDiv.firstChild) {
+            quadroView.quadroDiv.removeChild(quadroView.quadroDiv.firstChild);
+        }
+    }
+
+    const quadro = quadroView.quadro as Quadro;
+    quadroView.quadroDiv = document.getElementById("quadro-kanban") as HTMLDivElement;
+    preencherQuadro(quadroView.quadroDiv, quadro);
+    adicionarEventListeners(quadroView);
+}
+
 export function preencherHeader(dadosLogin: verificarLoginService.RespostaLogin) {
     const headerDiv = document.getElementById("quadro-header") as HTMLDivElement;
 
