@@ -69,3 +69,7 @@ button.bg-vermelho:hover {
     background-color: var(--blue);
     color: var(--white);
 }
+
+.hidden {
+    display: none;
+}

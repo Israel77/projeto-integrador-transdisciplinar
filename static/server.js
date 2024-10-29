@@ -27,6 +27,8 @@ app.use((req, res, next) => {
 
 app.use("/main", express.static(path.join(__dirname, "pages/main")));
 app.use("/login", express.static(path.join(__dirname, "pages/login")));
+app.use("/sign-up", express.static(path.join(__dirname, "pages/sign-up")));
+app.use("/criar-quadro", express.static(path.join(__dirname, "pages/criar-quadro")));
 app.use("/css", express.static(path.join(__dirname, "css")));
 app.use("/components", express.static(path.join(__dirname, "components")));
 app.use(express.static(__dirname));
