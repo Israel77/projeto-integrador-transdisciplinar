@@ -4,3 +4,18 @@
     padding: 2rem;
     outline: 1px solid var(--light-gray);
 }
+
+.lista-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding-block: .3em;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: .2em;
+}

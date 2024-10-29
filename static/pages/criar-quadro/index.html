@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <script src="main.js" type="module" defer></script>
     <div id="criar-quadro">
         <h1>Vamos criar seu primeiro quadro kanban</h1>
         <form action="submit" method="post" id="formulario-criar-quadro" class="vertical-form">
@@ -18,7 +19,9 @@
             <input type="text" id="titulo-quadro">
             <label for="descricao-quadro">Descrição do quadro</label>
             <textarea id="descricao-quadro"></textarea>
-            <div id="criar-colunas"></div>
+            <h2>Colunas</h2>
+            <div id="criar-colunas">
+            </div>
             <button type="submit" id="botao-criar-quadro">Criar quadro</button>
         </form>
     </div>

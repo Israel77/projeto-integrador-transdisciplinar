@@ -3,6 +3,6 @@
         "noImplicitAny": true,
         "strictNullChecks": true,
         "target": "ES2022",
-        "module": "ES2022"
+        "module": "ESNext",
     }
 }

@@ -3,7 +3,8 @@
     --lighter-gray: #F3F4F4;
     --dark-gray: #5A5A65;
     --light-gray: #E1E4E8;
-    --green: #59F28D;
+    --green: #3EBB6B;
+    --light-green: #59F28D;
     --blue: #067FEF;
     --light-blue: #0099FF;
     --red: #d81414;
@@ -30,6 +31,11 @@ button:hover {
     cursor: pointer;
 }
 
+button:disabled {
+    background-color: var(--dark-gray);
+    cursor: auto;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -54,6 +60,15 @@ form button {
 
 button.bg-vermelho:hover {
     background-color: var(--light-red);
+}
+
+.bg-verde {
+    background-color: var(--green);
+    color: var(--white);
+}
+
+button.bg-verde:hover {
+    background-color: var(--light-green);
 }
 
 .ghost-button {
