@@ -1,8 +1,7 @@
 use std::sync::Arc;
 
-use futures::join;
 use serde::{Deserialize, Serialize};
-use sqlx::{query, query_as, types::Uuid};
+use sqlx::{query_as, types::Uuid};
 
 use crate::{errors::error::ListaErros, persistence::models};
 
@@ -55,33 +54,16 @@ pub async fn consultar_quadro_por_id(
     id_quadro: &str,
     id_usuario: &str,
 ) -> Result<QuadroDTO, ListaErros> {
-    struct PkUsuario {
-        pk_usuario: i32,
-    }
+    let quadro_model = query_as!(
+        models::quadro::Quadro,
+        "SELECT * FROM kanban.quadros WHERE id_quadro=$1",
+        Uuid::parse_str(id_quadro).unwrap()
+    )
+    .fetch_one(pool)
+    .await?;
 
-    // TODO: Substituir por uma consulta com JOIN
-    let (quadro_model, id_usuario) = join!(
-        query_as!(
-            models::quadro::Quadro,
-            "SELECT * FROM kanban.quadros WHERE id_quadro=$1",
-            Uuid::parse_str(id_quadro).unwrap()
-        )
-        .fetch_one(pool),
-        query_as!(
-            PkUsuario,
-            "SELECT pk_usuario FROM kanban.usuarios WHERE id_usuario=$1",
-            Uuid::parse_str(id_usuario).unwrap()
-        )
-        .fetch_one(pool)
-    );
-
-    let quadro_model = quadro_model?;
-    let id_usuario = id_usuario?;
-
-    if quadro_model.pk_usuario.to_string() != id_usuario.pk_usuario.to_string() {
-        return Err(ListaErros::ErroUsuarioNaoAutorizado(
-            id_usuario.pk_usuario.to_string(),
-        ));
+    if quadro_model.id_usuario.to_string() != id_usuario {
+        return Err(ListaErros::ErroUsuarioNaoAutorizado(id_usuario.to_string()));
     }
 
     let colunas_models = query_as!(
@@ -135,7 +117,7 @@ pub async fn consultar_ids_quadros_usuario(
 
     query_as!(
         QuadroId,
-        "SELECT id_quadro FROM kanban.quadros WHERE pk_usuario IN (SELECT pk_usuario FROM kanban.usuarios WHERE id_usuario=$1)",
+        "SELECT id_quadro FROM kanban.quadros WHERE id_usuario=$1",
         Uuid::parse_str(id_usuario).unwrap(),
     )
     .fetch_all(pool)
@@ -148,28 +130,10 @@ pub async fn consultar_ids_quadros_usuario(
     })?
 }
 
-pub async fn verificar_quadro_pertence_ao_usuario(
+pub async fn criar_novo_quadro(
     pool: &sqlx::PgPool,
-    id_quadro: &str,
-    id_usuario: &str,
-) -> Result<(), ListaErros> {
-    let consulta = query!(
-        "SELECT q.pk_usuario
-        FROM kanban.quadros q
-        INNER JOIN kanban.usuarios u
-        ON q.pk_usuario = u.pk_usuario
-        WHERE
-        id_quadro=$1 AND
-        u.id_usuario=$2;",
-        Uuid::parse_str(id_quadro).unwrap(),
-        Uuid::parse_str(id_usuario).unwrap(),
-    )
-    .fetch_optional(pool)
-    .await?;
-
-    consulta
-        .map(|_| ())
-        .ok_or(ListaErros::ErroUsuarioNaoAutorizado(
-            Uuid::parse_str(id_usuario).unwrap().to_string(),
-        ))
+    id_usuario: &Uuid,
+    titulo_quadro: &str,
+    descricao_quadro: &str,
+) {
 }

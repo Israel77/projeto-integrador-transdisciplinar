@@ -6,7 +6,6 @@ use sqlx::types::{time::PrimitiveDateTime, Uuid};
 pub struct Quadro {
     pub pk_quadro: i32,
     pub id_quadro: Uuid,
-    pub pk_usuario: i32,
     pub id_usuario: Uuid,
     pub titulo_quadro: Arc<str>,
     pub descricao_quadro: Option<String>,

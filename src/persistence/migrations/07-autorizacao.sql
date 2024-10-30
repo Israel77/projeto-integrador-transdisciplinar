@@ -12,7 +12,7 @@ FROM kanban.usuarios u
 WHERE q.pk_usuario = u.pk_usuario;
 
 ALTER TABLE kanban.quadros ALTER COLUMN id_usuario SET NOT NULL;
--- TODO: Remover coluna de pk_usuario
+ALTER TABLE kanban.quadros DROP COLUMN pk_usuario;
 -- Colunas
 ALTER TABLE kanban.colunas
 ADD COLUMN id_usuario uuid

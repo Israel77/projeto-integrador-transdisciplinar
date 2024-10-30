@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS KANBAN.estados (
     quadro_id INT NOT NULL,
     nome_estado VARCHAR(50) NOT NULL,
     ordem INT NOT NULL,  -- Coluna para indicar a ordem do estado
-    UNIQUE (quadro_id, ordem),  -- Garante que a ordem seja única dentro de cada quadro
     FOREIGN KEY (quadro_id) REFERENCES KANBAN.quadros(id) ON DELETE CASCADE
 );
 
