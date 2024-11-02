@@ -53,6 +53,7 @@ async fn main() -> std::io::Result<()> {
             .service(
                 scope("/api/v1")
                     .service(routes::quadro::retornar_quadros)
+                    .service(routes::quadro::criar_quadro)
                     .service(routes::tarefas::atualizar_tarefa)
                     .service(routes::tarefas::atualizar_coluna_tarefa)
                     .service(routes::tarefas::atualizar_descricao_tarefa)

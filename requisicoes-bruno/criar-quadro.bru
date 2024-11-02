@@ -1,0 +1,35 @@
+meta {
+  name: criar-quadro
+  type: http
+  seq: 14
+}
+
+put {
+  url: http://localhost:8080/api/v1/quadro/criar
+  body: json
+  auth: none
+}
+
+headers {
+  ~Cookie: id=YhHLPGhb4qJQGBRKwRFvQJAJV1+4yJAUNuDlh1iDd2lNsuPPFS4DuDu8lF2aVS96zwzcHaBx80i13bTn%2FJbPfs1hOeabqlYlBqwbD8AyexR5YIL%2FLHo58gxEOaA%3D
+}
+
+body:json {
+  {
+    "tituloQuadro": "Quadro teste 1234",
+    "descricaoQuadro": "Teste criacao via API",
+    "nomesColunas": [
+      "Backlog",
+      "Em andamento",
+      "Concluída"
+    ]
+  }
+}
+
+script:pre-request {
+  const cookie = bru.getVar("cookie");
+  
+  if(cookie) {
+    req.setHeader("Cookie", cookie.split(";")[0])
+  }
+}

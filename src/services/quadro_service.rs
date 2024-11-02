@@ -1,7 +1,8 @@
 use std::sync::Arc;
 
+use futures::future::join_all;
 use serde::{Deserialize, Serialize};
-use sqlx::{query_as, types::Uuid};
+use sqlx::{query, query_as, types::Uuid};
 
 use crate::{errors::error::ListaErros, persistence::models};
 
@@ -135,5 +136,41 @@ pub async fn criar_novo_quadro(
     id_usuario: &Uuid,
     titulo_quadro: &str,
     descricao_quadro: &str,
-) {
+    nomes_colunas: Vec<&str>,
+) -> Result<Uuid, ListaErros> {
+    let novo_quadro = query!(
+        "
+        INSERT INTO kanban.quadros (id_usuario, titulo_quadro, descricao_quadro)
+        VALUES ($1, $2, $3)
+        RETURNING pk_quadro, id_quadro
+    ",
+        id_usuario,
+        titulo_quadro,
+        descricao_quadro
+    )
+    .fetch_one(pool)
+    .await?;
+
+    let (pk_quadro, id_quadro) = (novo_quadro.pk_quadro, novo_quadro.id_quadro);
+
+    let mut inserir_colunas = Vec::new();
+
+    for (index, nome_coluna) in nomes_colunas.iter().enumerate() {
+        inserir_colunas.push(
+            query!(
+                "INSERT INTO kanban.colunas (nome_coluna, ordem_coluna, pk_quadro, id_usuario)
+                VALUES ($1, $2, $3, $4)",
+                nome_coluna,
+                (index as i32) + 1,
+                pk_quadro,
+                id_usuario
+            )
+            .execute(pool),
+        );
+    }
+
+    // TODO: Verificar casos de erros na geração das colunas
+    join_all(inserir_colunas).await;
+
+    Ok(id_quadro)
 }
