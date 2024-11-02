@@ -1,7 +1,8 @@
-use std::{net::IpAddr, str::FromStr};
+use std::{net::IpAddr, str::FromStr, sync::Arc};
 
 use actix_session::Session;
 use actix_web::{get, post, web, HttpRequest, HttpResponse, Responder};
+use futures::join;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use sqlx::{query, types::Uuid, PgPool};
@@ -24,10 +25,10 @@ pub struct RequisicaoLogin {
 #[derive(Serialize, Deserialize)]
 pub struct RequisicaoRegistro {
     #[serde(rename = "nomeUsuario")]
-    pub nome_usuario: String,
+    pub nome_usuario: Arc<str>,
     #[serde(rename = "emailUsuario")]
-    pub email_usuario: String,
-    pub senha: String,
+    pub email_usuario: Arc<str>,
+    pub senha: Arc<str>,
 }
 
 #[post("/login")]
@@ -58,11 +59,48 @@ pub async fn sign_up(
     req: HttpRequest,
     body: web::Json<RequisicaoRegistro>,
     pool: web::Data<sqlx::PgPool>,
+    session: Session,
 ) -> impl Responder {
+    const COMPRIMENTO_MIN_SENHA: usize = 8;
+    const COST: u32 = bcrypt::DEFAULT_COST;
+
+    if body.senha.len() < COMPRIMENTO_MIN_SENHA {
+        return ListaErros::ErroSenhaCurta.as_response();
+    }
+
+    let (buscar_usuario, buscar_email) = join!(
+        sqlx::query!(
+            "SELECT * FROM kanban.usuarios WHERE nome_usuario = $1",
+            body.nome_usuario.clone().to_string()
+        )
+        .fetch_one(pool.get_ref()),
+        sqlx::query!(
+            "SELECT * FROM kanban.usuarios WHERE email_usuario = $1",
+            body.email_usuario.clone().to_string()
+        )
+        .fetch_one(pool.get_ref())
+    );
+
+    if buscar_usuario.is_ok() {
+        return ListaErros::ErroUsuarioJaExistente(body.nome_usuario.clone().to_string())
+            .as_response();
+    }
+
+    if buscar_email.is_ok() {
+        return ListaErros::ErroEmailJaExistente(body.email_usuario.clone().to_string())
+            .as_response();
+    }
+
+    let senha_hash = bcrypt::hash(body.senha.clone().as_ref(), COST);
+    if senha_hash.is_err() {
+        return ListaErros::ErroInterno.as_response();
+    }
+
+    let senha_hash = senha_hash.unwrap();
     registrar_usuario_service(
-        body.nome_usuario.clone(),
-        body.email_usuario.clone(),
-        body.senha.clone(),
+        body.nome_usuario.clone().as_ref(),
+        body.email_usuario.clone().as_ref(),
+        senha_hash.as_ref(),
         req.connection_info()
             .realip_remote_addr()
             .map(|ip_str| IpAddr::from_str(ip_str).ok())
@@ -70,7 +108,14 @@ pub async fn sign_up(
         pool.get_ref(),
     )
     .await
-    .map(|result| HttpResponse::Ok().json(result))
+    .map(|id_usuario| {
+        session
+            .insert("id_usuario", id_usuario.to_string())
+            .unwrap();
+        return HttpResponse::Ok().json(json!({
+            "idUsuario": id_usuario.to_string(),
+        }));
+    })
     .unwrap_or_else(|err| err.as_response())
 }
 
