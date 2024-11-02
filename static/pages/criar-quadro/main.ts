@@ -1,6 +1,9 @@
+import { criarNovoQuadro } from "../../services/criarNovoQuadro.js";
 import { renderizarLista } from "./ListaColunas.js";
 
 (() => {
+    const tituloQuadroInput = document.getElementById("titulo-quadro") as HTMLInputElement;
+    const descricaoQuadroInput = document.getElementById("descricao-quadro") as HTMLTextAreaElement;
     const listaColunas = [
         {
             nomeColuna: "Backlog",
@@ -25,6 +28,13 @@ import { renderizarLista } from "./ListaColunas.js";
     }
 
     const formCriarQuadro = document.getElementById("formulario-criar-quadro");
-    formCriarQuadro?.addEventListener("click", (e: MouseEvent) => e.preventDefault());
+    formCriarQuadro?.addEventListener("submit", (e: MouseEvent) => {
+        e.preventDefault()
 
+        criarNovoQuadro(tituloQuadroInput.value, descricaoQuadroInput.value, listaColunas.map(coluna => coluna.nomeColuna)).then(resposta => {
+            if (resposta.ok) {
+                window.location.href = `/main`;
+            }
+        });
+    });
 })()
