@@ -88,3 +88,19 @@ button.bg-verde:hover {
 .hidden {
     display: none;
 }
+
+.vertical-form {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: .7rem;
+    gap: .5em;
+}
+
+.form-container {
+    margin-top: 1rem;
+    margin-inline: auto;
+    max-width: min(30rem, 100vw);
+    padding: 1rem 1rem;
+    outline: 1px solid var(--light-gray);
+}

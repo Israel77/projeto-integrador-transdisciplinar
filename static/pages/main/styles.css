@@ -100,12 +100,6 @@
     border-radius: 1em;
 }
 
-.vertical-form {
-    display: flex;
-    flex-direction: column;
-    padding: .7rem;
-    gap: .5em;
-}
 
 .botoes-container {
     display: flex;

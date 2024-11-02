@@ -1,6 +1,10 @@
-#sign-up {
+/* #sign-up {
     margin: auto;
     max-width: min(30rem, 100vw);
     padding: 2rem;
     outline: 1px solid var(--light-gray);
+} */
+
+.erro {
+    color: var(--red);
 }

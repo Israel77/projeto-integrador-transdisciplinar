@@ -11,26 +11,29 @@
 </head>
 
 <body>
-    <script src="main.js" type="module" defer></script>
-    <div id="sign-up">
+    <div id="sign-up" class="form-container">
         <h1>Criar nova conta</h1>
         <form action="submit" method="post" id="formulario-criar-conta" class="vertical-form">
             <label for="nome-usuario">Nome de usuário</label>
             <input type="text" id="nome-usuario">
+            <p id="msg-nome-usuario" class="erro">
+                Nome de usuário inválido.
+            </p>
             <label for="email">Email</label>
             <input type="text" id="email">
+            <p id="msg-email" class="hidden erro">
+            </p>
             <label for="senha">Senha</label>
             <input type="password" name="senha" id="senha">
-            <p id="indicador-forca-senha" class="hidden"></p>
+            <p id="msg-senha" class="hidden erro"></p>
             <label for="confirmar-senha">Confirme sua senha</label>
             <input type="password" name="confirmar-senha" id="confirmar-senha">
-            <p id="indicador-senhas-diferentes" class="hidden">
-                As senhas não coincidem.
-            </p>
-            <button type="submit" id="botao-criar-conta">Criar conta</button>
+            <p id="msg-verificador-senha" class="hidden erro"></p>
+            <button type="submit" id="botao-criar-conta" disabled>Criar conta</button>
             <a href="/">Voltar</a>
         </form>
     </div>
+    <script src="main.js" type="module" defer></script>
 </body>
 
 
