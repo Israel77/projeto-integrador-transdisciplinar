@@ -109,3 +109,11 @@ button.bg-verde:hover {
     padding: 1rem 1rem;
     outline: 1px solid var(--light-gray);
 }
+
+.mensagem-erro {
+    display: flex;
+    align-items: center;
+    padding: .5em;
+    border-radius: .4rem;
+    margin-top: 1rem;
+}
