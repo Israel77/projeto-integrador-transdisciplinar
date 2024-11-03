@@ -49,6 +49,11 @@ input {
     border: 1px solid var(--dark-gray);
 }
 
+a {
+    color: var(--blue);
+    text-decoration: none;
+}
+
 form button {
     font-size: 1.2rem;
 }
