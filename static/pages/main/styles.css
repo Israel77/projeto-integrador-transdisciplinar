@@ -5,7 +5,10 @@
     overflow: scroll;
 }
 
-#quadro-kanban>h1,
+#quadro-kanban>*:not(button) {
+    padding-inline-start: 1rem;
+}
+
 #quadro-kanban>button {
     margin-inline-start: 1rem;
 }
@@ -19,7 +22,6 @@
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 4rem;
-    padding-inline-start: 1rem;
     width: fit-content;
 }
 
