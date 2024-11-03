@@ -1,14 +1,3 @@
-# --- Typescript build ---
-# Compile the static files
-FROM node:18-alpine as typescript
-
-WORKDIR /usr/src/projeto-integrador-transdisciplinar/static
-
-COPY ./static .
-
-RUN npm install -g typescript
-
-RUN tsc main.ts --target ES2022
 # ----------
 # --- Rust build ---
 # Use the official Rust image as the base image
@@ -35,9 +24,6 @@ RUN cargo build --release
 # --- Final image ---
 # Use a smaller base image for the final image
 FROM debian:bookworm-slim
-
-# Copy static files
-COPY --from=typescript /usr/src/projeto-integrador-transdisciplinar/static/ /usr/local/static
 
 # Copy the compiled binary from the builder stage
 RUN apt update && apt install -y \ 

@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 
 const app = express();
-const port = process.env.PORT || 6969;
+const port = process.env.FRONTEND_PORT || 6969;
 
 // Custom MIME types
 const customMimeTypes = {

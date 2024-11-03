@@ -1,11 +1,32 @@
 services:
-  web:
+  backend:
     build: .
+    env_file: .env_docker
     ports:
-    - "8080:8080"
-    env_file: .env
+    - "8081:8080"
+    depends_on:
+    - redis
+  frontend:
+    build: ./static
+    ports:
+    - "6969:6969"
+    environment:
+      BACKEND_URL: "http://localhost:8089"
+    depends_on:
+    - backend
+    - nginx
   redis:
-    image: redis:alpine
+    image: redis:latest
     ports:
     - "6379:6379"
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+    - "8089:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+    - backend
   
