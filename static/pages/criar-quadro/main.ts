@@ -1,9 +1,16 @@
 import { criarNovoQuadro } from "../../services/criarNovoQuadro.js";
+import { fazerLogout } from "../../services/fazerLogout.js";
 import { renderizarLista } from "./ListaColunas.js";
 
 (() => {
+    renderizarFormulario();
+    handleLinkVoltar();
+})()
+
+function renderizarFormulario() {
     const tituloQuadroInput = document.getElementById("titulo-quadro") as HTMLInputElement;
     const descricaoQuadroInput = document.getElementById("descricao-quadro") as HTMLTextAreaElement;
+
     const listaColunas = [
         {
             nomeColuna: "Backlog",
@@ -37,4 +44,14 @@ import { renderizarLista } from "./ListaColunas.js";
             }
         });
     });
-})()
+}
+
+function handleLinkVoltar() {
+    const linkVoltarInicio = document.getElementById("link-voltar");
+
+    linkVoltarInicio?.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await fazerLogout();
+        window.location.href = "/";
+    });
+}
