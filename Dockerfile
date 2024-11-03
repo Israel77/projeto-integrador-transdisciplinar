@@ -1,4 +1,3 @@
-# ----------
 # --- Rust build ---
 # Use the official Rust image as the base image
 FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
@@ -22,7 +21,6 @@ RUN cargo build --release
 # ----------
 
 # --- Final image ---
-# Use a smaller base image for the final image
 FROM debian:bookworm-slim
 
 # Copy the compiled binary from the builder stage
@@ -37,4 +35,3 @@ EXPOSE 8080
 WORKDIR /usr/local/
 # Set the command to run the binary
 CMD ["projeto-integrador-transdisciplinar"]
-# CMD ["bash"]
