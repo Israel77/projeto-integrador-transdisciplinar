@@ -1,5 +1,5 @@
-import { apagarColuna } from "../../../services/apagarColuna.js";
-import { atualizarView, QuadroView } from "../quadro.js";
+import { apagarColuna } from "/services/apagarColuna.js";
+import { atualizarView, QuadroView } from "/main/quadro.js";
 
 export function abrirDialogoApagarColuna(quadroView: QuadroView,
     idColuna: string,

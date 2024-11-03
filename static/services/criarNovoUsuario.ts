@@ -1,4 +1,4 @@
-import { appConfig } from "../config.js";
+import { appConfig } from "/config.js";
 
 export async function criarNovoUsuario(nomeUsuario: string, emailUsuario: string, senha: string) {
     return await fetch(`${appConfig.baseApiUrl}/api/v1/sign-up`, {

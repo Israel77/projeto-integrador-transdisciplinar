@@ -1,5 +1,5 @@
-import { appConfig } from "../config.js";
-import type { Tag } from "../types/types";
+import { appConfig } from "/config.js";
+import type { Tag } from "/types/types";
 
 export async function editarTarefa(idTarefa: string | undefined, idColuna: string, titulo: string, descricao: string, tags?: Tag[]) {
     await fetch(`${appConfig.baseApiUrl}/api/v1/tarefa/atualizar`, {

@@ -1,4 +1,4 @@
-import { appConfig } from "../config.js";
+import { appConfig } from "/config.js";
 
 export async function mudarNomeColuna(idColuna: string, novoNome: string) {
     fetch(`${appConfig.baseApiUrl}/api/v1/coluna/atualizar/nome`, {

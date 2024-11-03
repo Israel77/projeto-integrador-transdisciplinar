@@ -1,5 +1,5 @@
-import { deletarTarefa } from "../../../services/deletarTarefa.js";
-import { QuadroView } from "../quadro";
+import { deletarTarefa } from "/services/deletarTarefa.js";
+import { type QuadroView } from "/main/quadro";
 
 export function abrirDialogoApagarTarefa(quadroView: QuadroView,
     colunaDiv: HTMLElement,

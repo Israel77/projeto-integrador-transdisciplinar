@@ -1,4 +1,4 @@
-import { appConfig } from "../config.js";
+import { appConfig } from "/config.js";
 
 export async function apagarColuna(idColuna: string) {
     return await fetch(`${appConfig.baseApiUrl}/api/v1/coluna/apagar`, {

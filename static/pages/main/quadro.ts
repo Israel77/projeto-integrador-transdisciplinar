@@ -1,10 +1,10 @@
-import type { MensagemErro, Quadro } from "../../types/types";
+import type { MensagemErro, Quadro } from "/types/types";
 
-import { preencherQuadro } from "../../components/QuadroKanban.js";
-import { appConfig } from "../../config.js";
-import { adicionarEventListeners } from "./eventListeners.js";
-import * as fazerLogoutService from "../../services/fazerLogout.js";
-import * as verificarLoginService from "../../services/verificarLogin.js";
+import { preencherQuadro } from "/components/QuadroKanban.js";
+import { appConfig } from "/config.js";
+import { adicionarEventListeners } from "/main/eventListeners.js";
+import * as fazerLogoutService from "/services/fazerLogout.js";
+import * as verificarLoginService from "/services/verificarLogin.js";
 
 export type QuadroView = {
     quadroDiv?: HTMLDivElement;

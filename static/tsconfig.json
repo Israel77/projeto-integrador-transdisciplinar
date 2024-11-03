@@ -4,5 +4,11 @@
         "strictNullChecks": true,
         "target": "ES2022",
         "module": "ESNext",
+        "paths": {
+            "/*": [
+                "./*",
+                "./pages/*"
+            ]
+        },
     }
 }

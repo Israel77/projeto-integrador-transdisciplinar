@@ -1,4 +1,4 @@
-import { appConfig } from "../config.js";
+import { appConfig } from "/config.js";
 import type { MensagemErro, Tarefa } from "../types/types";
 
 export const buscarDadosTarefa = async (idTarefa: string) => {

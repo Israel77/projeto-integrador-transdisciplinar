@@ -1,6 +1,6 @@
-import { renderizarErro } from "../../components/Erro.js";
-import { appConfig } from "../../config.js";
-import { RequisicaoLogin } from "../../types/types";
+import { renderizarErro } from "/components/Erro.js";
+import { appConfig } from "/config.js";
+import { RequisicaoLogin } from "/types/types";
 
 (() => {
     const htmlBody: HTMLElement = document.getElementsByTagName('body')[0] as HTMLElement;

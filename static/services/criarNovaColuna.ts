@@ -1,4 +1,4 @@
-import { appConfig } from "../config.js";
+import { appConfig } from "/config.js";
 
 export async function criarNovaColuna(idQuadro: string, nomeColuna: string, ordemColuna: number) {
     return await fetch(`${appConfig.baseApiUrl}/api/v1/coluna/criar`, {

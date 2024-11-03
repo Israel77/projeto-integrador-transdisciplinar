@@ -1,7 +1,7 @@
-import { Tarefa } from "../../../types/types";
-import { QuadroView, recarregarQuadro } from "../quadro.js";
-import * as editarTarefaService from "../../../services/editarTarefa.js";
-import * as buscarDadosTarefaService from "../../../services/buscarDadosTarefa.js";
+import { type Tarefa } from "/types/types";
+import { QuadroView, recarregarQuadro } from "/main/quadro.js";
+import * as editarTarefaService from "/services/editarTarefa.js";
+import * as buscarDadosTarefaService from "/services/buscarDadosTarefa.js";
 
 export async function abrirEditorTarefa(e: Event, quadroView: QuadroView) {
     const dialogo = document.getElementById("modal") as HTMLDialogElement;

@@ -1,5 +1,5 @@
-import { appConfig } from "../config.js";
-import type { MensagemErro } from "../types/types.d.ts";
+import { appConfig } from "/config.js";
+import type { MensagemErro } from "/types/types.d.ts";
 
 export type RespostaLogin = {
     id: string;

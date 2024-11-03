@@ -1,4 +1,4 @@
-import { criarNovoUsuario } from "../../services/criarNovoUsuario.js";
+import { criarNovoUsuario } from "/services/criarNovoUsuario.js";
 
 (() => {
     const nomeUsuarioInput: HTMLInputElement = document.getElementById('nome-usuario') as HTMLInputElement;

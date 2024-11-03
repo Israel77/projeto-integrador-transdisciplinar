@@ -1,4 +1,4 @@
-import { verificarLogin } from "./services/verificarLogin.js"
+import { verificarLogin } from "/services/verificarLogin.js"
 
 (async () => {
     if ((await verificarLogin()).hasOwnProperty("id")) {
