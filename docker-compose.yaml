@@ -11,7 +11,9 @@ services:
     ports:
     - "6969:6969"
     environment:
-      BACKEND_URL: "http://localhost:8089"
+      BACKEND_URL: "http://nginx:80"
+      # URL_PREFIX: "http://localhost:8089/kanban"
+      # IMPORT_PREFIX: "kanban"
     depends_on:
     - backend
   redis:

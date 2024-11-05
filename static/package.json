@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "init": "node init.js",
-        "start": "node init.js && node server.js",
+        "docker-start": "git reset --hard $(cat hash) && node init.js && node server.js",
         "compile": "tsc",
         "compile-watch": "tsc --watch"
     },

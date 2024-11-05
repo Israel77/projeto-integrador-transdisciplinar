@@ -21,7 +21,6 @@ import { RequisicaoLogin } from "/types/types";
         fetch(`${appConfig.baseApiUrl}/api/v1/login`, {
             method: 'POST',
             credentials: 'include',
-            mode: 'cors',
             body: JSON.stringify(requisicao),
             headers: {
                 'Content-Type': 'application/json'

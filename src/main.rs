@@ -41,7 +41,10 @@ async fn main() -> std::io::Result<()> {
         .expect(format!("Erro ao conectar ao Redis: {}", redis_url).as_str());
 
     HttpServer::new(move || {
-        let cors = Cors::permissive().supports_credentials();
+        let cors = Cors::default()
+            .allow_any_origin()
+            .allowed_headers(vec!["GET", "POST", "PUT", "DELETE"])
+            .supports_credentials();
 
         App::new()
             .app_data(web::Data::new(pool.clone()))
