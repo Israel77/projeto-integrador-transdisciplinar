@@ -1,6 +1,6 @@
 # --- Typescript build ---
 # Compile the static files
-FROM alpine
+FROM docker.io/library/alpine:3.20
 
 ENV NODE_VERSION=18.17.0
 

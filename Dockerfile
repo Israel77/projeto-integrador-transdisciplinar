@@ -1,6 +1,6 @@
 # --- Rust build ---
 # Use the official Rust image as the base image
-FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
+FROM docker.io/lukemathwalker/cargo-chef:latest-rust-1 AS chef
 
 # Set the working directory
 WORKDIR /usr/src/projeto-integrador-transdisciplinar
@@ -21,7 +21,7 @@ RUN cargo build --release
 # ----------
 
 # --- Final image ---
-FROM debian:bookworm-slim
+FROM docker.io/library/debian:bookworm-slim
 
 # Copy the compiled binary from the builder stage
 RUN apt update && apt install -y \ 
