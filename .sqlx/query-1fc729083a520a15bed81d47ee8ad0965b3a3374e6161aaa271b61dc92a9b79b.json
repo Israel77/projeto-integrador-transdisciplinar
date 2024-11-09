@@ -1,0 +1,52 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT * FROM kanban.colunas WHERE pk_quadro=$1 ORDER BY ordem_coluna",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "pk_coluna",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "pk_quadro",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "nome_coluna",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "ordem_coluna",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 4,
+        "name": "id_coluna",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 5,
+        "name": "id_usuario",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "1fc729083a520a15bed81d47ee8ad0965b3a3374e6161aaa271b61dc92a9b79b"
+}

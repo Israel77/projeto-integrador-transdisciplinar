@@ -1,0 +1,25 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO kanban.usuarios (nome_usuario, email_usuario, senha_hash_usuario, ip_criacao_usuario)\n         VALUES ($1, $2, $3, $4)\n         RETURNING id_usuario",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id_usuario",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Inet"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "4ad47226b704588598593c9dc80dcb688fae8d583756b0b808c8669cf0a1bb11"
+}

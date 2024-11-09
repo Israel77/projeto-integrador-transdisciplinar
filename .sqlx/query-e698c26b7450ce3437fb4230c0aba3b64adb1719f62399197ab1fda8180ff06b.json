@@ -1,0 +1,58 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT * FROM kanban.usuarios WHERE nome_usuario = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "pk_usuario",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "nome_usuario",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "email_usuario",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "senha_hash_usuario",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "data_criacao_usuario",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 5,
+        "name": "ip_criacao_usuario",
+        "type_info": "Inet"
+      },
+      {
+        "ordinal": 6,
+        "name": "id_usuario",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "hash": "e698c26b7450ce3437fb4230c0aba3b64adb1719f62399197ab1fda8180ff06b"
+}

@@ -1,0 +1,55 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO kanban.colunas (pk_quadro, nome_coluna, ordem_coluna, id_usuario)\n        SELECT q.pk_quadro, $2, $3, $4\n        FROM kanban.quadros q\n        WHERE q.id_quadro = $1\n        RETURNING *",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "pk_coluna",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "pk_quadro",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "nome_coluna",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "ordem_coluna",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 4,
+        "name": "id_coluna",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 5,
+        "name": "id_usuario",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Varchar",
+        "Int4",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "3f46024e53223a6d39e2b125d6e569511e682fcd8abcfdb15d8936b74ecdc78f"
+}

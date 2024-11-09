@@ -1,0 +1,58 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT * FROM kanban.tarefas WHERE pk_coluna=$1 ORDER BY pk_tarefa",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "pk_tarefa",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "titulo_tarefa",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "descricao_tarefa",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "data_criacao_tarefa",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 4,
+        "name": "pk_coluna",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "id_tarefa",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 6,
+        "name": "id_usuario",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "e389bbc31adc79e2901fd111d701c0605ad0f9d5757aef670089034781f66251"
+}

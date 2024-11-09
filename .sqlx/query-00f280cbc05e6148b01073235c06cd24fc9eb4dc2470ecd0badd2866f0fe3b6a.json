@@ -1,0 +1,40 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT * FROM kanban.tags WHERE pk_tag IN (SELECT pk_tag FROM kanban.tarefas_tags WHERE pk_tarefa=$1)",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "pk_tag",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "nome_tag",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "id_tag",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "id_usuario",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "00f280cbc05e6148b01073235c06cd24fc9eb4dc2470ecd0badd2866f0fe3b6a"
+}

@@ -1,0 +1,31 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO kanban.tarefas (titulo_tarefa, descricao_tarefa, pk_coluna, id_usuario)\n        VALUES ($1, $2, $3, $4) \n        RETURNING id_tarefa, pk_tarefa",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id_tarefa",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "pk_tarefa",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Text",
+        "Int4",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "958cac91fd0d418bdf0bf31413870cdc61bfe3844b49e31a4b56b647e81b99ef"
+}

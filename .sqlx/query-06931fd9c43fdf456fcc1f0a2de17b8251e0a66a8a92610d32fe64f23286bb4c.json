@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT id_quadro FROM kanban.quadros WHERE id_usuario=$1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id_quadro",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "06931fd9c43fdf456fcc1f0a2de17b8251e0a66a8a92610d32fe64f23286bb4c"
+}

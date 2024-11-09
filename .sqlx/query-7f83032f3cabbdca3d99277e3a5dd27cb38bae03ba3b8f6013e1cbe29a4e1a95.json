@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT pk_tarefa FROM kanban.tarefas WHERE id_tarefa=$1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "pk_tarefa",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "7f83032f3cabbdca3d99277e3a5dd27cb38bae03ba3b8f6013e1cbe29a4e1a95"
+}

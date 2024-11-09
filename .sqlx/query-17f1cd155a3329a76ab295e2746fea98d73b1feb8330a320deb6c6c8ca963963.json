@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE kanban.colunas\n        SET ordem_coluna = ordem_coluna - 1\n        WHERE ordem_coluna > $1\n        AND pk_quadro = $2\n        AND id_usuario = $3",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "17f1cd155a3329a76ab295e2746fea98d73b1feb8330a320deb6c6c8ca963963"
+}

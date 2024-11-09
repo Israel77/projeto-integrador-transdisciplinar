@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "DELETE FROM kanban.tarefas_tags WHERE pk_tarefa IN (SELECT pk_tarefa FROM kanban.tarefas WHERE id_tarefa=$1)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "9e84f1b375f96eed6c9c9b7103231569736dc6e9102c2af8a65c6e40e06870e1"
+}

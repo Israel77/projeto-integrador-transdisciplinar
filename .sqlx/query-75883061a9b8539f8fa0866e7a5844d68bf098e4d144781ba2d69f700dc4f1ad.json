@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO kanban.tarefas_tags (pk_tarefa, pk_tag) VALUES ($1, $2)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "75883061a9b8539f8fa0866e7a5844d68bf098e4d144781ba2d69f700dc4f1ad"
+}

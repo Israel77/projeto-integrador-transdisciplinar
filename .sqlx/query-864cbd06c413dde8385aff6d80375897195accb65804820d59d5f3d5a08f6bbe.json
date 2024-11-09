@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE kanban.tarefas t\n        SET pk_coluna = (\n            SELECT pk_coluna FROM kanban.colunas c\n            WHERE ordem_coluna = (SELECT MIN(ordem_coluna) FROM kanban.colunas\n            WHERE id_usuario = t.id_usuario))\n        WHERE t.pk_coluna IS NULL;\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "864cbd06c413dde8385aff6d80375897195accb65804820d59d5f3d5a08f6bbe"
+}

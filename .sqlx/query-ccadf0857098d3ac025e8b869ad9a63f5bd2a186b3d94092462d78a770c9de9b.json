@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "DELETE FROM kanban.colunas\n        WHERE id_coluna = $1\n        AND id_usuario = $2\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "ccadf0857098d3ac025e8b869ad9a63f5bd2a186b3d94092462d78a770c9de9b"
+}

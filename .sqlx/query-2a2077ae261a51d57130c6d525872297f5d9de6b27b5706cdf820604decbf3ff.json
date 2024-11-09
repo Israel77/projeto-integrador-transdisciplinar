@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE kanban.tarefas SET titulo_tarefa=$1 WHERE id_tarefa=$2",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "2a2077ae261a51d57130c6d525872297f5d9de6b27b5706cdf820604decbf3ff"
+}
