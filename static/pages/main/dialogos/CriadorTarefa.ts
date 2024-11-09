@@ -1,4 +1,4 @@
-import { QuadroView, recarregarQuadro } from "/main/quadro.js";
+import { QuadroView, recarregarQuadro } from "/pages/main/quadro.js";
 import * as criarTarefaService from "/services/criarTarefa.js";
 
 export function abrirCriadorTarefa(e: Event, quadroView: QuadroView) {

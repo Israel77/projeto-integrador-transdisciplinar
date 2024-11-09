@@ -91,6 +91,7 @@ function mudarColuna(novaColuna: HTMLElement, tarefa: Element) {
     fetch(`${appConfig.baseApiUrl}/api/v1/tarefa/atualizar/coluna`, {
         method: "PUT",
         credentials: "include",
+        mode: "cors",
         headers: {
             "Content-Type": "application/json"
         },

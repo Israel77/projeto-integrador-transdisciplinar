@@ -10,6 +10,7 @@ export async function mudarNomeColuna(idColuna: string, novoNome: string) {
         body: JSON.stringify({
             idColuna,
             novoNome
-        })
+        }),
+        mode: "cors",
     });
 }

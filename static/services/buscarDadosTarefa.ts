@@ -5,6 +5,7 @@ export const buscarDadosTarefa = async (idTarefa: string) => {
     const resposta = await fetch(`${appConfig.baseApiUrl}/api/v1/tarefa/${idTarefa}`, {
         method: "GET",
         credentials: "include",
+        mode: "cors",
         headers: {
             "Content-Type": "application/json"
         }

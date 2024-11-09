@@ -1,6 +1,6 @@
 import { criarNovoQuadro } from "/services/criarNovoQuadro.js";
 import { fazerLogout } from "/services/fazerLogout.js";
-import { renderizarLista } from "/criar-quadro/ListaColunas.js";
+import { renderizarLista } from "/pages/criar-quadro/ListaColunas.js";
 
 (() => {
     renderizarFormulario();

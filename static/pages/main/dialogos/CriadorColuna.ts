@@ -1,5 +1,5 @@
 import { criarNovaColuna } from "/services/criarNovaColuna.js";
-import { type QuadroView, recarregarQuadro } from "/main/quadro.js";
+import { type QuadroView, recarregarQuadro } from "/pages/main/quadro.js";
 
 export function abrirCriadorColuna(e: MouseEvent, quadroView: QuadroView) {
     const dialogo = document.getElementById("modal") as HTMLDialogElement;

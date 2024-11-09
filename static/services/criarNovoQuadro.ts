@@ -7,6 +7,7 @@ export async function criarNovoQuadro(tituloQuadro: string, descricaoQuadro: str
         headers: {
             "Content-Type": "application/json"
         },
+        mode: "cors",
         body: JSON.stringify({
             tituloQuadro,
             descricaoQuadro,

@@ -8,6 +8,7 @@ export async function editarTarefa(idTarefa: string | undefined, idColuna: strin
         headers: {
             "Content-Type": "application/json"
         },
+        mode: "cors",
         body: JSON.stringify({
             idTarefa,
             titulo,

@@ -7,6 +7,7 @@ export async function criarNovaColuna(idQuadro: string, nomeColuna: string, orde
         headers: {
             "Content-Type": "application/json"
         },
+        mode: "cors",
         body: JSON.stringify({
             idQuadro,
             ordemColuna,

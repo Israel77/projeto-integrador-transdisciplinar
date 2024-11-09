@@ -2,7 +2,7 @@ import type { MensagemErro, Quadro } from "/types/types";
 
 import { preencherQuadro } from "/components/QuadroKanban.js";
 import { appConfig } from "/config.js";
-import { adicionarEventListeners } from "/main/eventListeners.js";
+import { adicionarEventListeners } from "/pages/main/eventListeners.js";
 import * as fazerLogoutService from "/services/fazerLogout.js";
 import * as verificarLoginService from "/services/verificarLogin.js";
 
@@ -36,6 +36,7 @@ export function carregarDadosQuadro(quadroView: QuadroView) {
     fetch(`${appConfig.baseApiUrl}/api/v1/quadro/${quadroView.idQuadro}`, {
         method: "GET",
         credentials: "include",
+        mode: "cors",
         headers: {
             "Content-Type": "application/json"
         }

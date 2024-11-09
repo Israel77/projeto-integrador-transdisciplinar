@@ -1,5 +1,5 @@
 import { type Tarefa } from "/types/types";
-import { QuadroView, recarregarQuadro } from "/main/quadro.js";
+import { QuadroView, recarregarQuadro } from "/pages/main/quadro.js";
 import * as editarTarefaService from "/services/editarTarefa.js";
 import * as buscarDadosTarefaService from "/services/buscarDadosTarefa.js";
 

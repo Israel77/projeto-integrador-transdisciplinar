@@ -1,9 +1,9 @@
-import { abrirDialogoApagarColuna } from "/main/dialogos/ConfirmarApagarColuna.js";
-import { abrirDialogoApagarTarefa } from "/main/dialogos/ConfirmarApagarTarefa.js";
-import { abrirCriadorColuna } from "/main/dialogos/CriadorColuna.js";
-import { abrirCriadorTarefa } from "/main/dialogos/CriadorTarefa.js";
-import { abrirEditorTarefa } from "/main/dialogos/EditorTarefa.js";
-import { QuadroView } from "/main/quadro.js";
+import { abrirDialogoApagarColuna } from "/pages/main/dialogos/ConfirmarApagarColuna.js";
+import { abrirDialogoApagarTarefa } from "/pages/main/dialogos/ConfirmarApagarTarefa.js";
+import { abrirCriadorColuna } from "/pages/main/dialogos/CriadorColuna.js";
+import { abrirCriadorTarefa } from "/pages/main/dialogos/CriadorTarefa.js";
+import { abrirEditorTarefa } from "/pages/main/dialogos/EditorTarefa.js";
+import { QuadroView } from "/pages/main/quadro.js";
 
 export function adicionarEventListeners(quadroView: QuadroView) {
     // Colunas

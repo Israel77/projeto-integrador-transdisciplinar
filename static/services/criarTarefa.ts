@@ -7,6 +7,7 @@ export async function criarTarefa(titulo: string, descricao: string, idColuna: s
         headers: {
             "Content-Type": "application/json"
         },
+        mode: "cors",
         body: JSON.stringify({
             titulo,
             descricao,

@@ -7,6 +7,7 @@ export async function criarNovoUsuario(nomeUsuario: string, emailUsuario: string
         headers: {
             "Content-Type": "application/json"
         },
+        mode: "cors",
         body: JSON.stringify({
             nomeUsuario,
             emailUsuario,

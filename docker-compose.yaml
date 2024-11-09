@@ -1,3 +1,6 @@
+networks:
+  virtual_network:
+    driver: bridge
 services:
   backend:
     build: .
@@ -6,20 +9,26 @@ services:
     - "8081:8080"
     depends_on:
     - redis
+    networks:
+    - virtual_network
   frontend:
     build: ./static
     ports:
-    - "6969:6969"
+    - "3000:6969"
     environment:
-      BACKEND_URL: "http://nginx:80"
-      # URL_PREFIX: "http://localhost:8089/kanban"
+      BACKEND_URL: "http://localhost:8089/kanban"
+      URL_PREFIX: "/kanban"
       # IMPORT_PREFIX: "kanban"
     depends_on:
     - backend
+    networks:
+    - virtual_network
   redis:
     image: redis:latest
-    ports:
-    - "6379:6379"
+    # ports:
+    # - "6379:6379"
+    networks:
+    - virtual_network
   nginx:
     build: ./nginx
     restart: always
@@ -28,4 +37,6 @@ services:
     depends_on:
     - backend
     - frontend
+    networks:
+    - virtual_network
   

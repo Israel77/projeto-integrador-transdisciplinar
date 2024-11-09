@@ -21,6 +21,7 @@ COPY . .
 
 RUN npm ci
 
+ARG CACHEBUST=1
 RUN npm run compile
 
 RUN git config --global user.email "ci@example.com"

@@ -1,5 +1,5 @@
 import * as verificarLoginService from "/services/verificarLogin.js";
-import { inicializarQuadro, type QuadroView } from "/main/quadro.js";
+import { inicializarQuadro, type QuadroView } from "/pages/main/quadro.js";
 
 (async () => {
     let quadroView: QuadroView = {};

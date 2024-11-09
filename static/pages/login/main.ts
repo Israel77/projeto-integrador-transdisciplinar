@@ -1,6 +1,6 @@
 import { renderizarErro } from "/components/Erro.js";
-import { appConfig } from "/config.js";
-import { RequisicaoLogin } from "/types/types";
+import { fazerLogin } from "/services/fazerLogin.js";
+import { MensagemErro, RequisicaoLogin } from "/types/types";
 
 (() => {
     const htmlBody: HTMLElement = document.getElementsByTagName('body')[0] as HTMLElement;
@@ -18,23 +18,17 @@ import { RequisicaoLogin } from "/types/types";
             senha: senha.value
         };
 
-        fetch(`${appConfig.baseApiUrl}/api/v1/login`, {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify(requisicao),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        fazerLogin(requisicao)
             .then(resposta => {
                 if (resposta.ok) {
                     console.log("Login realizado com sucesso!");
                     window.location.href = '/main';
                 } else {
-                    resposta.json().then(resposta => {
-                        renderizarErro(htmlBody, resposta);
-                        console.error(resposta.message);
-                    });
+                    resposta.json()
+                        .then((body: MensagemErro) => {
+                            renderizarErro(htmlBody, body);
+                            console.error(body.message);
+                        });
                 }
             })
             .catch(erro => console.error(erro));

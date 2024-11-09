@@ -10,6 +10,7 @@ const urlPrefix = process.env.URL_PREFIX;
 const importPrefix = process.env.IMPORT_PREFIX;
 
 if (backendUrl) {
+    console.log(`Atualizando o arquivo de configuração com a URL do backend ${backendUrl}`);
     const configPath = path.join(__dirname, "config.js");
     const configContent = fs.readFileSync(configPath, 'utf-8');
     const updatedConfigContent = configContent.replace(/baseApiUrl: ".*?"/g, `baseApiUrl: "${backendUrl}"`);
@@ -17,19 +18,15 @@ if (backendUrl) {
     fs.writeFileSync(configPath, updatedConfigContent);
 }
 
-if (urlPrefix) {
-    // console.log(encontrarArquivosHTML(__dirname));
+(function atualizarArquivos() {
     for (const arquivo of encontrarArquivosHTML(__dirname)) {
         atualizarArquivoHTML(arquivo);
     }
-}
-
-if (importPrefix) {
-    // console.log(encontrarArquivosJS(__dirname));
     for (const arquivo of encontrarArquivosJS(__dirname)) {
         atualizarArquivoJS(arquivo);
     }
-}
+})()
+
 
 /**
  * Encontra todos os arquivos HTML em um diretório e seus subdiretórios.
@@ -55,12 +52,14 @@ function encontrarArquivosHTML(diretorio) {
 }
 
 function atualizarArquivoHTML(arquivo) {
-    const conteudo = fs.readFileSync(arquivo, 'utf-8');
-    const conteudoAtualizado = conteudo
-        .replace(/href="\/(.*)"/g, `href="${urlPrefix}/$1"`)
-        .replace(/src="\/(.*\.js)"/g, `src="${urlPrefix}/$1"`);
-    // console.log(conteudoAtualizado);
-    fs.writeFileSync(arquivo, conteudoAtualizado);
+    if (urlPrefix) {
+        const conteudo = fs.readFileSync(arquivo, 'utf-8');
+        const conteudoAtualizado = conteudo
+            .replace(/href="\/(.*)"/g, `href="${urlPrefix}/$1"`)
+            .replace(/src="\/(.*\.js)"/g, `src="${urlPrefix}/$1"`);
+        // console.log(conteudoAtualizado);
+        fs.writeFileSync(arquivo, conteudoAtualizado);
+    }
 }
 
 function encontrarArquivosJS(diretorio) {
@@ -82,8 +81,15 @@ function encontrarArquivosJS(diretorio) {
 
 function atualizarArquivoJS(arquivo) {
     const conteudo = fs.readFileSync(arquivo, 'utf-8');
-    const conteudoAtualizado = conteudo
-        .replace(/import (.*) from "\/(.*)"/g, `import $1 from "/${importPrefix}/$2"`);
+    let conteudoAtualizado = conteudo;
+    if (importPrefix) {
+        conteudoAtualizado = conteudoAtualizado
+            .replace(/import (.*) from "\/(.*)"/g, `import $1 from "/${importPrefix}/$2"`);
+    }
+    if (urlPrefix) {
+        conteudoAtualizado = conteudoAtualizado
+            .replace(/window.location.href += [\'|\"]+\/*(.*)[\'|\"]/g, `window.location.href="${urlPrefix}/$1"`);
+    }
     // console.log(conteudoAtualizado);
     fs.writeFileSync(arquivo, conteudoAtualizado);
 }

@@ -7,6 +7,7 @@ export async function apagarColuna(idColuna: string) {
         headers: {
             "Content-Type": "application/json"
         },
+        mode: "cors",
         body: JSON.stringify({
             idColuna,
         })
