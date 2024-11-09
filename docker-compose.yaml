@@ -14,10 +14,10 @@ services:
   frontend:
     build: ./static
     ports:
-    - "3000:6969"
+    - "80:6969"
     environment:
       BACKEND_URL: "http://localhost:8089/kanban"
-      URL_PREFIX: "/kanban"
+      URL_PREFIX: ""
       # IMPORT_PREFIX: "kanban"
     depends_on:
     - backend

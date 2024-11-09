@@ -88,7 +88,7 @@ function atualizarArquivoJS(arquivo) {
     }
     if (urlPrefix) {
         conteudoAtualizado = conteudoAtualizado
-            .replace(/window.location.href += [\'|\"]+\/*(.*)[\'|\"]/g, `window.location.href="${urlPrefix}/$1"`);
+            .replace(/window.location.href += [\'|\"|\`]*\/*(.*)[\'|\"|\`]/g, `window.location.href=\`${urlPrefix}/$1\``);
     }
     // console.log(conteudoAtualizado);
     fs.writeFileSync(arquivo, conteudoAtualizado);
