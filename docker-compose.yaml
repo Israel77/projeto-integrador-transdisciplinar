@@ -15,7 +15,7 @@ services:
     build: ./static
     ports:
     - "80:6969"
-    - "433:8433"
+    - "443:3443"
     env_file: env/.env_frontend_des
     depends_on:
     - backend
@@ -32,6 +32,7 @@ services:
     restart: always
     ports:
     - "8089:80"
+    - "8443:443"
     depends_on:
     - backend
     - frontend

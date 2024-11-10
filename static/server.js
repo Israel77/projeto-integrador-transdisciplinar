@@ -5,7 +5,7 @@ const https = require("https");
 
 const app = express();
 const port = process.env.FRONTEND_PORT || 6969;
-const securePort = process.env.FRONTEND_HTTPS_PORT || 8433;
+const securePort = process.env.FRONTEND_HTTPS_PORT || 3443;
 
 const sslKey = process.env.SSL_KEY || "";
 const sslCert = process.env.SSL_CERT || "";
