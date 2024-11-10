@@ -1,8 +1,14 @@
 const express = require("express");
 const path = require("path");
+const http = require("http");
+const https = require("https");
 
 const app = express();
 const port = process.env.FRONTEND_PORT || 6969;
+const securePort = process.env.FRONTEND_HTTPS_PORT || 8433;
+
+const sslKey = process.env.SSL_KEY || "";
+const sslCert = process.env.SSL_CERT || "";
 
 // Custom MIME types
 const customMimeTypes = {
@@ -56,6 +62,10 @@ app.use((req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+
+
+http.createServer(app).listen(port);
+https.createServer({
+    key: sslKey,
+    cert: sslCert
+}, app).listen(securePort);

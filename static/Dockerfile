@@ -2,7 +2,7 @@
 # Compile the static files
 FROM docker.io/library/alpine:3.20
 
-ENV NODE_VERSION=18.17.0
+ENV NODE_VERSION=22.2.0
 
 # Install Node.js and npm
 RUN apk add --no-cache \

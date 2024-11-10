@@ -32,5 +32,5 @@ export type MensagemErro = {
 export type Tag = string;
 
 export type AppConfig = {
-    "baseApiUrl": string,
+    baseApiUrl: string,
 }

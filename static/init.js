@@ -9,14 +9,17 @@ const backendUrl = process.env.BACKEND_URL;
 const urlPrefix = process.env.URL_PREFIX;
 const importPrefix = process.env.IMPORT_PREFIX;
 
-if (backendUrl) {
-    console.log(`Atualizando o arquivo de configuração com a URL do backend ${backendUrl}`);
+(function atualizarConfiguracao() {
     const configPath = path.join(__dirname, "config.js");
     const configContent = fs.readFileSync(configPath, 'utf-8');
-    const updatedConfigContent = configContent.replace(/baseApiUrl: ".*?"/g, `baseApiUrl: "${backendUrl}"`);
-    // console.log("Escrevendo no arquivo de configuração:\n", updatedConfigContent);
+    let updatedConfigContent = configContent;
+    if (backendUrl) {
+        console.log(`Atualizando o arquivo de configuração com a URL do backend ${backendUrl}`);
+        updatedConfigContent = updatedConfigContent.replace(/baseApiUrl: ".*?"/g, `baseApiUrl: "${backendUrl}"`);
+        // console.log("Escrevendo no arquivo de configuração:\n", updatedConfigContent);
+    }
     fs.writeFileSync(configPath, updatedConfigContent);
-}
+})();
 
 (function atualizarArquivos() {
     for (const arquivo of encontrarArquivosHTML(__dirname)) {
@@ -25,7 +28,7 @@ if (backendUrl) {
     for (const arquivo of encontrarArquivosJS(__dirname)) {
         atualizarArquivoJS(arquivo);
     }
-})()
+})();
 
 
 /**

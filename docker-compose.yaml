@@ -4,7 +4,7 @@ networks:
 services:
   backend:
     build: .
-    env_file: .env_docker
+    env_file: env/.env_backend_des
     ports:
     - "8081:8080"
     depends_on:
@@ -15,16 +15,14 @@ services:
     build: ./static
     ports:
     - "80:6969"
-    environment:
-      BACKEND_URL: "http://localhost:8089/kanban"
-      URL_PREFIX: ""
-      # IMPORT_PREFIX: "kanban"
+    - "433:8433"
+    env_file: env/.env_frontend_des
     depends_on:
     - backend
     networks:
     - virtual_network
   redis:
-    image: redis:latest
+    image: docker.io/library/redis:latest
     # ports:
     # - "6379:6379"
     networks:
