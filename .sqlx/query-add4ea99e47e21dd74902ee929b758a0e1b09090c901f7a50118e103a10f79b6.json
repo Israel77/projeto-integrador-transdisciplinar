@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT id_usuario, senha_hash_usuario FROM kanban.usuarios WHERE nome_usuario = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id_usuario",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "senha_hash_usuario",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "add4ea99e47e21dd74902ee929b758a0e1b09090c901f7a50118e103a10f79b6"
+}

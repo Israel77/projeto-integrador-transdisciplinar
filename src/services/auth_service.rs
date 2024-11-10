@@ -16,9 +16,8 @@ pub async fn login_service(
     pool: &sqlx::PgPool,
     session: Session,
 ) -> Result<String, ListaErros> {
-    let dados_usuario = sqlx::query_as!(
-        Usuario,
-        "SELECT * FROM kanban.usuarios WHERE nome_usuario = $1",
+    let dados_usuario = sqlx::query!(
+        "SELECT id_usuario, senha_hash_usuario FROM kanban.usuarios WHERE nome_usuario = $1",
         nome_usuario,
     )
     .fetch_one(pool)
