@@ -15,14 +15,14 @@ ALTER TABLE kanban.quadros ALTER COLUMN id_usuario SET NOT NULL;
 ALTER TABLE kanban.quadros DROP COLUMN pk_usuario;
 -- Colunas
 ALTER TABLE kanban.colunas
-ADD COLUMN id_usuario uuid
+ADD COLUMN id_usuario uuid;
 
 ALTER TABLE kanban.colunas ADD FOREIGN KEY (id_usuario) REFERENCES kanban.usuarios (id_usuario) ON DELETE CASCADE;
 
 UPDATE kanban.colunas c
 SET id_usuario = q.id_usuario
 FROM kanban.quadros q
-WHERE c.pk_quadro = q.pk_quadro 
+WHERE c.pk_quadro = q.pk_quadro;
 
 ALTER TABLE kanban.colunas ALTER COLUMN id_usuario SET NOT NULL;
 -- Tarefas
@@ -34,7 +34,7 @@ ALTER TABLE kanban.tarefas ADD FOREIGN KEY (id_usuario) REFERENCES kanban.usuari
 UPDATE kanban.tarefas t
 SET id_usuario = c.id_usuario
 FROM kanban.colunas c
-WHERE t.pk_coluna = c.pk_coluna 
+WHERE t.pk_coluna = c.pk_coluna; 
 
 ALTER TABLE kanban.tarefas ALTER COLUMN id_usuario SET NOT NULL;
 -- Tags
