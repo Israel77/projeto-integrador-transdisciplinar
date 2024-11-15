@@ -2,13 +2,12 @@ use std::net::IpAddr;
 
 use actix_session::Session;
 use bcrypt::verify;
-use futures::join;
 use sqlx::{
     query,
     types::{ipnetwork::IpNetwork, Uuid},
 };
 
-use crate::{errors::error::ListaErros, persistence::models::usuario::Usuario};
+use crate::errors::error::ListaErros;
 
 pub async fn login_service(
     nome_usuario: String,

@@ -134,8 +134,10 @@ pub async fn deletar_coluna(
         UPDATE kanban.tarefas t
         SET pk_coluna = (
             SELECT pk_coluna FROM kanban.colunas c
-            WHERE ordem_coluna = (SELECT MIN(ordem_coluna) FROM kanban.colunas
-            WHERE id_usuario = t.id_usuario))
+            WHERE ordem_coluna = (
+                SELECT MIN(ordem_coluna) FROM kanban.colunas
+                WHERE id_usuario = t.id_usuario)
+            AND id_usuario = t.id_usuario)
         WHERE t.pk_coluna IS NULL;
         "
     )
