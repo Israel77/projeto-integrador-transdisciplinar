@@ -17,6 +17,7 @@ RUN node -v && npm -v
 
 WORKDIR /usr/src/projeto-integrador-transdisciplinar/static
 
+ARG CACHEBUST=1
 COPY . .
 
 RUN npm ci

@@ -20,12 +20,6 @@ export function inicializarQuadro(dadosLogin: verificarLoginService.RespostaLogi
         return;
     }
 
-    const botaoLogout = document.getElementById("botao-logout") as HTMLButtonElement;
-    botaoLogout.addEventListener("click", async () => {
-        await fazerLogoutService.fazerLogout();
-        window.location.href = "/";
-    });
-
     // Por enquanto, cada usuário terá apenas um quadro
     quadroView.idQuadro = (dadosLogin as verificarLoginService.RespostaLogin).quadros[0];
 
@@ -59,23 +53,17 @@ export function carregarDadosQuadro(quadroView: QuadroView) {
     });
 }
 
+// Recarrega o quadro a partir do servidor
 export function recarregarQuadro(quadroView: QuadroView) {
     console.log("Recarregando quadro");
-    if (quadroView.quadroDiv !== undefined) {
-        while (quadroView.quadroDiv.firstChild) {
-            quadroView.quadroDiv.removeChild(quadroView.quadroDiv.firstChild);
-        }
-    }
+
+    apagarDadosQuadro(quadroView);
     carregarDadosQuadro(quadroView);
 }
 
+// Atualiza a visualização do quadro a partir dos dados locais
 export function atualizarView(quadroView: QuadroView) {
-
-    if (quadroView.quadroDiv !== undefined) {
-        while (quadroView.quadroDiv.firstChild) {
-            quadroView.quadroDiv.removeChild(quadroView.quadroDiv.firstChild);
-        }
-    }
+    apagarDadosQuadro(quadroView);
 
     const quadro = quadroView.quadro as Quadro;
     quadroView.quadroDiv = document.getElementById("quadro-kanban") as HTMLDivElement;
@@ -107,6 +95,22 @@ export function preencherHeader(dadosLogin: verificarLoginService.RespostaLogin)
     botaoSair.className = 'bg-vermelho';
     botaoSair.textContent = 'Sair';
 
+    botaoSair.addEventListener("click", async () => {
+        await fazerLogoutService.fazerLogout();
+        window.location.href = "/";
+    });
+
     headerDiv.append(pCumprimento, botaoSair);
 }
 
+function apagarDadosQuadro(quadroView: QuadroView) {
+    if (quadroView.quadroDiv === undefined) return;
+
+    // Remove todos os elementos filhos do quadro, exceto o header
+    while (quadroView.quadroDiv.children.length > 1) {
+        const lastChild = quadroView.quadroDiv.lastChild as HTMLElement;
+        if (lastChild && lastChild.id !== "quadro-header") {
+            quadroView.quadroDiv.removeChild(lastChild);
+        }
+    }
+}

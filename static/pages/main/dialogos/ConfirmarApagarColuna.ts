@@ -22,7 +22,7 @@ export function abrirDialogoApagarColuna(quadroView: QuadroView,
         e.preventDefault();
         console.log(quadroView);
         try {
-            await apagarColuna(idColuna);
+            apagarColuna(idColuna);
 
             // Insere as tarefas na primeira coluna do quadro
             if (quadroView.quadro) {
@@ -46,7 +46,7 @@ export function abrirDialogoApagarColuna(quadroView: QuadroView,
                 atualizarView(quadroView);
             }
         } catch (error) {
-            console.error("Erro ao apagar a tarefa:", error);
+            console.error("Erro ao apagar a coluna:", error);
         } finally {
             dialogo.removeChild(formApagarColuna);
             dialogo.close();
