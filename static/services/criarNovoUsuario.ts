@@ -1,4 +1,5 @@
 import { appConfig } from "/config.js";
+import { MensagemErro } from "/types/types";
 
 export async function criarNovoUsuario(nomeUsuario: string, emailUsuario: string, senha: string) {
     return await fetch(`${appConfig.baseApiUrl}/api/v1/sign-up`, {
@@ -16,6 +17,6 @@ export async function criarNovoUsuario(nomeUsuario: string, emailUsuario: string
     }) as Omit<Response, 'json'> & {
         json: () => Promise<{
             idUsuario: string,
-        }>
+        } | MensagemErro>
     };
 }

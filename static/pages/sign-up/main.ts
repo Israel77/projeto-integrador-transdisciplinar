@@ -1,6 +1,9 @@
+import { renderizarErro } from "/components/Erro.js";
 import { criarNovoUsuario } from "/services/criarNovoUsuario.js";
+import { MensagemErro } from "/types/types";
 
 (() => {
+    const containerFormulario: HTMLDivElement = document.getElementById('sign-up') as HTMLDivElement;
     const nomeUsuarioInput: HTMLInputElement = document.getElementById('nome-usuario') as HTMLInputElement;
     const emailUsuarioInput: HTMLInputElement = document.getElementById('email') as HTMLInputElement;
     const senhaInput: HTMLInputElement = document.getElementById('senha') as HTMLInputElement;
@@ -20,7 +23,9 @@ import { criarNovoUsuario } from "/services/criarNovoUsuario.js";
             if (resposta.ok) {
                 window.location.href = '/criar-quadro';
             } else {
-                console.error(resposta);
+                resposta.json().then((err: MensagemErro) => {
+                    renderizarErro(containerFormulario, err);
+                });
             }
         });
     });
