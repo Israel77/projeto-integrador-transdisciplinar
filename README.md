@@ -13,8 +13,8 @@ As seguintes dependências devem estar devidamente instaladas e configuradas:
 - Cargo watch (opcional)
 - Node e NPM
 - Redis/Valkey
-- Docker/podman (opcional)
-- Docker compose (opcional)
+- Docker/podman (opcional - recomendado)
+- Docker compose (opcional - recomendado)
 - Visual Studio Code/VSCodium (opcional)
 
 Certifique-se de possuir um usuário do Postgres habilitado com permissão de leitura, escrita, alteração e deleção de tabelas. Se for primeira vez executando o projeto, é necessário preparar o banco de dados executando **todos** os scripts contidos no diretório src/persistence/migrations.
@@ -53,3 +53,13 @@ $ cargo watch -x run
 ```
 
 Se você está utilizando o VSCodium ou Visual Studio Code como editor de texto/IDE, há uma task pré-configurada no arquivo .vscode/tasks.json chamada Start App, que irá automaticamente baixar e inicializar uma imagem do Redis, além de executar o Cargo em modo watch (requer podman e cargo-watch instalados).
+
+## Executar com Docker compose
+
+Use o arquivo docker-compose.yml para iniciar o projeto com Docker compose.
+```bash
+sudo docker compose up
+```
+Acesse o projeto em https://localhost:443.
+
+Para terminar a execução do projeto, pressione Ctrl+C no terminal.
