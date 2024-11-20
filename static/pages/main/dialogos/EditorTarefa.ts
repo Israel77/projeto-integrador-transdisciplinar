@@ -27,6 +27,19 @@ export async function abrirEditorTarefa(e: Event, quadroView: QuadroView) {
     const inputDescricao = document.createElement("textarea");
     const botaoSalvar = document.createElement("button");
 
+    // Seletor da coluna
+    const seletorColuna = document.createElement("select");
+    seletorColuna.id = "seletor-coluna";
+    seletorColuna.name = "coluna";
+    for (const coluna of quadroView.quadro?.colunas || []) {
+        const opcao = document.createElement("option");
+        opcao.value = coluna.idColuna;
+        opcao.textContent = coluna.nomeColuna;
+        seletorColuna.appendChild(opcao);
+    }
+    //Valor padrão
+    seletorColuna.value = dadosTarefa.idColuna;
+
     // Label do título
     labelTitulo.textContent = "Título";
     labelTitulo.htmlFor = "editar-titulo";
@@ -60,7 +73,7 @@ export async function abrirEditorTarefa(e: Event, quadroView: QuadroView) {
             try {
                 await editarTarefaService.editarTarefa(
                     idTarefa,
-                    dadosTarefa.idColuna,
+                    seletorColuna.value,
                     inputTitulo.value,
                     inputDescricao.value,
                     dadosTarefa.tags
@@ -91,6 +104,7 @@ export async function abrirEditorTarefa(e: Event, quadroView: QuadroView) {
         botaoContainer.append(botaoCancelar, botaoSalvar);
 
         formEditarTarefa.append(
+            seletorColuna,
             labelTitulo,
             inputTitulo,
             labelDescricao,
