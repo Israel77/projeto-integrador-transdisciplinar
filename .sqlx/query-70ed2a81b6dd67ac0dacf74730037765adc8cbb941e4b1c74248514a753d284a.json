@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT * FROM kanban.tarefas WHERE pk_coluna=$1 ORDER BY pk_tarefa",
+  "query": "SELECT * FROM kanban.tarefas WHERE pk_coluna=$1 ORDER BY prioridade DESC",
   "describe": {
     "columns": [
       {
@@ -60,5 +60,5 @@
       false
     ]
   },
-  "hash": "e389bbc31adc79e2901fd111d701c0605ad0f9d5757aef670089034781f66251"
+  "hash": "70ed2a81b6dd67ac0dacf74730037765adc8cbb941e4b1c74248514a753d284a"
 }
