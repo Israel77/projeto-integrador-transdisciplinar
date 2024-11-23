@@ -79,7 +79,7 @@ pub async fn consultar_quadro_por_id(
     for coluna_model in colunas_models {
         let tarefas_models = query_as!(
             models::tarefa::Tarefa,
-            "SELECT * FROM kanban.tarefas WHERE pk_coluna=$1 ORDER BY pk_tarefa",
+            "SELECT * FROM kanban.tarefas WHERE pk_coluna=$1 ORDER BY prioridade DESC",
             coluna_model.pk_coluna
         )
         .fetch_all(pool)

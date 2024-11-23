@@ -24,6 +24,7 @@ struct AtualizarTarefaDTO {
     descricao: Option<String>,
     #[serde(rename = "idColuna")]
     id_coluna: Option<String>,
+    prioridade: i16,
 }
 
 #[derive(Deserialize)]
@@ -54,6 +55,7 @@ struct CriarTarefaDTO {
     descricao: Option<String>,
     #[serde(rename = "idColuna")]
     id_coluna: Option<String>,
+    prioridade: Option<i16>,
 }
 
 #[get("/tarefa/{id_tarefa}")]
@@ -124,6 +126,7 @@ pub async fn atualizar_tarefa(
                 .as_ref()
                 .map(|descricao| descricao.as_str()),
             pk_coluna,
+            dados_tarefa.prioridade,
             vec![],
         )
         .await;
@@ -250,6 +253,7 @@ pub async fn criar_tarefa(
                 .as_ref()
                 .map(|descricao| descricao.as_str()),
             pk_coluna,
+            dados_tarefa.prioridade,
             vec![],
             id_usuario,
         )
