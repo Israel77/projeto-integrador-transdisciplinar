@@ -9,54 +9,32 @@ Projeto de faculdade implementando um quadro kanban como um monolito, com o intu
 As seguintes dependências devem estar devidamente instaladas e configuradas:
 
 - PostgreSQL
-- Rust e Cargo
-- Cargo watch (opcional)
-- Node e NPM
-- Redis/Valkey
-- Docker/podman (opcional - recomendado)
-- Docker compose (opcional - recomendado)
-- Visual Studio Code/VSCodium (opcional)
+- docker/podman
+- docker-compose/podman-compose
+- chave e certificado ssl, para criptografia https
 
 Certifique-se de possuir um usuário do Postgres habilitado com permissão de leitura, escrita, alteração e deleção de tabelas. Se for primeira vez executando o projeto, é necessário preparar o banco de dados executando **todos** os scripts contidos no diretório src/persistence/migrations.
 
 Estes scripts são responsáveis por criar um SCHEMA chamado "kanban" com todas as tabelas necessárias para a execução do projeto, bem como inserir alguns dados para testes.
 
-## Executar em modo de desenvolvimento
-
-Compile os arquivos TypeScript para gerar o JavaScript correspondente:
-```
-$ cd static
-$ npm run compile
-``` 
-
-Na raiz do projeto, crie um arquivo .env contendo as seguintes variáveis de ambiente:
-```
-DATABASE_URL=(url do postgres - incluindo as informações de usuário e senha)
-REDIS_URL=(url do redis)
-```
-
-Também na raiz do projeto, execute o comando para compilar os arquivos Rust e iniciar o servidor:
-```
-$ cargo run
-```
-
-### Compilação automática
-
-É possível compilar automáticamente os arquivos TypeScript para JavaScript quando eles forem editados, executando o seguinte comando no diretório static:
-```
-$ npm run compile-watch
-```
-
-Similarmente, com a extensão cargo-watch instalada, é possível recompilar os arquivos Rust quando o projeto for alterado, com o comando:
-```
-$ cargo watch -x run
-```
-
-Se você está utilizando o VSCodium ou Visual Studio Code como editor de texto/IDE, há uma task pré-configurada no arquivo .vscode/tasks.json chamada Start App, que irá automaticamente baixar e inicializar uma imagem do Redis, além de executar o Cargo em modo watch (requer podman e cargo-watch instalados).
-
 ## Executar com Docker compose
 
-Use o arquivo docker-compose.yml para iniciar o projeto com Docker compose.
+### Preencher a variáveis de ambiente
+Algumas variáveis de ambiente são utilizadas no projeto para configurar parâmetros utilizados tanto pelo backend, quanto pelo frontend. O repositório possui alguns valores padrão usados como exemplo, mas provavelmente eles deverão ser alterados na sua máquina (especialmente no ambiente de produção) para refletir as configuração do seu ambiente.
+
+Preencha as variáveis de ambiente localizadas na pasta env/.env_backend_des, com os seguintes dados:
+```
+DATABASE_URL=(URL completa do banco de dados, incluindo usuário e senha)
+REDIS_URL=(Url do redis - dentro da rede docker)
+```
+Preencha as variáveis de ambiente localizadas na pasta env/.env_frontend_des, com os seguintes dados:
+```
+BACKEND_URL=(URL do service de backend)
+SSL_CERT=(Seu certificado SSL para o ambiente)
+SSL_KEY=(Sua chave SSL para o ambiente)
+```
+
+Após fazer os devidos ajustes nas variáveis de ambiente, use o arquivo docker-compose.yml para iniciar o projeto com Docker compose.
 ```bash
 sudo docker compose up
 ```
