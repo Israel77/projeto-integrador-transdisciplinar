@@ -119,6 +119,15 @@
     flex-wrap: wrap;
 }
 
+.card-prioridade {
+    display: inline;
+    justify-content: center;
+    margin-inline-start: .6rem;
+    padding-inline: .4em;
+    border-radius: 50%;
+    background-color: var(--light-gray);
+}
+
 button {
     border-radius: .6em;
 }

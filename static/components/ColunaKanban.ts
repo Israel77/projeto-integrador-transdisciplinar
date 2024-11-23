@@ -44,6 +44,7 @@ export function criarColuna(root: HTMLElement, coluna: Coluna): HTMLDivElement {
 
     colunaDiv.appendChild(btnAdicionarTarefa);
 
+    coluna.tarefas.sort((a, b) => b.prioridade - a.prioridade);
     for (let tarefa of coluna.tarefas) {
         criarCardTarefa(colunaDiv, tarefa);
     }
@@ -86,7 +87,17 @@ function mudarColuna(novaColuna: HTMLElement, tarefa: Element) {
         }
     }
 
-    novaColuna.appendChild(tarefa)
+    novaColuna.appendChild(tarefa);
+    let cardTarefas = Array.from(novaColuna.children)
+        .filter((child: HTMLDivElement) => child.dataset.idTarefa !== undefined) as HTMLDivElement[];
+    cardTarefas.sort((a, b) => parseInt(b.dataset.prioridadeTarefa ?? "0") - parseInt(a.dataset.prioridadeTarefa ?? "0"));
+    console.log(cardTarefas);
+    // Remover tarefas
+    for (const tarefa of cardTarefas) {
+        novaColuna.removeChild(tarefa);
+    }
+    // Reinserir tarefas na nova ordem
+    cardTarefas.forEach(cardTarefa => novaColuna.appendChild(cardTarefa));
 
     fetch(`${appConfig.baseApiUrl}/api/v1/tarefa/atualizar/coluna`, {
         method: "PUT",

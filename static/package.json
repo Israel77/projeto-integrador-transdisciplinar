@@ -1,6 +1,6 @@
 {
     "name": "projeto-integrador-transdisciplinar-static",
-    "version": "1.0.0",
+    "version": "0.1.1",
     "description": "Frontend do projeto",
     "main": "main.js",
     "scripts": {

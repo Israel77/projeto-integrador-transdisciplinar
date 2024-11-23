@@ -17,6 +17,7 @@ export type Tarefa = {
     "idColuna": string,
     "titulo": string,
     "descricao": string,
+    "prioridade": number,
     "tags": Tag[]
 }
 

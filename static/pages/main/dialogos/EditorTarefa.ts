@@ -25,6 +25,8 @@ export async function abrirEditorTarefa(e: Event, quadroView: QuadroView) {
     const inputTitulo = document.createElement("input");
     const labelDescricao = document.createElement("label");
     const inputDescricao = document.createElement("textarea");
+    const inputPrioridade = document.createElement("input");
+    const labelPrioridade = document.createElement("label");
     const botaoSalvar = document.createElement("button");
 
     // Seletor da coluna
@@ -62,6 +64,16 @@ export async function abrirEditorTarefa(e: Event, quadroView: QuadroView) {
         inputDescricao.value = dadosTarefa.descricao;
     }
 
+    // Input de prioridade
+    inputPrioridade.id = "prioridade";
+    inputPrioridade.type = "number";
+    inputPrioridade.valueAsNumber = dadosTarefa.prioridade;
+    inputPrioridade.min = "1";
+
+    // Label de prioridade
+    labelPrioridade.textContent = "Prioridade";
+    labelPrioridade.htmlFor = "prioridade";
+
     // Botão de salvar
     botaoSalvar.type = "submit";
     botaoSalvar.textContent = "Salvar";
@@ -76,7 +88,8 @@ export async function abrirEditorTarefa(e: Event, quadroView: QuadroView) {
                     seletorColuna.value,
                     inputTitulo.value,
                     inputDescricao.value,
-                    dadosTarefa.tags
+                    dadosTarefa.tags,
+                    inputPrioridade.valueAsNumber
                 );
             } catch (error) {
                 console.error("Erro ao atualizar tarefa:", error);
@@ -109,6 +122,8 @@ export async function abrirEditorTarefa(e: Event, quadroView: QuadroView) {
             inputTitulo,
             labelDescricao,
             inputDescricao,
+            labelPrioridade,
+            inputPrioridade,
             botaoContainer
         );
 

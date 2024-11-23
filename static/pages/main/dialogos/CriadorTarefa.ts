@@ -22,13 +22,28 @@ export function abrirCriadorTarefa(e: Event, quadroView: QuadroView) {
     dialogo.appendChild(formCriarTarefa);
 
     formCriarTarefa.classList.add("vertical-form");
+    const labelColuna = document.createElement("label");
+    const seletorColuna = document.createElement("select");
     const labelTitulo = document.createElement("label");
     const inputTitulo = document.createElement("input");
     const labelDescricao = document.createElement("label");
     const inputDescricao = document.createElement("textarea");
-    const labelColuna = document.createElement("label");
-    const seletorColuna = document.createElement("select");
+    const inputPrioridade = document.createElement("input");
+    const labelPrioridade = document.createElement("label");
     const botaoSalvar = document.createElement("button");
+
+    // Seletor da coluna
+    seletorColuna.id = "seletor-coluna";
+    seletorColuna.name = "coluna";
+    for (const coluna of quadroView.quadro?.colunas || []) {
+        const opcao = document.createElement("option");
+        opcao.value = coluna.idColuna;
+        opcao.textContent = coluna.nomeColuna;
+        seletorColuna.appendChild(opcao);
+    }
+    if (idColuna !== undefined) {
+        seletorColuna.value = idColuna;
+    }
 
     // Label do título
     labelTitulo.textContent = "Título";
@@ -51,18 +66,15 @@ export function abrirCriadorTarefa(e: Event, quadroView: QuadroView) {
     labelColuna.textContent = "Coluna";
     labelColuna.htmlFor = "seletor-coluna";
 
-    // Seletor da coluna
-    seletorColuna.id = "seletor-coluna";
-    seletorColuna.name = "coluna";
-    for (const coluna of quadroView.quadro?.colunas || []) {
-        const opcao = document.createElement("option");
-        opcao.value = coluna.idColuna;
-        opcao.textContent = coluna.nomeColuna;
-        seletorColuna.appendChild(opcao);
-    }
-    if (idColuna !== undefined) {
-        seletorColuna.value = idColuna;
-    }
+    // Input de prioridade
+    inputPrioridade.id = "prioridade";
+    inputPrioridade.type = "number";
+    inputPrioridade.valueAsNumber = 1;
+    inputPrioridade.min = "1";
+
+    // Label de prioridade
+    labelPrioridade.textContent = "Prioridade";
+    labelPrioridade.htmlFor = "prioridade";
 
     // Botão de salvar
     botaoSalvar.type = "submit";
@@ -70,7 +82,7 @@ export function abrirCriadorTarefa(e: Event, quadroView: QuadroView) {
     const __criarTarefa = async (e: MouseEvent) => {
         e.preventDefault();
         try {
-            await criarTarefaService.criarTarefa(inputTitulo.value, inputDescricao.value, seletorColuna.value);
+            await criarTarefaService.criarTarefa(inputTitulo.value, inputDescricao.value, seletorColuna.value, inputPrioridade.valueAsNumber);
         } catch (error) {
             console.error("Erro ao atualizar tarefa:", error);
         } finally {
@@ -103,6 +115,8 @@ export function abrirCriadorTarefa(e: Event, quadroView: QuadroView) {
         inputTitulo,
         labelDescricao,
         inputDescricao,
+        labelPrioridade,
+        inputPrioridade,
         botaoContainer
     );
 

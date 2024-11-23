@@ -6,6 +6,7 @@ export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivEleme
     // Criação
     let tarefaDiv = document.createElement("div");
     let pTitulo = document.createElement("p");
+    let prioridadeSpan = document.createElement("span");
     let pDescricao = document.createElement("p");
     let secaoTags = document.createElement("div");
     let botaoDeletar = document.createElement("button");
@@ -29,9 +30,11 @@ export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivEleme
     pTitulo.classList.add("titulo-card");
     pDescricao.classList.add("descricao-card");
     secaoTags.classList.add("tag-container");
+    prioridadeSpan.classList.add("card-prioridade");
 
     // Dados
     tarefaDiv.setAttribute("data-id-tarefa", tarefa.id);
+    tarefaDiv.setAttribute("data-prioridade-tarefa", tarefa.prioridade.toString());
 
     botaoDeletar.innerText = "Apagar tarefa";
     pTitulo.innerText = tarefa.titulo;
@@ -39,6 +42,8 @@ export function criarCardTarefa(root: HTMLElement, tarefa: Tarefa): HTMLDivEleme
     for (let tag of tarefa.tags) {
         criarTag(secaoTags, tag);
     }
+    prioridadeSpan.innerText = tarefa.prioridade.toString();
+    pTitulo.appendChild(prioridadeSpan);
 
     return tarefaDiv;
 }
