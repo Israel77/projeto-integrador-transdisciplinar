@@ -16,6 +16,7 @@ pub struct TarefaDTO {
     descricao: Option<String>,
     #[serde(rename = "idColuna")]
     id_coluna: Option<Arc<str>>,
+    prioridade: i16,
     tags: Vec<Arc<str>>,
 }
 
@@ -30,6 +31,7 @@ impl TarefaDTO {
             titulo: tarefa.titulo_tarefa,
             descricao: tarefa.descricao_tarefa,
             id_coluna: id_coluna.map(|id| Arc::from(id.to_string())),
+            prioridade: tarefa.prioridade,
             tags: tags.iter().map(|model| model.nome_tag.clone()).collect(),
         }
     }

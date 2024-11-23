@@ -37,6 +37,11 @@
         "ordinal": 6,
         "name": "id_usuario",
         "type_info": "Uuid"
+      },
+      {
+        "ordinal": 7,
+        "name": "prioridade",
+        "type_info": "Int2"
       }
     ],
     "parameters": {
@@ -50,6 +55,7 @@
       true,
       true,
       true,
+      false,
       false,
       false
     ]

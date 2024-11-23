@@ -1,0 +1,6 @@
+ALTER TABLE kanban.tarefas
+ADD COLUMN IF NOT EXISTS
+prioridade SMALLINT DEFAULT 1;
+
+ALTER TABLE kanban.tarefas
+ALTER COLUMN prioridade SET NOT NULL;
